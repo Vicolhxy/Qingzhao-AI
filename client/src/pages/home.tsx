@@ -33,11 +33,11 @@ const photoCategories = [
 // Placeholder component for photo samples
 function PhotoPlaceholder({ className, large = false }: { className?: string; large?: boolean }) {
   const size = large 
-    ? "h-48 w-36 md:h-56 md:w-40 lg:h-64 lg:w-48" 
+    ? "h-56 w-44 md:h-64 md:w-48 lg:h-72 lg:w-56" 
     : "h-16 w-14 md:h-20 md:w-16";
   return (
     <div 
-      className={`bg-gray-300 dark:bg-gray-600 rounded-lg flex items-center justify-center ${size} ${className}`}
+      className={`bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center ${size} ${className}`}
       data-testid={`placeholder-${large ? 'large' : 'small'}`}
     >
       <span className="text-gray-500 dark:text-gray-400 text-xs">样品照片</span>
@@ -61,7 +61,7 @@ export default function Home() {
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-3 py-4">
+      <div className="container mx-auto px-3 py-8">
         <Tabs 
           value={selectedCategory} 
           onValueChange={(value) => setSelectedCategory(value as PhotoCategory)}
@@ -77,7 +77,7 @@ export default function Home() {
                   <TabsTrigger
                     key={category.id}
                     value={category.id}
-                    className="w-full rounded-none justify-start px-3 py-2 text-sm text-foreground/80 hover:bg-muted border-l-2 border-transparent data-[state=active]:border-[#28BE6F] data-[state=active]:text-[#28BE6F] data-[state=active]:bg-transparent"
+                    className="w-full rounded-none justify-start px-4 py-3 text-sm text-foreground/80 hover:bg-muted border-l-2 border-transparent data-[state=active]:border-[#28BE6F] data-[state=active]:text-[#28BE6F] data-[state=active]:bg-transparent"
                     data-testid={`tab-${category.id}`}
                   >
                     <span className="font-medium">{category.name}</span>
@@ -95,34 +95,36 @@ export default function Home() {
                   className="mt-0"
                   data-testid={`content-${category.id}`}
                 >
-                  <Card className="border-0 shadow-sm">
-                    <CardContent className="p-4 sm:p-5 md:p-6">
+                  <div className="bg-transparent">
+                    <div className="p-4 sm:p-5 md:p-6">
                       {/* Large Sample Photo */}
                       <div className="mb-4 flex justify-center">
                         <PhotoPlaceholder large className="mx-auto" />
                       </div>
 
-                      {/* Small Sample Photos */}
-                      <div className="flex justify-center gap-2 mb-4">
-                        <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
-                        <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
-                        <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
+                      {/* Small Sample Photos - align width with large photo */}
+                      <div className="flex justify-center mb-4">
+                        <div className="w-44 md:w-48 lg:w-56 flex justify-between">
+                          <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
+                          <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
+                          <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
+                        </div>
                       </div>
 
-                      {/* Action Button */}
-                      <div className="text-center">
+                      {/* Action Button - match large photo width */}
+                      <div className="flex justify-center">
                         <Link to={`/upload?category=${category.id}`}>
                           <Button 
                             size="lg" 
-                            className="w-full max-w-sm bg-primary hover:bg-primary/90 text-primary-foreground"
+                            className="w-44 md:w-48 lg:w-56 bg-primary hover:bg-primary/90 text-primary-foreground"
                             data-testid={`button-make-same-${category.id}`}
                           >
                             我要做同款
                           </Button>
                         </Link>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </TabsContent>
               ))}
             </div>
