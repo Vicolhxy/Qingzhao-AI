@@ -57,7 +57,6 @@ export default function Home() {
           data-testid="banner-image"
         />
       </div>
-
       {/* Content Section */}
       <div className="px-3 py-8">
         <div className="flex items-start gap-3">
@@ -88,10 +87,9 @@ export default function Home() {
               return (
                 <div data-testid={`content-${category.id}`}>
                   {/* Large Sample Photo */}
-                  <div className="mb-4">
+                  <div className="mb-4 ml-[24px] mr-[24px] pl-[24px] pr-[24px]">
                     <PhotoPlaceholder large />
                   </div>
-
                   {/* Small Sample Photos - align width with large photo */}
                   <div className="mb-4">
                     <div className="w-48 md:w-54 lg:w-60 flex justify-between">
@@ -100,7 +98,6 @@ export default function Home() {
                       <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
                     </div>
                   </div>
-
                   {/* Action Button - match large photo width */}
                   <div>
                     <Link to={`/upload?category=${category.id}`}>
