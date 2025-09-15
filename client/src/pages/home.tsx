@@ -91,7 +91,7 @@ export default function Home() {
                     <PhotoPlaceholder large />
                   </div>
                   {/* Small Sample Photos - align width with large photo */}
-                  <div className="mb-4">
+                  <div className="mb-4 pl-[24px] pr-[24px] ml-[24px] mr-[24px]">
                     <div className="w-48 md:w-54 lg:w-60 flex justify-between">
                       <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
                       <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
@@ -99,7 +99,7 @@ export default function Home() {
                     </div>
                   </div>
                   {/* Action Button - match large photo width */}
-                  <div>
+                  <div className="ml-[24px] mr-[24px] pl-[24px] pr-[24px]">
                     <Link to={`/upload?category=${category.id}`}>
                       <Button 
                         size="lg" 
