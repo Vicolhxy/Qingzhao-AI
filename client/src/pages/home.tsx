@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PhotoCategory } from "@shared/schema";
 import bannerImage from "@assets/Banner_1757964490417.png";
 
@@ -33,8 +31,8 @@ const photoCategories = [
 // Placeholder component for photo samples
 function PhotoPlaceholder({ className, large = false }: { className?: string; large?: boolean }) {
   const size = large 
-    ? "h-56 w-44 md:h-64 md:w-48 lg:h-72 lg:w-56" 
-    : "h-16 w-14 md:h-20 md:w-16";
+    ? "h-64 w-48 md:h-72 md:w-54 lg:h-80 lg:w-60" 
+    : "h-16 w-14";
   return (
     <div 
       className={`bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center ${size} ${className}`}
@@ -61,75 +59,65 @@ export default function Home() {
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-3 py-8">
-        <Tabs 
-          value={selectedCategory} 
-          onValueChange={(value) => setSelectedCategory(value as PhotoCategory)}
-          className="w-full"
-          data-testid="photo-category-tabs"
-        >
-          {/* Left Navigation and Right Content Layout */}
-          <div className="flex gap-3">
-            {/* Left Navigation */}
-            <div className="w-20 sm:w-24 md:w-28 shrink-0">
-              <TabsList className="flex-col gap-1 p-0 bg-transparent">
-                {photoCategories.map((category) => (
-                  <TabsTrigger
-                    key={category.id}
-                    value={category.id}
-                    className="w-full rounded-none justify-start px-4 py-3 text-sm text-foreground/80 hover:bg-muted border-l-2 border-transparent data-[state=active]:border-[#28BE6F] data-[state=active]:text-[#28BE6F] data-[state=active]:bg-transparent"
-                    data-testid={`tab-${category.id}`}
-                  >
-                    <span className="font-medium">{category.name}</span>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </div>
-
-            {/* Right Content Area */}
-            <div className="flex-1 max-w-[640px] w-full">
+      <div className="px-3 py-8">
+        <div className="flex items-start gap-3">
+          {/* Left Navigation */}
+          <div className="w-20 sm:w-24 md:w-28 shrink-0">
+            <div className="flex flex-col gap-1">
               {photoCategories.map((category) => (
-                <TabsContent 
-                  key={category.id} 
-                  value={category.id} 
-                  className="mt-0"
-                  data-testid={`content-${category.id}`}
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`w-full text-left px-4 py-3 text-sm border-l-2 transition-colors ${
+                    selectedCategory === category.id
+                      ? 'border-[#28BE6F] text-[#28BE6F] font-medium'
+                      : 'border-transparent text-foreground/80 hover:bg-muted'
+                  }`}
+                  data-testid={`tab-${category.id}`}
                 >
-                  <div className="bg-transparent">
-                    <div className="p-4 sm:p-5 md:p-6">
-                      {/* Large Sample Photo */}
-                      <div className="mb-4 flex justify-center">
-                        <PhotoPlaceholder large className="mx-auto" />
-                      </div>
-
-                      {/* Small Sample Photos - align width with large photo */}
-                      <div className="flex justify-center mb-4">
-                        <div className="w-44 md:w-48 lg:w-56 flex justify-between">
-                          <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
-                          <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
-                          <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
-                        </div>
-                      </div>
-
-                      {/* Action Button - match large photo width */}
-                      <div className="flex justify-center">
-                        <Link to={`/upload?category=${category.id}`}>
-                          <Button 
-                            size="lg" 
-                            className="w-44 md:w-48 lg:w-56 bg-primary hover:bg-primary/90 text-primary-foreground"
-                            data-testid={`button-make-same-${category.id}`}
-                          >
-                            我要做同款
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
+                  {category.name}
+                </button>
               ))}
             </div>
           </div>
-        </Tabs>
+
+          {/* Right Content Area */}
+          <div className="flex-1 pr-3">
+            {(() => {
+              const category = photoCategories.find(c => c.id === selectedCategory)!;
+              return (
+                <div data-testid={`content-${category.id}`}>
+                  {/* Large Sample Photo */}
+                  <div className="mb-4">
+                    <PhotoPlaceholder large />
+                  </div>
+
+                  {/* Small Sample Photos - align width with large photo */}
+                  <div className="mb-4">
+                    <div className="w-48 md:w-54 lg:w-60 flex justify-between">
+                      <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
+                      <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
+                      <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
+                    </div>
+                  </div>
+
+                  {/* Action Button - match large photo width */}
+                  <div>
+                    <Link to={`/upload?category=${category.id}`}>
+                      <Button 
+                        size="lg" 
+                        className="w-48 md:w-54 lg:w-60 bg-primary hover:bg-primary/90 text-primary-foreground"
+                        data-testid={`button-make-same-${category.id}`}
+                      >
+                        我要做同款
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
       </div>
     </div>
   );
