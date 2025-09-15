@@ -46,7 +46,7 @@ function SamplePhoto({ className, large = false }: { className?: string; large?:
     );
   }
   
-  const smallSize = "h-24 w-18 md:h-28 md:w-21 lg:h-32 lg:w-24";
+  const smallSize = "h-20 w-[60px] md:h-24 md:w-[72px] lg:h-28 lg:w-[84px]";
   return (
     <div 
       className={`bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center ${smallSize} ${className}`}
