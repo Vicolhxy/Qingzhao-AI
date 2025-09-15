@@ -46,7 +46,7 @@ function SamplePhoto({ className, large = false }: { className?: string; large?:
     );
   }
   
-  const smallSize = "h-20 w-16";
+  const smallSize = "h-24 w-18 md:h-28 md:w-22 lg:h-32 lg:w-23";
   return (
     <div 
       className={`bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center ${smallSize} ${className}`}
@@ -95,7 +95,7 @@ export default function Home() {
           </div>
 
           {/* Right Content Area */}
-          <div className="flex-1 max-w-[320px]">
+          <div className="flex-1 max-w-[320px] -ml-2">
             {(() => {
               const category = photoCategories.find(c => c.id === selectedCategory)!;
               return (
@@ -106,7 +106,7 @@ export default function Home() {
                   </div>
                   {/* Small Sample Photos - align width with large photo */}
                   <div className="mb-4">
-                    <div className="w-60 md:w-72 lg:w-[300px] flex gap-3">
+                    <div className="w-60 md:w-72 lg:w-[300px] flex justify-between">
                       <SamplePhoto data-testid={`small-sample-1-${category.id}`} />
                       <SamplePhoto data-testid={`small-sample-2-${category.id}`} />
                       <SamplePhoto data-testid={`small-sample-3-${category.id}`} />
