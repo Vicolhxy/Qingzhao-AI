@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { PhotoCategory } from "@shared/schema";
 import bannerImage from "@assets/Banner_1757964490417.png";
+import professionalPhoto from "@assets/professional-main_1757969208604.jpg";
 
 // Photo category data with Chinese names
 const photoCategories = [
@@ -28,17 +29,30 @@ const photoCategories = [
   }
 ];
 
-// Placeholder component for photo samples
-function PhotoPlaceholder({ className, large = false }: { className?: string; large?: boolean }) {
-  const size = large 
-    ? "h-80 w-60 md:h-96 md:w-72 lg:h-[448px] lg:w-84" 
-    : "h-16 w-14";
+// Sample photo component
+function SamplePhoto({ className, large = false }: { className?: string; large?: boolean }) {
+  if (large) {
+    return (
+      <div 
+        className={`h-80 w-60 md:h-96 md:w-72 lg:h-[400px] lg:w-[300px] rounded overflow-hidden bg-gray-100 ${className}`}
+        data-testid="large-sample-photo"
+      >
+        <img 
+          src={professionalPhoto} 
+          alt="专业职业照样片" 
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+    );
+  }
+  
+  const smallSize = "h-20 w-16";
   return (
     <div 
-      className={`bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center ${size} ${className}`}
-      data-testid={`placeholder-${large ? 'large' : 'small'}`}
+      className={`bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center ${smallSize} ${className}`}
+      data-testid="small-sample-placeholder"
     >
-      <span className="text-gray-500 dark:text-gray-400 text-xs">样品照片</span>
+      <span className="text-gray-500 dark:text-gray-400 text-xs">样品</span>
     </div>
   );
 }
@@ -81,21 +95,21 @@ export default function Home() {
           </div>
 
           {/* Right Content Area */}
-          <div className="flex-1">
+          <div className="flex-1 max-w-[320px]">
             {(() => {
               const category = photoCategories.find(c => c.id === selectedCategory)!;
               return (
                 <div data-testid={`content-${category.id}`}>
                   {/* Large Sample Photo */}
                   <div className="mb-4">
-                    <PhotoPlaceholder large />
+                    <SamplePhoto large />
                   </div>
                   {/* Small Sample Photos - align width with large photo */}
                   <div className="mb-4">
-                    <div className="w-60 md:w-72 lg:w-84 flex justify-between">
-                      <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
-                      <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
-                      <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
+                    <div className="w-60 md:w-72 lg:w-[300px] flex gap-3">
+                      <SamplePhoto data-testid={`small-sample-1-${category.id}`} />
+                      <SamplePhoto data-testid={`small-sample-2-${category.id}`} />
+                      <SamplePhoto data-testid={`small-sample-3-${category.id}`} />
                     </div>
                   </div>
                   {/* Action Button - match large photo width */}
@@ -103,7 +117,7 @@ export default function Home() {
                     <Link to={`/upload?category=${category.id}`}>
                       <Button 
                         size="lg" 
-                        className="w-60 md:w-72 lg:w-84 bg-primary hover:bg-primary/90 text-primary-foreground"
+                        className="w-60 md:w-72 lg:w-[300px] bg-primary hover:bg-primary/90 text-primary-foreground"
                         data-testid={`button-make-same-${category.id}`}
                       >
                         我要做同款
