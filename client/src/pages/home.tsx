@@ -117,7 +117,7 @@ export default function Home() {
                     <Link to={`/upload?category=${category.id}`}>
                       <Button 
                         size="lg" 
-                        className="w-60 md:w-72 lg:w-[300px] bg-primary hover:bg-primary/90 text-primary-foreground"
+                        className="w-60 md:w-72 lg:w-[300px] bg-primary hover:bg-primary/90 text-white text-lg font-bold"
                         data-testid={`button-make-same-${category.id}`}
                       >
                         我要做同款
