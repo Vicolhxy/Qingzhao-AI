@@ -66,61 +66,65 @@ export default function Home() {
           className="w-full"
           data-testid="photo-category-tabs"
         >
-          {/* Tab Navigation */}
-          <div className="mb-6">
-            <TabsList className="grid w-full grid-cols-2 gap-2 h-auto p-1">
+          {/* Left Navigation and Right Content Layout */}
+          <div className="flex gap-6">
+            {/* Left Navigation */}
+            <div className="w-48 flex-shrink-0">
+              <TabsList className="flex-col h-auto w-full p-0 bg-transparent">
+                {photoCategories.map((category) => (
+                  <TabsTrigger
+                    key={category.id}
+                    value={category.id}
+                    className="w-full justify-start p-4 mb-2 text-left data-[state=active]:bg-primary data-[state=active]:text-primary-foreground border border-border data-[state=active]:border-primary"
+                    data-testid={`tab-${category.id}`}
+                  >
+                    <span className="font-medium text-base">{category.name}</span>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
+
+            {/* Right Content Area */}
+            <div className="flex-1">
               {photoCategories.map((category) => (
-                <TabsTrigger
-                  key={category.id}
-                  value={category.id}
-                  className="text-left p-4 h-auto flex-col items-start data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  data-testid={`tab-${category.id}`}
+                <TabsContent 
+                  key={category.id} 
+                  value={category.id} 
+                  className="mt-0"
+                  data-testid={`content-${category.id}`}
                 >
-                  <span className="font-medium text-base">{category.name}</span>
-                  <span className="text-sm opacity-70 mt-1">{category.description}</span>
-                </TabsTrigger>
+                  <Card className="border-0 shadow-sm">
+                    <CardContent className="p-6">
+                      {/* Large Sample Photo */}
+                      <div className="mb-6 flex justify-center">
+                        <PhotoPlaceholder large className="mx-auto" />
+                      </div>
+
+                      {/* Small Sample Photos */}
+                      <div className="flex justify-center gap-3 mb-6">
+                        <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
+                        <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
+                        <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
+                      </div>
+
+                      {/* Action Button */}
+                      <div className="text-center">
+                        <Link to={`/upload?category=${category.id}`}>
+                          <Button 
+                            size="lg" 
+                            className="w-full max-w-sm bg-primary hover:bg-primary/90 text-primary-foreground"
+                            data-testid={`button-make-same-${category.id}`}
+                          >
+                            我要做同款
+                          </Button>
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
               ))}
-            </TabsList>
+            </div>
           </div>
-
-          {/* Tab Content */}
-          {photoCategories.map((category) => (
-            <TabsContent 
-              key={category.id} 
-              value={category.id} 
-              className="mt-0"
-              data-testid={`content-${category.id}`}
-            >
-              <Card className="border-0 shadow-sm">
-                <CardContent className="p-6">
-                  {/* Large Sample Photo */}
-                  <div className="mb-6 flex justify-center">
-                    <PhotoPlaceholder large className="mx-auto" />
-                  </div>
-
-                  {/* Small Sample Photos */}
-                  <div className="flex justify-center gap-3 mb-6">
-                    <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
-                    <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
-                    <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
-                  </div>
-
-                  {/* Action Button */}
-                  <div className="text-center">
-                    <Link to={`/upload?category=${category.id}`}>
-                      <Button 
-                        size="lg" 
-                        className="w-full max-w-sm bg-primary hover:bg-primary/90 text-primary-foreground"
-                        data-testid={`button-make-same-${category.id}`}
-                      >
-                        我要做同款
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          ))}
         </Tabs>
       </div>
     </div>
