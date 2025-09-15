@@ -31,7 +31,7 @@ const photoCategories = [
 // Placeholder component for photo samples
 function PhotoPlaceholder({ className, large = false }: { className?: string; large?: boolean }) {
   const size = large 
-    ? "h-64 w-48 md:h-72 md:w-54 lg:h-80 lg:w-60" 
+    ? "h-72 w-54 md:h-80 md:w-60 lg:h-96 lg:w-72" 
     : "h-16 w-14";
   return (
     <div 
@@ -92,7 +92,7 @@ export default function Home() {
                   </div>
                   {/* Small Sample Photos - align width with large photo */}
                   <div className="mb-4 pl-[24px] pr-[24px] ml-[24px] mr-[24px]">
-                    <div className="w-48 md:w-54 lg:w-60 flex justify-between">
+                    <div className="w-54 md:w-60 lg:w-72 flex justify-between">
                       <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
                       <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
                       <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
@@ -103,7 +103,7 @@ export default function Home() {
                     <Link to={`/upload?category=${category.id}`}>
                       <Button 
                         size="lg" 
-                        className="w-48 md:w-54 lg:w-60 bg-primary hover:bg-primary/90 text-primary-foreground"
+                        className="w-54 md:w-60 lg:w-72 bg-primary hover:bg-primary/90 text-primary-foreground"
                         data-testid={`button-make-same-${category.id}`}
                       >
                         我要做同款
