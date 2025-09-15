@@ -32,13 +32,15 @@ const photoCategories = [
 
 // Placeholder component for photo samples
 function PhotoPlaceholder({ className, large = false }: { className?: string; large?: boolean }) {
-  const size = large ? "h-64 w-48" : "h-24 w-20";
+  const size = large 
+    ? "h-48 w-36 md:h-56 md:w-40 lg:h-64 lg:w-48" 
+    : "h-16 w-14 md:h-20 md:w-16";
   return (
     <div 
       className={`bg-gray-300 dark:bg-gray-600 rounded-lg flex items-center justify-center ${size} ${className}`}
       data-testid={`placeholder-${large ? 'large' : 'small'}`}
     >
-      <span className="text-gray-500 dark:text-gray-400 text-sm">样品照片</span>
+      <span className="text-gray-500 dark:text-gray-400 text-xs">样品照片</span>
     </div>
   );
 }
@@ -59,7 +61,7 @@ export default function Home() {
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-3 py-4">
         <Tabs 
           value={selectedCategory} 
           onValueChange={(value) => setSelectedCategory(value as PhotoCategory)}
@@ -67,25 +69,25 @@ export default function Home() {
           data-testid="photo-category-tabs"
         >
           {/* Left Navigation and Right Content Layout */}
-          <div className="flex gap-6">
+          <div className="flex gap-3">
             {/* Left Navigation */}
-            <div className="w-48 flex-shrink-0">
-              <TabsList className="flex-col h-auto w-full p-0 bg-transparent">
+            <div className="w-20 sm:w-24 md:w-28 shrink-0">
+              <TabsList className="flex-col gap-1 p-0 bg-transparent">
                 {photoCategories.map((category) => (
                   <TabsTrigger
                     key={category.id}
                     value={category.id}
-                    className="w-full justify-start p-4 mb-2 text-left data-[state=active]:bg-primary data-[state=active]:text-primary-foreground border border-border data-[state=active]:border-primary"
+                    className="w-full rounded-none justify-start px-3 py-2 text-sm text-foreground/80 hover:bg-muted border-l-2 border-transparent data-[state=active]:border-[#28BE6F] data-[state=active]:text-[#28BE6F] data-[state=active]:bg-transparent"
                     data-testid={`tab-${category.id}`}
                   >
-                    <span className="font-medium text-base">{category.name}</span>
+                    <span className="font-medium">{category.name}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>
             </div>
 
             {/* Right Content Area */}
-            <div className="flex-1">
+            <div className="flex-1 max-w-[640px] w-full">
               {photoCategories.map((category) => (
                 <TabsContent 
                   key={category.id} 
@@ -94,14 +96,14 @@ export default function Home() {
                   data-testid={`content-${category.id}`}
                 >
                   <Card className="border-0 shadow-sm">
-                    <CardContent className="p-6">
+                    <CardContent className="p-4 sm:p-5 md:p-6">
                       {/* Large Sample Photo */}
-                      <div className="mb-6 flex justify-center">
+                      <div className="mb-4 flex justify-center">
                         <PhotoPlaceholder large className="mx-auto" />
                       </div>
 
                       {/* Small Sample Photos */}
-                      <div className="flex justify-center gap-3 mb-6">
+                      <div className="flex justify-center gap-2 mb-4">
                         <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
                         <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
                         <PhotoPlaceholder data-testid={`small-sample-3-${category.id}`} />
