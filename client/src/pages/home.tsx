@@ -58,8 +58,8 @@ export default function Home() {
         />
       </div>
       {/* Content Section */}
-      <div className="px-3 py-8">
-        <div className="flex items-start gap-3">
+      <div className="px-4 py-8">
+        <div className="flex items-start gap-6">
           {/* Left Navigation */}
           <div className="w-28 sm:w-32 md:w-36 shrink-0">
             <div className="flex flex-col gap-1">
@@ -67,7 +67,7 @@ export default function Home() {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`w-full text-left px-4 py-3 text-sm border-l-2 transition-colors whitespace-nowrap ${
+                  className={`w-full text-left px-3 py-3 text-sm border-l-2 transition-colors whitespace-nowrap ${
                     selectedCategory === category.id
                       ? 'border-[#28BE6F] text-[#28BE6F] font-medium'
                       : 'border-transparent text-foreground/80 hover:bg-muted'
@@ -81,17 +81,17 @@ export default function Home() {
           </div>
 
           {/* Right Content Area */}
-          <div className="flex-1 pr-3">
+          <div className="flex-1">
             {(() => {
               const category = photoCategories.find(c => c.id === selectedCategory)!;
               return (
                 <div data-testid={`content-${category.id}`}>
                   {/* Large Sample Photo */}
-                  <div className="mb-4 ml-[24px] mr-[24px] pl-[24px] pr-[24px]">
+                  <div className="mb-4">
                     <PhotoPlaceholder large />
                   </div>
                   {/* Small Sample Photos - align width with large photo */}
-                  <div className="mb-4 pl-[24px] pr-[24px] ml-[24px] mr-[24px]">
+                  <div className="mb-4">
                     <div className="w-60 md:w-72 lg:w-84 flex justify-between">
                       <PhotoPlaceholder data-testid={`small-sample-1-${category.id}`} />
                       <PhotoPlaceholder data-testid={`small-sample-2-${category.id}`} />
@@ -99,7 +99,7 @@ export default function Home() {
                     </div>
                   </div>
                   {/* Action Button - match large photo width */}
-                  <div className="ml-[24px] mr-[24px] pl-[24px] pr-[24px]">
+                  <div>
                     <Link to={`/upload?category=${category.id}`}>
                       <Button 
                         size="lg" 
