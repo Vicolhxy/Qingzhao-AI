@@ -62,13 +62,13 @@ export default function Home() {
       <div className="px-3 py-8">
         <div className="flex items-start gap-3">
           {/* Left Navigation */}
-          <div className="w-20 sm:w-24 md:w-28 shrink-0">
+          <div className="w-28 sm:w-32 md:w-36 shrink-0">
             <div className="flex flex-col gap-1">
               {photoCategories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`w-full text-left px-4 py-3 text-sm border-l-2 transition-colors ${
+                  className={`w-full text-left px-4 py-3 text-sm border-l-2 transition-colors whitespace-nowrap ${
                     selectedCategory === category.id
                       ? 'border-[#28BE6F] text-[#28BE6F] font-medium'
                       : 'border-transparent text-foreground/80 hover:bg-muted'
