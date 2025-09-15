@@ -46,7 +46,7 @@ function SamplePhoto({ className, large = false }: { className?: string; large?:
     );
   }
   
-  const smallSize = "h-20 w-[60px] md:h-24 md:w-[72px] lg:h-28 lg:w-[84px]";
+  const smallSize = "h-[93px] w-[70px] md:h-[109px] md:w-[82px] lg:h-[115px] lg:w-[86px]";
   return (
     <div 
       className={`bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center ${smallSize} ${className}`}
@@ -106,7 +106,7 @@ export default function Home() {
                   </div>
                   {/* Small Sample Photos - align width with large photo */}
                   <div className="mb-4">
-                    <div className="w-60 md:w-72 lg:w-[300px] flex justify-between">
+                    <div className="w-60 md:w-72 lg:w-[300px] flex justify-start gap-[17px] md:gap-[20px] lg:gap-[21px]">
                       <SamplePhoto data-testid={`small-sample-1-${category.id}`} />
                       <SamplePhoto data-testid={`small-sample-2-${category.id}`} />
                       <SamplePhoto data-testid={`small-sample-3-${category.id}`} />
