@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { PhotoCategory } from "@shared/schema";
 import bannerImage from "@assets/Banner_1757964490417.png";
@@ -34,7 +34,7 @@ function SamplePhoto({ className, large = false }: { className?: string; large?:
   if (large) {
     return (
       <div 
-        className={`h-80 w-60 md:h-96 md:w-72 lg:h-[400px] lg:w-[300px] rounded overflow-hidden bg-gray-100 ${className}`}
+        className={`h-64 w-48 sm:h-80 sm:w-60 md:h-96 md:w-72 lg:h-[400px] lg:w-[300px] rounded overflow-hidden bg-gray-100 ${className}`}
         data-testid="large-sample-photo"
       >
         <img 
@@ -46,7 +46,7 @@ function SamplePhoto({ className, large = false }: { className?: string; large?:
     );
   }
   
-  const smallSize = "h-[93px] w-[70px] md:h-[109px] md:w-[82px] lg:h-[115px] lg:w-[86px]";
+  const smallSize = "h-[75px] w-[56px] sm:h-[93px] sm:w-[70px] md:h-[109px] md:w-[82px] lg:h-[115px] lg:w-[86px]";
   return (
     <div 
       className={`bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center ${smallSize} ${className}`}
@@ -59,6 +59,7 @@ function SamplePhoto({ className, large = false }: { className?: string; large?:
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState(PhotoCategory.PROFESSIONAL);
+  const [, setLocation] = useLocation();
 
   return (
     <div className="min-h-screen bg-background">
@@ -73,17 +74,17 @@ export default function Home() {
       </div>
       {/* Content Section */}
       <div className="px-4 py-8">
-        <div className="flex items-start gap-6">
+        <div className="flex flex-col md:flex-row md:items-start gap-6">
           {/* Left Navigation */}
-          <div className="w-28 sm:w-32 md:w-36 shrink-0">
-            <div className="flex flex-col gap-1">
+          <div className="w-full md:w-28 lg:w-32 xl:w-36 md:shrink-0">
+            <div className="flex flex-row md:flex-col gap-1 overflow-x-auto md:overflow-x-visible">
               {photoCategories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`w-full text-left px-3 py-3 text-sm border-l-2 transition-colors whitespace-nowrap ${
+                  className={`flex-shrink-0 md:w-full text-left px-3 py-3 text-sm border-l-2 md:border-l-2 border-b-2 md:border-b-0 transition-colors whitespace-nowrap ${
                     selectedCategory === category.id
-                      ? 'border-[#28BE6F] text-[#28BE6F] font-medium'
+                      ? 'border-primary text-primary font-medium'
                       : 'border-transparent text-foreground/80 hover:bg-muted'
                   }`}
                   data-testid={`tab-${category.id}`}
@@ -95,7 +96,7 @@ export default function Home() {
           </div>
 
           {/* Right Content Area */}
-          <div className="flex-1 max-w-[320px] -ml-2">
+          <div className="w-full md:flex-1 md:max-w-[320px] md:-ml-2">
             {(() => {
               const category = photoCategories.find(c => c.id === selectedCategory)!;
               return (
@@ -106,7 +107,7 @@ export default function Home() {
                   </div>
                   {/* Small Sample Photos - align width with large photo */}
                   <div className="mb-4">
-                    <div className="w-60 md:w-72 lg:w-[300px] flex justify-start gap-[17px] md:gap-[20px] lg:gap-[21px]">
+                    <div className="w-48 sm:w-60 md:w-72 lg:w-[300px] flex justify-start gap-[14px] sm:gap-[17px] md:gap-[20px] lg:gap-[21px]">
                       <SamplePhoto data-testid={`small-sample-1-${category.id}`} />
                       <SamplePhoto data-testid={`small-sample-2-${category.id}`} />
                       <SamplePhoto data-testid={`small-sample-3-${category.id}`} />
@@ -114,15 +115,14 @@ export default function Home() {
                   </div>
                   {/* Action Button - match large photo width */}
                   <div>
-                    <Link to={`/upload?category=${category.id}`}>
-                      <Button 
-                        size="lg" 
-                        className="w-60 md:w-72 lg:w-[300px] bg-primary hover:bg-primary/90 text-white text-lg font-bold"
-                        data-testid={`button-make-same-${category.id}`}
-                      >
-                        我要做同款
-                      </Button>
-                    </Link>
+                    <Button 
+                      size="lg" 
+                      className="w-48 sm:w-60 md:w-72 lg:w-[300px] bg-primary hover:bg-primary/90 text-white text-lg font-bold"
+                      onClick={() => setLocation(`/upload?category=${category.id}`)}
+                      data-testid={`button-make-same-${category.id}`}
+                    >
+                      我要做同款
+                    </Button>
                   </div>
                 </div>
               );
