@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { PhotoCategory } from "@shared/schema";
@@ -40,17 +40,38 @@ export default function Home() {
   const [selectedGender, setSelectedGender] = useState("male");
   const [selectedCategory, setSelectedCategory] = useState(PhotoCategory.PROFESSIONAL);
   const [, setLocation] = useLocation();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Sample images based on gender and category
+  // All sample images in rotation order
+  const allSampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+
+  // Sample images based on current rotation
   const getSampleImages = () => {
-    // For now, use male samples as default
-    return {
-      large: sampleMale1,
-      small: [sampleMale2, sampleMale3, sampleMale4]
-    };
+    const totalImages = allSampleImages.length;
+    
+    // Current large image
+    const large = allSampleImages[currentImageIndex];
+    
+    // Small images are the next 3 in rotation
+    const small = [
+      allSampleImages[(currentImageIndex + 1) % totalImages],
+      allSampleImages[(currentImageIndex + 2) % totalImages], 
+      allSampleImages[(currentImageIndex + 3) % totalImages]
+    ];
+    
+    return { large, small };
   };
 
   const samples = getSampleImages();
+
+  // Auto-rotate images every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % allSampleImages.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [allSampleImages.length]);
 
   return (
     <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -154,7 +175,7 @@ export default function Home() {
                 <img 
                   src={samples.large} 
                   alt="大样片" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-all duration-300 ease-in-out"
                 />
               </div>
             </div>
@@ -167,7 +188,7 @@ export default function Home() {
               >
                 {samples.small.map((sample, index) => (
                   <div 
-                    key={index}
+                    key={`${currentImageIndex}-${index}`}
                     className="flex-1 bg-gray-100 rounded overflow-hidden"
                     style={{ aspectRatio: '1/1.43' }}
                     data-testid={`small-sample-${index + 1}`}
@@ -175,7 +196,7 @@ export default function Home() {
                     <img 
                       src={sample} 
                       alt={`小样片${index + 1}`} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-all duration-300 ease-in-out"
                     />
                   </div>
                 ))}

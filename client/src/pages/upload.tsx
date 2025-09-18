@@ -101,7 +101,7 @@ export default function Upload() {
 
         {/* Second div: Upload Photo Area */}
         <div data-testid="section-upload">
-          <div>
+          <div style={{ backgroundColor: '#F9F9F9', padding: '16px', borderRadius: '8px' }}>
             <div className="flex items-center gap-2 mb-3">
               <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
               <h2 className="text-lg font-medium">上传照片</h2>
@@ -111,8 +111,7 @@ export default function Upload() {
             <div className="flex gap-4" data-testid="area-upload">
               {/* Left: Outline human image area */}
               <div 
-                className="flex-1 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors"
-                style={{ marginTop: '12px', marginLeft: '12px', marginBottom: '12px' }}
+                className="flex-1 bg-white border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors"
                 onClick={handleUploadClick}
                 data-testid="area-outline"
               >
@@ -169,7 +168,7 @@ export default function Upload() {
         />
 
         {/* Third div: Button (48px gap from upload area) */}
-        <div style={{ marginTop: '48px', paddingBottom: '32px' }} data-testid="section-button">
+        <div style={{ marginTop: '48px' }} data-testid="section-button">
           <Button 
             size="lg" 
             className="bg-primary hover:bg-primary/90 text-white font-bold rounded-full"
@@ -189,30 +188,33 @@ export default function Upload() {
             </p>
           )}
         </div>
+      </div>
 
-        {/* Fourth div: Footer (same as homepage) */}
-        <div 
-          className="text-center" 
-          style={{ marginBottom: '24px' }}
-          data-testid="footer"
-        >
-          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-            <Link 
-              href="/terms" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-terms"
-            >
-              用户服务协议
-            </Link>
-            <span>|</span>
-            <Link 
-              href="/privacy" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-privacy"
-            >
-              隐私政策
-            </Link>
-          </div>
+      {/* Bottom spacing - 32px (4px grid: 8 * 4 = 32) */}
+      <div style={{ paddingBottom: '32px' }}></div>
+
+      {/* Footer - Fixed distance from bottom 24px (4px grid: 6 * 4 = 24) */}
+      <div 
+        className="text-center" 
+        style={{ marginBottom: '24px' }}
+        data-testid="footer"
+      >
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+          <Link 
+            href="/terms" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-terms"
+          >
+            用户服务协议
+          </Link>
+          <span>|</span>
+          <Link 
+            href="/privacy" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-privacy"
+          >
+            隐私政策
+          </Link>
         </div>
       </div>
     </div>
