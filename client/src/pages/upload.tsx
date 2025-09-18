@@ -1,10 +1,17 @@
 import { useState, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Camera, Upload as UploadIcon } from "lucide-react";
+import { ArrowLeft, User, Sun, Building } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
+
+// Import sample images (same as home page)
+import sampleMale1 from "@assets/Sample-Male-1_1758161866744.png";
+import sampleMale2 from "@assets/Sample-Male-2_1758161866744.png";
+import sampleMale3 from "@assets/Sample-Male-3_1758161866745.png";
+import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
+
+// Import outline human image
+import outlineHuman from "@assets/Outline-human_1758207634258.png";
 
 // Category display names
 const categoryNames = {
@@ -14,40 +21,23 @@ const categoryNames = {
   [PhotoCategory.WECHAT_PORTRAIT]: "微信头像",
 };
 
-// Placeholder component for large sample photo
-function PhotoPlaceholder({ className }: { className?: string }) {
-  return (
-    <div 
-      className={`bg-gray-300 dark:bg-gray-600 rounded-lg flex items-center justify-center h-64 w-48 ${className}`}
-      data-testid="large-sample-placeholder"
-    >
-      <span className="text-gray-500 dark:text-gray-400 text-sm">样品照片</span>
-    </div>
-  );
-}
-
-// Small stacked placeholders
-function StackedPlaceholders() {
-  return (
-    <div className="relative flex justify-center mt-4">
-      <div className="absolute h-16 w-14 bg-gray-200 rounded border transform -rotate-12 translate-x-4 translate-y-2" />
-      <div className="absolute h-16 w-14 bg-gray-300 rounded border transform rotate-6 -translate-x-2" />
-      <div className="h-16 w-14 bg-gray-400 rounded border" data-testid="stacked-placeholders" />
-    </div>
-  );
-}
-
 export default function Upload() {
   const [, setLocation] = useLocation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [progress, setProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  // Parse category from URL params
+  // Parse category and gender from URL params
   const urlParams = new URLSearchParams(window.location.search);
   const category = (urlParams.get('category') || PhotoCategory.PROFESSIONAL) as PhotoCategory;
+  const gender = urlParams.get('gender') || 'male';
   const categoryName = categoryNames[category];
+
+  // Sample images (using same as home page)
+  const sampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -56,155 +46,176 @@ export default function Upload() {
     }
   };
 
-  const handleUploadClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleCameraClick = () => {
-    // For now, just trigger file picker (camera will be available on mobile)
-    if (fileInputRef.current) {
-      fileInputRef.current.setAttribute('capture', 'camera');
-      fileInputRef.current.click();
+  const handleSubmit = () => {
+    if (selectedFile) {
+      // Navigate to result page
+      setLocation(`/result?category=${category}&gender=${gender}`);
     }
   };
 
-  const handleSubmit = async () => {
-    if (!selectedFile) return;
-    
-    setIsProcessing(true);
-    setProgress(0);
-    
-    // Simulate processing with progress updates
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 90) {
-          clearInterval(progressInterval);
-          // Navigate to results page after processing
-          setTimeout(() => {
-            setLocation('/result?category=' + category);
-          }, 1000);
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 500);
-  };
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       {/* Header */}
       <div className="flex items-center p-4 border-b" data-testid="upload-header">
-        <Link to="/">
-          <Button variant="ghost" size="icon" data-testid="back-button">
+        <Link href="/">
+          <Button variant="ghost" size="icon" data-testid="button-back">
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="ml-3 text-lg font-medium" data-testid="category-title">{categoryName}</h1>
+        <h1 className="ml-3 text-lg font-medium" data-testid="text-category-title">{categoryName}</h1>
       </div>
 
-      <div className="container mx-auto px-3 py-4 max-w-md">
-        {/* Large Sample Display */}
-        <div className="text-center mb-6">
-          <PhotoPlaceholder className="mx-auto mb-4" />
-          <StackedPlaceholders />
+      {/* Main Content Container with fixed 20px margins */}
+      <div style={{ marginLeft: '20px', marginRight: '20px' }}>
+        
+        {/* First div: Sample Photos Display */}
+        <div style={{ paddingTop: '24px', paddingBottom: '24px' }} data-testid="section-samples">
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
+              <h2 className="text-lg font-medium">样片展示</h2>
+            </div>
+            
+            {/* 4 Sample Photos Grid - Responsive */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="grid-samples">
+              {sampleImages.map((sample, index) => (
+                <div 
+                  key={index}
+                  className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden"
+                  data-testid={`img-sample-${index + 1}`}
+                >
+                  <img 
+                    src={sample} 
+                    alt={`样片${index + 1}`} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Upload Section */}
-        <Card className="border-0 shadow-sm mb-6">
-          <CardContent className="p-6 text-center">
-            {!isProcessing ? (
-              <>
-                {!selectedFile ? (
-                  <div>
-                    <div className="mb-6">
-                      <UploadIcon className="mx-auto h-12 w-12 text-muted-foreground mb-3" />
-                      <p className="text-muted-foreground mb-4">上传您的照片开始制作</p>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <Button
-                        size="lg"
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-                        onClick={handleUploadClick}
-                        data-testid="upload-button"
-                      >
-                        <UploadIcon className="mr-2 h-4 w-4" />
-                        选择照片
-                      </Button>
-                      
-                      <Button
-                        size="lg" 
-                        variant="outline"
-                        className="w-full"
-                        onClick={handleCameraClick}
-                        data-testid="camera-button"
-                      >
-                        <Camera className="mr-2 h-4 w-4" />
-                        拍照
-                      </Button>
-                    </div>
-                    
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileSelect}
-                      className="hidden"
-                      data-testid="file-input"
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <div className="mb-4">
-                      <div className="w-20 h-20 mx-auto bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-3">
-                        <UploadIcon className="h-8 w-8 text-green-600 dark:text-green-400" />
-                      </div>
-                      <p className="font-medium mb-1">照片已选择</p>
-                      <p className="text-sm text-muted-foreground" data-testid="selected-filename">
-                        {selectedFile.name}
-                      </p>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <Button
-                        size="lg"
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-                        onClick={handleSubmit}
-                        data-testid="submit-button"
-                      >
-                        开始制作
-                      </Button>
-                      
-                      <Button
-                        variant="outline"
-                        onClick={() => setSelectedFile(null)}
-                        data-testid="reselect-button"
-                      >
-                        重新选择
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="py-8" data-testid="processing-section">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        {/* Second div: Upload Photo Area */}
+        <div style={{ paddingBottom: '24px' }} data-testid="section-upload">
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-4">
+              <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
+              <h2 className="text-lg font-medium">上传照片</h2>
+            </div>
+            
+            {/* Upload Area - Left and Right sections */}
+            <div className="flex gap-4" data-testid="area-upload">
+              {/* Left: Outline human image area */}
+              <div 
+                className="flex-1 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors"
+                style={{ marginTop: '12px', marginLeft: '12px', marginBottom: '12px' }}
+                onClick={handleUploadClick}
+                data-testid="area-outline"
+              >
+                <div className="w-full h-full flex items-center justify-center min-h-[300px]">
+                  <img 
+                    src={outlineHuman} 
+                    alt="人物轮廓" 
+                    className="max-w-full max-h-full object-contain opacity-30"
+                    style={{ filter: 'invert(0.5)' }}
+                  />
                 </div>
-                <h3 className="font-medium mb-2">正在制作中...</h3>
-                <p className="text-sm text-muted-foreground mb-4">AI 正在为您生成专业照片</p>
-                <Progress value={progress} className="w-full" data-testid="processing-progress" />
-                <p className="text-xs text-muted-foreground mt-2">{progress}%</p>
               </div>
-            )}
-          </CardContent>
-        </Card>
 
-        {/* Tips */}
-        <div className="text-center">
-          <div className="inline-flex items-center text-sm text-muted-foreground">
-            <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-            <span data-testid="privacy-notice">请先阅读并同意隐私协议</span>
+              {/* Right: Photo tips */}
+              <div className="w-24 flex flex-col justify-center" data-testid="area-tips">
+                <div className="space-y-6">
+                  {/* Tip 1: Single Person */}
+                  <div className="text-center" data-testid="tip-single">
+                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                      <User className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <p className="text-xs text-gray-600">单人照片</p>
+                  </div>
+
+                  {/* Tip 2: Good Lighting */}
+                  <div className="text-center" data-testid="tip-lighting">
+                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                      <Sun className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <p className="text-xs text-gray-600">光线充足</p>
+                  </div>
+
+                  {/* Tip 3: Simple Background */}
+                  <div className="text-center" data-testid="tip-background">
+                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                      <Building className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <p className="text-xs text-gray-600">背景简单</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileSelect}
+          className="hidden"
+          data-testid="input-file"
+        />
+
+        {/* Third div: Button (48px gap from upload area) */}
+        <div style={{ paddingTop: '48px', paddingBottom: '32px' }} data-testid="section-button">
+          <Button 
+            size="lg" 
+            className="bg-primary hover:bg-primary/90 text-white font-bold rounded-full"
+            style={{ 
+              width: '100%', 
+              padding: '12px 0' 
+            }}
+            onClick={selectedFile ? handleSubmit : handleUploadClick}
+            data-testid="button-upload"
+          >
+            {selectedFile ? '点击上传 / 生成' : '点击上传 / 自拍'}
+          </Button>
+          
+          {selectedFile && (
+            <p className="text-center text-sm text-gray-500 mt-2" data-testid="text-selected-file">
+              已选择: {selectedFile.name}
+            </p>
+          )}
+        </div>
+
+        {/* Fourth div: Footer (same as homepage) */}
+        <div 
+          className="text-center border-t pt-6" 
+          style={{ marginBottom: '24px' }}
+          data-testid="footer"
+        >
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+            <Link 
+              href="/terms" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-terms"
+            >
+              用户服务协议
+            </Link>
+            <span>|</span>
+            <Link 
+              href="/privacy" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-privacy"
+            >
+              隐私政策
+            </Link>
+            <span>|</span>
+            <Link 
+              href="/children-protection" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-children-protection"
+            >
+              儿童保护规则
+            </Link>
           </div>
         </div>
       </div>
