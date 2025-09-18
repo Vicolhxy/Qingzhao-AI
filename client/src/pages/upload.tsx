@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -25,6 +25,7 @@ const categoryNames = {
 export default function Upload() {
   const [, setLocation] = useLocation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -39,13 +40,27 @@ export default function Upload() {
   const sampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
 
   const handleUploadClick = () => {
+    // Clear input value to allow re-selecting the same file
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    // Use single file input to show native system options (camera/album/files)
     fileInputRef.current?.click();
   };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Clean up previous URL to prevent memory leaks
+      if (uploadedImageUrl) {
+        URL.revokeObjectURL(uploadedImageUrl);
+      }
+      
       setSelectedFile(file);
+      
+      // Create preview URL for the uploaded image
+      const imageUrl = URL.createObjectURL(file);
+      setUploadedImageUrl(imageUrl);
     }
   };
 
@@ -60,6 +75,15 @@ export default function Upload() {
     setSelectedImage(imageSrc);
     setDialogOpen(true);
   };
+
+  // Cleanup blob URL on component unmount
+  useEffect(() => {
+    return () => {
+      if (uploadedImageUrl) {
+        URL.revokeObjectURL(uploadedImageUrl);
+      }
+    };
+  }, [uploadedImageUrl]);
 
   return (
     <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -117,19 +141,27 @@ export default function Upload() {
           
           {/* Upload Area - Left and Right sections */}
           <div className="flex gap-4" data-testid="area-upload" style={{ backgroundColor: '#F9F9F9', padding: '16px', borderRadius: '8px' }}>
-            {/* Left: Outline human image area */}
+            {/* Left: Photo display area */}
             <div 
               className="flex-1 bg-white border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors"
               onClick={handleUploadClick}
-              data-testid="area-outline"
+              data-testid="area-photo"
             >
               <div className="w-full h-full flex items-center justify-center min-h-[300px]">
-                <img 
-                  src={outlineHuman} 
-                  alt="人物轮廓" 
-                  className="max-w-full max-h-full object-contain opacity-30"
-                  style={{ filter: 'invert(0.5)' }}
-                />
+                {uploadedImageUrl ? (
+                  <img 
+                    src={uploadedImageUrl} 
+                    alt="已上传照片" 
+                    className="max-w-full max-h-full object-contain mx-auto"
+                  />
+                ) : (
+                  <img 
+                    src={outlineHuman} 
+                    alt="人物轮廓" 
+                    className="max-w-full max-h-full object-contain opacity-30"
+                    style={{ filter: 'invert(0.5)' }}
+                  />
+                )}
               </div>
             </div>
 
@@ -186,14 +218,8 @@ export default function Upload() {
             onClick={selectedFile ? handleSubmit : handleUploadClick}
             data-testid="button-upload"
           >
-            {selectedFile ? '点击上传 / 生成' : '点击上传 / 自拍'}
+            {selectedFile ? '开始生成我的照片（4张）' : '点击上传 / 拍照'}
           </Button>
-          
-          {selectedFile && (
-            <p className="text-center text-sm text-gray-500 mt-2" data-testid="text-selected-file">
-              已选择: {selectedFile.name}
-            </p>
-          )}
         </div>
 
         {/* Bottom spacing - 32px (4px grid: 8 * 4 = 32) */}
