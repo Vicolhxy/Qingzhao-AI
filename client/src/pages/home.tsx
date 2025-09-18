@@ -53,7 +53,7 @@ export default function Home() {
   const samples = getSampleImages();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       {/* Full-width Banner */}
       <div className="w-full" data-testid="banner-section">
         <img 
@@ -69,17 +69,27 @@ export default function Home() {
         
         {/* Gender Selector Section - 24px padding (4px grid: 6 * 4 = 24) */}
         <div style={{ paddingTop: '24px', paddingBottom: '24px' }} data-testid="gender-selector">
-          <div className="flex" style={{ gap: '4px' }}>
+          <div 
+            className="flex border rounded-full overflow-hidden"
+            style={{ 
+              borderColor: '#E5E7EB',
+              borderWidth: '1px'
+            }}
+          >
             {genderOptions.map((gender) => (
               <button
                 key={gender.id}
                 onClick={() => setSelectedGender(gender.id)}
-                className={`flex-1 flex items-center justify-center rounded-full text-sm font-medium transition-colors ${
+                className={`flex-1 flex items-center justify-center text-sm font-medium transition-colors ${
                   selectedGender === gender.id
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'text-blue-600'
+                    : 'text-gray-600 hover:bg-gray-50'
                 }`}
-                style={{ padding: '12px 16px', gap: '8px' }}
+                style={{ 
+                  padding: '12px 16px', 
+                  gap: '8px',
+                  backgroundColor: selectedGender === gender.id ? '#DBEAFE' : 'transparent'
+                }}
                 data-testid={`gender-${gender.id}`}
               >
                 <span className="text-base">{gender.icon}</span>
