@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { PhotoCategory } from "@shared/schema";
@@ -63,6 +63,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Screen Dimensions Display */}
+      <div className="fixed top-2 right-2 bg-black/80 text-white text-sm px-2 py-1 rounded z-50">
+        {typeof window !== 'undefined' ? `${window.innerWidth} × ${window.innerHeight}` : ''}
+      </div>
       {/* Banner Section */}
       <div className="w-full relative" data-testid="banner-section">
         <img 
