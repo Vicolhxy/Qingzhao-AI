@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ArrowLeft, User, Sun, Building } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
 
@@ -24,6 +25,8 @@ const categoryNames = {
 export default function Upload() {
   const [, setLocation] = useLocation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Parse category and gender from URL params
@@ -51,6 +54,11 @@ export default function Upload() {
       // Navigate to result page
       setLocation(`/result?category=${category}&gender=${gender}`);
     }
+  };
+
+  const handleImageClick = (imageSrc: string) => {
+    setSelectedImage(imageSrc);
+    setDialogOpen(true);
   };
 
   return (
@@ -81,11 +89,12 @@ export default function Upload() {
               {sampleImages.map((sample, index) => (
                 <div 
                   key={index}
-                  className="bg-gray-100 rounded-[6px] overflow-hidden"
+                  className="bg-gray-100 rounded-[6px] overflow-hidden cursor-pointer hover:scale-105 transition-transform"
                   style={{ 
                     width: 'clamp(60px, calc((100% - 18px)/4), 86px)', 
                     aspectRatio: '86 / 126' 
                   }}
+                  onClick={() => handleImageClick(sample)}
                   data-testid={`img-sample-${index + 1}`}
                 >
                   <img 
@@ -217,6 +226,21 @@ export default function Upload() {
           </Link>
         </div>
       </div>
+
+      {/* Image Preview Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-md mx-auto p-0">
+          <DialogTitle className="sr-only">样片预览</DialogTitle>
+          <div className="relative">
+            <img 
+              src={selectedImage} 
+              alt="样片预览" 
+              className="w-full h-auto object-cover rounded-lg"
+              data-testid="img-dialog-preview"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

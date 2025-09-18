@@ -244,6 +244,31 @@ export default function Terms() {
             <p>本协议任一条款被视为废止、无效或不可执行，不影响其余条款有效性。</p>
           </div>
         </div>
+
+        {/* Footer - Fixed distance from bottom 24px (4px grid: 6 * 4 = 24) */}
+        <div 
+          className="text-center" 
+          style={{ marginBottom: '24px' }}
+          data-testid="footer"
+        >
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+            <Link 
+              href="/terms" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-terms"
+            >
+              用户服务协议
+            </Link>
+            <span>|</span>
+            <Link 
+              href="/privacy" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-privacy"
+            >
+              隐私政策
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
