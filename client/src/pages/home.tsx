@@ -82,13 +82,15 @@ export default function Home() {
                 onClick={() => setSelectedGender(gender.id)}
                 className={`flex-1 flex items-center justify-center text-sm font-medium transition-colors ${
                   selectedGender === gender.id
-                    ? 'text-blue-600'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? (gender.id === 'male' ? 'text-blue-600' : 'text-pink-600')
+                    : 'text-gray-600'
                 }`}
                 style={{ 
                   padding: '12px 16px', 
                   gap: '8px',
-                  backgroundColor: selectedGender === gender.id ? '#DBEAFE' : 'transparent'
+                  backgroundColor: selectedGender === gender.id 
+                    ? (gender.id === 'male' ? '#DBEAFE' : '#FCE7F3') 
+                    : 'transparent'
                 }}
                 data-testid={`gender-${gender.id}`}
               >
@@ -109,14 +111,31 @@ export default function Home() {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`w-full text-left text-sm border-l-2 transition-colors ${
+                  className={`w-full text-left text-sm transition-colors ${
                     selectedCategory === category.id
-                      ? 'border-primary text-primary font-medium bg-primary/5'
-                      : 'border-transparent text-gray-600 hover:bg-gray-50'
+                      ? 'text-primary font-medium'
+                      : 'text-gray-600'
                   }`}
-                  style={{ padding: '12px' }}
+                  style={{ 
+                    padding: '12px',
+                    position: 'relative'
+                  }}
                   data-testid={`category-${category.id}`}
                 >
+                  {selectedCategory === category.id && (
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '4px',
+                        height: '60%',
+                        backgroundColor: 'hsl(148 65% 45%)',
+                        borderRadius: '0 2px 2px 0'
+                      }}
+                    />
+                  )}
                   {category.name}
                 </button>
               ))}
