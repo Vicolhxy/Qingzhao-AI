@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { PhotoCategory } from "@shared/schema";
 
@@ -203,6 +203,31 @@ export default function Home() {
 
         {/* Bottom spacing - 32px (4px grid: 8 * 4 = 32) */}
         <div style={{ paddingBottom: '32px' }}></div>
+
+        {/* Footer - Fixed distance from bottom 24px (4px grid: 6 * 4 = 24) */}
+        <div 
+          className="text-center border-t pt-6" 
+          style={{ marginBottom: '24px' }}
+          data-testid="footer"
+        >
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+            <Link 
+              href="/terms" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-terms"
+            >
+              用户服务协议
+            </Link>
+            <span>|</span>
+            <Link 
+              href="/privacy" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-privacy"
+            >
+              隐私政策
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
