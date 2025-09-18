@@ -5,7 +5,7 @@ import { z } from "zod";
 
 // Photo Categories
 export enum PhotoCategory {
-  PROFESSIONAL = "professional", // 专业职业照
+  PROFESSIONAL = "professional", // 专业职场照
   BLACK_WHITE_ART = "black_white_art", // 黑白艺术照
   ID_PHOTO = "id_photo", // 证件照
   WECHAT_PORTRAIT = "wechat_portrait", // 微信头像

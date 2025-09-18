@@ -14,7 +14,7 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 const photoCategories = [
   {
     id: PhotoCategory.PROFESSIONAL,
-    name: "专业职业照"
+    name: "专业职场照"
   },
   {
     id: PhotoCategory.BLACK_WHITE_ART, 

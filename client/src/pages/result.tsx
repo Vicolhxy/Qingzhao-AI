@@ -7,7 +7,7 @@ import { PhotoCategory } from "@shared/schema";
 
 // Category display names
 const categoryNames = {
-  [PhotoCategory.PROFESSIONAL]: "专业职业照",
+  [PhotoCategory.PROFESSIONAL]: "专业职场照",
   [PhotoCategory.BLACK_WHITE_ART]: "黑白艺术照", 
   [PhotoCategory.ID_PHOTO]: "证件照",
   [PhotoCategory.WECHAT_PORTRAIT]: "微信头像",
