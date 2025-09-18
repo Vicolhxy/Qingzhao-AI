@@ -76,12 +76,16 @@ export default function Upload() {
               <h2 className="text-lg font-medium">样片展示</h2>
             </div>
             
-            {/* 4 Sample Photos Grid - Responsive */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="grid-samples">
+            {/* 4 Sample Photos Horizontal Strip */}
+            <div className="flex flex-nowrap gap-[6px]" data-testid="grid-samples">
               {sampleImages.map((sample, index) => (
                 <div 
                   key={index}
-                  className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden"
+                  className="bg-gray-100 rounded-[6px] overflow-hidden"
+                  style={{ 
+                    width: 'clamp(60px, calc((100% - 18px)/4), 86px)', 
+                    aspectRatio: '86 / 126' 
+                  }}
                   data-testid={`img-sample-${index + 1}`}
                 >
                   <img 
@@ -96,9 +100,9 @@ export default function Upload() {
         </div>
 
         {/* Second div: Upload Photo Area */}
-        <div style={{ paddingBottom: '24px' }} data-testid="section-upload">
+        <div data-testid="section-upload">
           <div className="mb-4">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3">
               <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
               <h2 className="text-lg font-medium">上传照片</h2>
             </div>
@@ -165,7 +169,7 @@ export default function Upload() {
         />
 
         {/* Third div: Button (48px gap from upload area) */}
-        <div style={{ paddingTop: '48px', paddingBottom: '32px' }} data-testid="section-button">
+        <div style={{ marginTop: '48px', paddingBottom: '32px' }} data-testid="section-button">
           <Button 
             size="lg" 
             className="bg-primary hover:bg-primary/90 text-white font-bold rounded-full"
