@@ -86,7 +86,7 @@ export default function Home() {
                     : 'text-gray-600'
                 }`}
                 style={{ 
-                  padding: '12px 16px', 
+                  padding: '10px 16px', 
                   gap: '8px',
                   backgroundColor: selectedGender === gender.id 
                     ? (gender.id === 'male' ? '#DBEAFE' : '#FCE7F3') 
