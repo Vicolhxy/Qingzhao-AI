@@ -28,6 +28,7 @@ export default function Upload() {
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>('');
+  const [aigcModalOpen, setAigcModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Parse category and gender from URL params
@@ -66,9 +67,15 @@ export default function Upload() {
 
   const handleSubmit = () => {
     if (selectedFile) {
-      // Navigate to result page
-      setLocation(`/result?category=${category}&gender=${gender}`);
+      // Show AIGC service agreement modal first
+      setAigcModalOpen(true);
     }
+  };
+
+  const handleAigcAgreement = () => {
+    setAigcModalOpen(false);
+    // Navigate to result page after agreement
+    setLocation(`/result?category=${category}&gender=${gender}`);
   };
 
   const handleImageClick = (imageSrc: string) => {
@@ -272,6 +279,43 @@ export default function Upload() {
               <X className="w-5 h-5 mr-2" />
               关闭
             </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* AIGC Service Agreement Modal - Bottom Drawer */}
+      <Dialog open={aigcModalOpen} onOpenChange={setAigcModalOpen}>
+        <DialogContent className="max-w-full mx-0 p-0 rounded-t-xl rounded-b-none translate-y-0 animate-in slide-in-from-bottom-0 duration-300 bottom-0 top-auto border-0 [&>button]:hidden">
+          <div className="px-6 pt-6 pb-0">
+            <DialogTitle className="text-lg font-semibold mb-4 text-center" data-testid="text-aigc-title">
+              AIGC服务协议
+            </DialogTitle>
+            
+            <div className="text-sm text-gray-700 leading-relaxed mb-8" data-testid="text-aigc-content">
+              <p>
+                欢迎使用轻照AI，您将上传照片用于AIGC服务，您需要在取得照片权利人的同意后再进行操作。
+                <span className="font-bold">您上传的照片仅用于制作AI生图，不会被存储、传播或用于其他用途，</span>
+                相关规则请您仔细阅读
+                <Link href="/terms" className="font-bold text-primary underline mx-1">《用户服务协议》</Link>
+                和
+                <Link href="/privacy" className="font-bold text-primary underline mx-1">《隐私政策》</Link>
+                。
+              </p>
+            </div>
+
+            <div style={{ paddingBottom: '48px' }}>
+              <Button
+                size="lg"
+                className="w-full bg-primary hover:bg-primary/90 text-white font-bold rounded-full"
+                onClick={handleAigcAgreement}
+                data-testid="button-aigc-agree"
+                style={{ 
+                  padding: '12px 0' 
+                }}
+              >
+                我知道了
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
