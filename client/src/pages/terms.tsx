@@ -245,10 +245,10 @@ export default function Terms() {
           </div>
         </div>
 
-        {/* Footer - Fixed distance from bottom 24px (4px grid: 6 * 4 = 24) */}
+        {/* Footer - Fixed distance from bottom 48px (4px grid: 12 * 4 = 48) */}
         <div 
           className="text-center" 
-          style={{ marginBottom: '24px' }}
+          style={{ marginBottom: '48px' }}
           data-testid="footer"
         >
           <div className="flex items-center justify-center gap-2 text-xs text-gray-500">

@@ -41,6 +41,8 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState(PhotoCategory.PROFESSIONAL);
   const [, setLocation] = useLocation();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [nextImageIndex, setNextImageIndex] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // All sample images in rotation order
   const allSampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
@@ -64,14 +66,28 @@ export default function Home() {
 
   const samples = getSampleImages();
 
-  // Auto-rotate images every 2 seconds
+  // Auto-rotate images every 2.5 seconds with 500ms crossfade transition
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % allSampleImages.length);
-    }, 2000);
+    let intervalRef: NodeJS.Timeout;
+    let timeoutRef: NodeJS.Timeout;
 
-    return () => clearInterval(interval);
-  }, [allSampleImages.length]);
+    intervalRef = setInterval(() => {
+      const nextIndex = (currentImageIndex + 1) % allSampleImages.length;
+      setNextImageIndex(nextIndex);
+      setIsTransitioning(true);
+      
+      // After 500ms crossfade, swap to the next image
+      timeoutRef = setTimeout(() => {
+        setCurrentImageIndex(nextIndex);
+        setIsTransitioning(false);
+      }, 500);
+    }, 2500);
+
+    return () => {
+      clearInterval(intervalRef);
+      if (timeoutRef) clearTimeout(timeoutRef);
+    };
+  }, [currentImageIndex, allSampleImages.length]);
 
   return (
     <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -169,13 +185,22 @@ export default function Home() {
             {/* Large Sample Photo - Base 212x304, responsive */}
             <div style={{ marginBottom: '12px' }} data-testid="large-sample">
               <div 
-                className="w-full bg-gray-100 rounded overflow-hidden"
+                className="w-full bg-gray-100 rounded overflow-hidden relative"
                 style={{ aspectRatio: '212/304' }}
               >
+                {/* Current image */}
                 <img 
                   src={samples.large} 
                   alt="大样片" 
-                  className="w-full h-full object-cover transition-all duration-300 ease-in-out"
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+                  style={{ opacity: isTransitioning ? 0 : 1 }}
+                />
+                {/* Next image for crossfade - always rendered */}
+                <img 
+                  src={allSampleImages[nextImageIndex]} 
+                  alt="大样片" 
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out z-10"
+                  style={{ opacity: isTransitioning ? 1 : 0 }}
                 />
               </div>
             </div>
@@ -186,20 +211,32 @@ export default function Home() {
                 className="flex w-full" 
                 style={{ gap: '8px' }}
               >
-                {samples.small.map((sample, index) => (
-                  <div 
-                    key={`${currentImageIndex}-${index}`}
-                    className="flex-1 bg-gray-100 rounded overflow-hidden"
-                    style={{ aspectRatio: '1/1.43' }}
-                    data-testid={`small-sample-${index + 1}`}
-                  >
-                    <img 
-                      src={sample} 
-                      alt={`小样片${index + 1}`} 
-                      className="w-full h-full object-cover transition-all duration-300 ease-in-out"
-                    />
-                  </div>
-                ))}
+                {samples.small.map((sample, index) => {
+                  const nextSmallIndex = (currentImageIndex + index + 2) % allSampleImages.length;
+                  return (
+                    <div 
+                      key={`${currentImageIndex}-${index}`}
+                      className="flex-1 bg-gray-100 rounded overflow-hidden relative"
+                      style={{ aspectRatio: '1/1.43' }}
+                      data-testid={`small-sample-${index + 1}`}
+                    >
+                      {/* Current small image */}
+                      <img 
+                        src={sample} 
+                        alt={`小样片${index + 1}`} 
+                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+                        style={{ opacity: isTransitioning ? 0 : 1 }}
+                      />
+                      {/* Next small image for crossfade - always rendered */}
+                      <img 
+                        src={allSampleImages[nextSmallIndex]} 
+                        alt={`小样片${index + 1}`} 
+                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out z-10"
+                        style={{ opacity: isTransitioning ? 1 : 0 }}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -225,10 +262,10 @@ export default function Home() {
         {/* Bottom spacing - 32px (4px grid: 8 * 4 = 32) */}
         <div style={{ paddingBottom: '32px' }}></div>
 
-        {/* Footer - Fixed distance from bottom 24px (4px grid: 6 * 4 = 24) */}
+        {/* Footer - Fixed distance from bottom 48px (4px grid: 12 * 4 = 48) */}
         <div 
           className="text-center" 
-          style={{ marginBottom: '24px' }}
+          style={{ marginBottom: '48px' }}
           data-testid="footer"
         >
           <div className="flex items-center justify-center gap-2 text-xs text-gray-500">

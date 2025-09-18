@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { ArrowLeft, User, Sun, Building } from "lucide-react";
+import { ArrowLeft, User, Sun, Building, X } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
 
 // Import sample images (same as home page)
@@ -110,56 +110,54 @@ export default function Upload() {
 
         {/* Second div: Upload Photo Area */}
         <div data-testid="section-upload">
-          <div style={{ backgroundColor: '#F9F9F9', padding: '16px', borderRadius: '8px' }}>
-            <div className="flex items-center gap-2 mb-3">
-              <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
-              <h2 className="text-lg font-medium">上传照片</h2>
-            </div>
-            
-            {/* Upload Area - Left and Right sections */}
-            <div className="flex gap-4" data-testid="area-upload">
-              {/* Left: Outline human image area */}
-              <div 
-                className="flex-1 bg-white border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors"
-                onClick={handleUploadClick}
-                data-testid="area-outline"
-              >
-                <div className="w-full h-full flex items-center justify-center min-h-[300px]">
-                  <img 
-                    src={outlineHuman} 
-                    alt="人物轮廓" 
-                    className="max-w-full max-h-full object-contain opacity-30"
-                    style={{ filter: 'invert(0.5)' }}
-                  />
-                </div>
+          <div className="flex items-center gap-2 mb-3">
+            <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
+            <h2 className="text-lg font-medium">上传照片</h2>
+          </div>
+          
+          {/* Upload Area - Left and Right sections */}
+          <div className="flex gap-4" data-testid="area-upload" style={{ backgroundColor: '#F9F9F9', padding: '16px', borderRadius: '8px' }}>
+            {/* Left: Outline human image area */}
+            <div 
+              className="flex-1 bg-white border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors"
+              onClick={handleUploadClick}
+              data-testid="area-outline"
+            >
+              <div className="w-full h-full flex items-center justify-center min-h-[300px]">
+                <img 
+                  src={outlineHuman} 
+                  alt="人物轮廓" 
+                  className="max-w-full max-h-full object-contain opacity-30"
+                  style={{ filter: 'invert(0.5)' }}
+                />
               </div>
+            </div>
 
-              {/* Right: Photo tips */}
-              <div className="w-24 flex flex-col justify-center" data-testid="area-tips">
-                <div className="space-y-6">
-                  {/* Tip 1: Single Person */}
-                  <div className="text-center" data-testid="tip-single">
-                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
-                      <User className="w-6 h-6 text-gray-600" />
-                    </div>
-                    <p className="text-xs text-gray-600">单人照片</p>
+            {/* Right: Photo tips */}
+            <div className="w-24 flex flex-col justify-center" data-testid="area-tips">
+              <div className="space-y-6">
+                {/* Tip 1: Single Person */}
+                <div className="text-center" data-testid="tip-single">
+                  <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                    <User className="w-6 h-6 text-gray-600" />
                   </div>
+                  <p className="text-xs text-gray-600">单人照片</p>
+                </div>
 
-                  {/* Tip 2: Good Lighting */}
-                  <div className="text-center" data-testid="tip-lighting">
-                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
-                      <Sun className="w-6 h-6 text-gray-600" />
-                    </div>
-                    <p className="text-xs text-gray-600">光线充足</p>
+                {/* Tip 2: Good Lighting */}
+                <div className="text-center" data-testid="tip-lighting">
+                  <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                    <Sun className="w-6 h-6 text-gray-600" />
                   </div>
+                  <p className="text-xs text-gray-600">光线充足</p>
+                </div>
 
-                  {/* Tip 3: Simple Background */}
-                  <div className="text-center" data-testid="tip-background">
-                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
-                      <Building className="w-6 h-6 text-gray-600" />
-                    </div>
-                    <p className="text-xs text-gray-600">背景简单</p>
+                {/* Tip 3: Simple Background */}
+                <div className="text-center" data-testid="tip-background">
+                  <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                    <Building className="w-6 h-6 text-gray-600" />
                   </div>
+                  <p className="text-xs text-gray-600">背景简单</p>
                 </div>
               </div>
             </div>
@@ -197,47 +195,57 @@ export default function Upload() {
             </p>
           )}
         </div>
-      </div>
 
-      {/* Bottom spacing - 32px (4px grid: 8 * 4 = 32) */}
-      <div style={{ paddingBottom: '32px' }}></div>
+        {/* Bottom spacing - 32px (4px grid: 8 * 4 = 32) */}
+        <div style={{ paddingBottom: '32px' }}></div>
 
-      {/* Footer - Fixed distance from bottom 24px (4px grid: 6 * 4 = 24) */}
-      <div 
-        className="text-center" 
-        style={{ marginBottom: '24px' }}
-        data-testid="footer"
-      >
-        <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-          <Link 
-            href="/terms" 
-            className="hover:text-primary transition-colors"
-            data-testid="link-terms"
-          >
-            用户服务协议
-          </Link>
-          <span>|</span>
-          <Link 
-            href="/privacy" 
-            className="hover:text-primary transition-colors"
-            data-testid="link-privacy"
-          >
-            隐私政策
-          </Link>
+        {/* Footer - Fixed distance from bottom 48px (4px grid: 12 * 4 = 48) */}
+        <div 
+          className="text-center" 
+          style={{ marginBottom: '48px' }}
+          data-testid="footer"
+        >
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+            <Link 
+              href="/terms" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-terms"
+            >
+              用户服务协议
+            </Link>
+            <span>|</span>
+            <Link 
+              href="/privacy" 
+              className="hover:text-primary transition-colors"
+              data-testid="link-privacy"
+            >
+              隐私政策
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* Image Preview Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-md mx-auto p-0">
+        <DialogContent className="max-w-screen-sm mx-auto p-6 [&>button]:hidden">
           <DialogTitle className="sr-only">样片预览</DialogTitle>
-          <div className="relative">
+          <div className="flex flex-col items-center">
             <img 
               src={selectedImage} 
               alt="样片预览" 
-              className="w-full h-auto object-cover rounded-lg"
+              className="w-full h-auto object-contain"
               data-testid="img-dialog-preview"
             />
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setDialogOpen(false)}
+              className="mt-6 px-8 py-3 text-base"
+              data-testid="button-close-preview"
+            >
+              <X className="w-5 h-5 mr-2" />
+              关闭
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
