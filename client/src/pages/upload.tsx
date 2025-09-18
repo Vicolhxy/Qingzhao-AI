@@ -101,7 +101,7 @@ export default function Upload() {
 
         {/* Second div: Upload Photo Area */}
         <div data-testid="section-upload">
-          <div className="mb-4">
+          <div>
             <div className="flex items-center gap-2 mb-3">
               <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
               <h2 className="text-lg font-medium">上传照片</h2>
@@ -192,7 +192,7 @@ export default function Upload() {
 
         {/* Fourth div: Footer (same as homepage) */}
         <div 
-          className="text-center border-t pt-6" 
+          className="text-center" 
           style={{ marginBottom: '24px' }}
           data-testid="footer"
         >
@@ -211,14 +211,6 @@ export default function Upload() {
               data-testid="link-privacy"
             >
               隐私政策
-            </Link>
-            <span>|</span>
-            <Link 
-              href="/children-protection" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-children-protection"
-            >
-              儿童保护规则
             </Link>
           </div>
         </div>

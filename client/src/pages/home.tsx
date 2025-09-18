@@ -206,7 +206,7 @@ export default function Home() {
 
         {/* Footer - Fixed distance from bottom 24px (4px grid: 6 * 4 = 24) */}
         <div 
-          className="text-center border-t pt-6" 
+          className="text-center" 
           style={{ marginBottom: '24px' }}
           data-testid="footer"
         >
