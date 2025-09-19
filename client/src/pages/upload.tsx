@@ -94,7 +94,7 @@ export default function Upload() {
   }, [uploadedImageUrl]);
 
   return (
-    <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+    <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide flex flex-col" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       {/* Header */}
       <div className="flex items-center p-4 border-b" data-testid="upload-header">
         <Link href="/">
@@ -106,7 +106,7 @@ export default function Upload() {
       </div>
 
       {/* Main Content Container with fixed 20px margins */}
-      <div style={{ marginLeft: '20px', marginRight: '20px' }}>
+      <div className="flex-grow" style={{ marginLeft: '20px', marginRight: '20px' }}>
         
         {/* First div: Sample Photos Display */}
         <div style={{ paddingTop: '24px', paddingBottom: '24px' }} data-testid="section-samples">
@@ -302,8 +302,7 @@ export default function Upload() {
       
       {/* Footer at page bottom */}
       <div 
-        className="text-center bg-background" 
-        style={{ marginBottom: '24px', paddingTop: '16px' }}
+        className="text-center bg-background mt-auto mb-6 pt-4"
         data-testid="footer"
       >
         <div className="flex items-center justify-center gap-2 text-xs text-gray-500">

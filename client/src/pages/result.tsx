@@ -96,7 +96,7 @@ export default function Result() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="flex items-center p-4 border-b" data-testid="result-header">
         <Link href="/">
@@ -112,7 +112,7 @@ export default function Result() {
         </div>
       </div>
 
-      <div className="container mx-auto px-3 py-6 max-w-md">
+      <div className="container mx-auto px-3 py-6 max-w-md flex-grow">
 
         {/* Photo Title */}
         <div className="mb-3">
@@ -188,8 +188,7 @@ export default function Result() {
       
       {/* Footer at page bottom */}
       <div 
-        className="text-center bg-background" 
-        style={{ marginBottom: '24px', paddingTop: '16px' }}
+        className="text-center bg-background mt-auto mb-6 pt-4"
         data-testid="footer"
       >
         <div className="flex items-center justify-center gap-2 text-xs text-gray-500">

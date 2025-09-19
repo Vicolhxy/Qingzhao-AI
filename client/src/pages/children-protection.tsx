@@ -11,8 +11,8 @@ export default function ChildrenProtection() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-6">
+    <div className="min-h-screen bg-background flex flex-col">
+      <div className="max-w-4xl mx-auto px-4 py-6 flex-grow">
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
           <button
@@ -225,8 +225,7 @@ export default function ChildrenProtection() {
       
       {/* Footer at page bottom */}
       <div 
-        className="text-center bg-background" 
-        style={{ marginBottom: '24px', paddingTop: '16px' }}
+        className="text-center bg-background mt-auto mb-6 pt-4"
         data-testid="footer"
       >
         <div className="flex items-center justify-center gap-2 text-xs text-gray-500">

@@ -94,7 +94,7 @@ export default function Home() {
   }, [currentImageIndex, allSampleImages.length]);
 
   return (
-    <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+    <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide flex flex-col" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       {/* Full-width Banner */}
       <div className="w-full" data-testid="banner-section">
         <img 
@@ -106,7 +106,7 @@ export default function Home() {
       </div>
 
       {/* Main Content Container with fixed 28px margins (4px grid: 7 * 4 = 28) */}
-      <div style={{ marginLeft: '28px', marginRight: '28px' }}>
+      <div className="flex-grow" style={{ marginLeft: '28px', marginRight: '28px' }}>
         
         {/* Gender Selector Section - 24px padding (4px grid: 6 * 4 = 24) */}
         <div style={{ paddingTop: '24px', paddingBottom: '24px' }} data-testid="gender-selector">
@@ -267,8 +267,7 @@ export default function Home() {
       
       {/* Footer at page bottom */}
       <div 
-        className="text-center bg-background" 
-        style={{ marginBottom: '24px', paddingTop: '16px' }}
+        className="text-center bg-background mt-auto mb-6 pt-4"
         data-testid="footer"
       >
         <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
