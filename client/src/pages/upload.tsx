@@ -75,8 +75,8 @@ export default function Upload() {
 
   const handleAigcAgreement = () => {
     setAigcModalOpen(false);
-    // Navigate to result page after agreement
-    setLocation(`/result?category=${category}&gender=${gender}`);
+    // Navigate to generating page after agreement
+    setLocation(`/generating?category=${category}&gender=${gender}`);
   };
 
   const handleImageClick = (imageSrc: string) => {
