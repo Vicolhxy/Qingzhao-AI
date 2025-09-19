@@ -221,14 +221,12 @@ export default function ChildrenProtection() {
           </div>
         </div>
         
-        {/* Bottom spacing to prevent fixed footer overlap */}
-        <div style={{ paddingBottom: '80px' }}></div>
       </div>
       
-      {/* Fixed Footer */}
+      {/* Footer at page bottom */}
       <div 
-        className="fixed left-0 right-0 text-center bg-background" 
-        style={{ bottom: '24px', paddingTop: '16px' }}
+        className="text-center bg-background" 
+        style={{ marginBottom: '24px', paddingTop: '16px' }}
         data-testid="footer"
       >
         <div className="flex items-center justify-center gap-2 text-xs text-gray-500">

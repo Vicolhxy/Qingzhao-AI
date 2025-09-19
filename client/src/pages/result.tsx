@@ -2,8 +2,10 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowLeft, Download, Eye } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
+import { useState } from "react";
 
 // Category display names
 const categoryNames = {
@@ -13,32 +15,52 @@ const categoryNames = {
   [PhotoCategory.WECHAT_PORTRAIT]: "微信头像",
 };
 
-// Result photo placeholder with watermark
+// Result photo placeholder with watermark and click to view
 function ResultPhotoPlaceholder({ index }: { index: number }) {
   return (
-    <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden" style={{ aspectRatio: '212/304' }} data-testid={`result-photo-${index}`}>
-      {/* Photo content */}
-      <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
-        <span className="text-gray-500 dark:text-gray-400 text-xs">生成照片 {index + 1}</span>
-      </div>
-      
-      {/* Watermark overlay */}
-      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-        <div className="bg-white/90 dark:bg-black/90 px-3 py-1 rounded-full text-xs font-medium transform -rotate-12 opacity-60">
-          DEMO
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity" style={{ aspectRatio: '212/304' }} data-testid={`result-photo-${index}`}>
+          {/* Photo content */}
+          <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
+            <span className="text-gray-500 dark:text-gray-400 text-xs">生成照片 {index + 1}</span>
+          </div>
+          
+          {/* Watermark overlay */}
+          <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+            <div className="bg-white/90 dark:bg-black/90 px-3 py-1 rounded-full text-xs font-medium transform -rotate-12 opacity-60">
+              DEMO
+            </div>
+          </div>
+          
+          {/* Preview button */}
+          <Button
+            size="icon"
+            variant="secondary"
+            className="absolute top-2 right-2 h-7 w-7 bg-white/80 hover:bg-white"
+            data-testid={`preview-button-${index}`}
+          >
+            <Eye className="h-3 w-3" />
+          </Button>
         </div>
-      </div>
+      </DialogTrigger>
       
-      {/* Preview button */}
-      <Button
-        size="icon"
-        variant="secondary"
-        className="absolute top-2 right-2 h-7 w-7 bg-white/80 hover:bg-white"
-        data-testid={`preview-button-${index}`}
-      >
-        <Eye className="h-3 w-3" />
-      </Button>
-    </div>
+      <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 bg-transparent border-none" data-testid={`photo-dialog-${index}`}>
+        <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden" style={{ aspectRatio: '212/304', maxWidth: '400px', margin: '0 auto' }}>
+          {/* Large photo content */}
+          <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
+            <span className="text-gray-500 dark:text-gray-400 text-lg">生成照片 {index + 1}</span>
+          </div>
+          
+          {/* Large watermark overlay */}
+          <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+            <div className="bg-white/90 dark:bg-black/90 px-6 py-3 rounded-full text-lg font-medium transform -rotate-12 opacity-60">
+              DEMO
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -62,24 +84,28 @@ export default function Result() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b" data-testid="result-header">
-        <div className="flex items-center">
-          <Link href="/">
-            <Button variant="ghost" size="icon" data-testid="back-button">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <div className="ml-3">
-            <h1 className="text-lg font-medium" data-testid="category-title">{categoryName}</h1>
-          </div>
+      <div className="flex items-center p-4 border-b" data-testid="result-header">
+        <Link href="/">
+          <Button variant="ghost" size="icon" data-testid="back-button">
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+        </Link>
+        <div className="ml-3 flex items-center">
+          <h1 className="text-lg font-medium" data-testid="category-title">{categoryName}</h1>
+          <Badge variant="secondary" className="ml-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+            已完成
+          </Badge>
         </div>
-        <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-          已完成
-        </Badge>
       </div>
 
       <div className="container mx-auto px-3 py-6 max-w-md">
 
+        {/* Photo Title */}
+        <div className="mb-3">
+          <h3 className="text-lg font-medium inline" data-testid="photo-title">生成照片</h3>
+          <span className="text-sm text-gray-500 ml-3" data-testid="text-hint-preview">点击可查看大图</span>
+        </div>
+        
         {/* Results Grid - 2x2 Layout */}
         <div className="grid grid-cols-2 gap-3 mb-6" data-testid="results-grid">
           {Array.from({ length: 4 }, (_, i) => (
@@ -95,8 +121,8 @@ export default function Result() {
                 <h3 className="font-semibold" data-testid="pricing-title">高清无水印原片（4张）</h3>
               </div>
               <div className="text-right">
+                <div className="text-sm text-muted-foreground line-through mb-1">¥99.9</div>
                 <div className="text-2xl font-bold text-primary" data-testid="price">¥19.9</div>
-                <div className="text-sm text-muted-foreground line-through">¥39.8</div>
               </div>
             </div>
             
@@ -116,6 +142,13 @@ export default function Result() {
               <Download className="mr-2 h-4 w-4" />
               立即购买下载
             </Button>
+            
+            {/* Agreement Notice */}
+            <div className="text-center mt-3">
+              <p className="text-xs text-muted-foreground">
+                点击购买即表示同意服务条款和隐私政策
+              </p>
+            </div>
           </CardContent>
         </Card>
 
@@ -130,31 +163,14 @@ export default function Result() {
           >
             制作新照片
           </Button>
-          
-          <div className="text-center">
-            <Link href="/">
-              <Button variant="ghost" size="sm" data-testid="back-home-button">
-                返回首页
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Footer Notice */}
-        <div className="text-center mt-6">
-          <p className="text-xs text-muted-foreground">
-            点击购买即表示同意服务条款和隐私政策
-          </p>
         </div>
         
-        {/* Bottom spacing to prevent fixed footer overlap */}
-        <div style={{ paddingBottom: '80px' }}></div>
       </div>
       
-      {/* Fixed Footer */}
+      {/* Footer at page bottom */}
       <div 
-        className="fixed left-0 right-0 text-center bg-background" 
-        style={{ bottom: '24px', paddingTop: '16px' }}
+        className="text-center bg-background" 
+        style={{ marginBottom: '24px', paddingTop: '16px' }}
         data-testid="footer"
       >
         <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
