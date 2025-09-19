@@ -2,8 +2,8 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowLeft, Download, Eye } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { ArrowLeft, Download, Eye, X } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
 import { useState } from "react";
 
@@ -45,19 +45,33 @@ function ResultPhotoPlaceholder({ index }: { index: number }) {
         </div>
       </DialogTrigger>
       
-      <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 bg-transparent border-none" data-testid={`photo-dialog-${index}`}>
-        <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden" style={{ aspectRatio: '212/304', maxWidth: '400px', margin: '0 auto' }}>
-          {/* Large photo content */}
-          <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
-            <span className="text-gray-500 dark:text-gray-400 text-lg">生成照片 {index + 1}</span>
-          </div>
-          
-          {/* Large watermark overlay */}
-          <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-            <div className="bg-white/90 dark:bg-black/90 px-6 py-3 rounded-full text-lg font-medium transform -rotate-12 opacity-60">
-              DEMO
+      <DialogContent className="max-w-screen-sm mx-auto p-6 [&>button]:hidden">
+        <DialogTitle className="sr-only">生成照片预览</DialogTitle>
+        <div className="flex flex-col items-center">
+          <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden w-full" style={{ aspectRatio: '212/304', maxWidth: '300px' }}>
+            {/* Large photo content */}
+            <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
+              <span className="text-gray-500 dark:text-gray-400 text-lg">生成照片 {index + 1}</span>
+            </div>
+            
+            {/* Large watermark overlay */}
+            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+              <div className="bg-white/90 dark:bg-black/90 px-6 py-3 rounded-full text-lg font-medium transform -rotate-12 opacity-60">
+                DEMO
+              </div>
             </div>
           </div>
+          <DialogClose asChild>
+            <Button
+              variant="outline"
+              size="lg"
+              className="mt-6 px-8 py-3 text-base"
+              data-testid={`button-close-preview-${index}`}
+            >
+              <X className="w-5 h-5 mr-2" />
+              关闭
+            </Button>
+          </DialogClose>
         </div>
       </DialogContent>
     </Dialog>
@@ -102,8 +116,11 @@ export default function Result() {
 
         {/* Photo Title */}
         <div className="mb-3">
-          <h3 className="text-lg font-medium inline" data-testid="photo-title">生成照片</h3>
-          <span className="text-sm text-gray-500 ml-3" data-testid="text-hint-preview">点击可查看大图</span>
+          <div className="flex items-center gap-2">
+            <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
+            <h3 className="text-lg font-medium" data-testid="photo-title">生成照片</h3>
+            <span className="text-sm text-gray-500 ml-3" data-testid="text-hint-preview">点击可查看大图</span>
+          </div>
         </div>
         
         {/* Results Grid - 2x2 Layout */}
@@ -121,8 +138,10 @@ export default function Result() {
                 <h3 className="font-semibold" data-testid="pricing-title">高清无水印原片（4张）</h3>
               </div>
               <div className="text-right">
-                <div className="text-sm text-muted-foreground line-through mb-1">¥99.9</div>
-                <div className="text-2xl font-bold text-primary" data-testid="price">¥19.9</div>
+                <div className="flex items-center justify-end gap-2">
+                  <span className="text-sm text-muted-foreground line-through">¥99.9</span>
+                  <span className="text-2xl font-bold text-primary" data-testid="price">¥19.9</span>
+                </div>
               </div>
             </div>
             
