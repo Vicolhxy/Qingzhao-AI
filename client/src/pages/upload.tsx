@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { ArrowLeft, User, Sun, Building, X } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
 
@@ -113,6 +114,7 @@ export default function Upload() {
             <div className="flex items-center gap-2 mb-3">
               <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
               <h2 className="text-lg font-medium">样片展示</h2>
+              <span className="text-sm text-gray-500 ml-3" data-testid="text-hint-preview">点击可查看大图</span>
             </div>
             
             {/* 4 Sample Photos Horizontal Strip */}
@@ -229,33 +231,8 @@ export default function Upload() {
           </Button>
         </div>
 
-        {/* Bottom spacing - 32px (4px grid: 8 * 4 = 32) */}
-        <div style={{ paddingBottom: '32px' }}></div>
-
-        {/* Footer - Fixed distance from bottom 48px (4px grid: 12 * 4 = 48) */}
-        <div 
-          className="text-center" 
-          style={{ marginBottom: '48px' }}
-          data-testid="footer"
-        >
-          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-            <Link 
-              href="/terms" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-terms"
-            >
-              用户服务协议
-            </Link>
-            <span>|</span>
-            <Link 
-              href="/privacy" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-privacy"
-            >
-              隐私政策
-            </Link>
-          </div>
-        </div>
+        {/* Bottom spacing to prevent fixed footer overlap */}
+        <div style={{ paddingBottom: '80px' }}></div>
       </div>
 
       {/* Image Preview Dialog */}
@@ -284,12 +261,16 @@ export default function Upload() {
       </Dialog>
 
       {/* AIGC Service Agreement Modal - Bottom Drawer */}
-      <Dialog open={aigcModalOpen} onOpenChange={setAigcModalOpen}>
-        <DialogContent className="max-w-full mx-0 p-0 rounded-t-xl rounded-b-none translate-y-0 animate-in slide-in-from-bottom-0 duration-300 bottom-0 top-auto border-0 [&>button]:hidden">
+      <Sheet open={aigcModalOpen} onOpenChange={setAigcModalOpen}>
+        <SheetContent side="bottom" className="rounded-t-xl border-0 p-0">
           <div className="px-6 pt-6 pb-0">
-            <DialogTitle className="text-lg font-semibold mb-4 text-center" data-testid="text-aigc-title">
+            <SheetTitle className="text-lg font-semibold mb-4 text-center" data-testid="text-aigc-title">
               AIGC服务协议
-            </DialogTitle>
+            </SheetTitle>
+            
+            <SheetDescription className="sr-only">
+              AIGC服务协议说明
+            </SheetDescription>
             
             <div className="text-sm text-gray-700 leading-relaxed mb-8" data-testid="text-aigc-content">
               <p>
@@ -317,8 +298,33 @@ export default function Upload() {
               </Button>
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </SheetContent>
+      </Sheet>
+      
+      {/* Fixed Footer */}
+      <div 
+        className="fixed left-0 right-0 text-center bg-background" 
+        style={{ bottom: '48px', paddingTop: '16px' }}
+        data-testid="footer"
+      >
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+          <Link 
+            href="/terms" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-terms"
+          >
+            用户服务协议
+          </Link>
+          <span>|</span>
+          <Link 
+            href="/privacy" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-privacy"
+          >
+            隐私政策
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

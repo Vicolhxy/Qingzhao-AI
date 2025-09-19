@@ -64,7 +64,7 @@ export default function Result() {
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b" data-testid="result-header">
         <div className="flex items-center">
-          <Link to="/">
+          <Link href="/">
             <Button variant="ghost" size="icon" data-testid="back-button">
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -152,7 +152,7 @@ export default function Result() {
           </Button>
           
           <div className="text-center">
-            <Link to="/">
+            <Link href="/">
               <Button variant="ghost" size="sm" data-testid="back-home-button">
                 返回首页
               </Button>
@@ -165,6 +165,34 @@ export default function Result() {
           <p className="text-xs text-muted-foreground">
             点击购买即表示同意服务条款和隐私政策
           </p>
+        </div>
+        
+        {/* Bottom spacing to prevent fixed footer overlap */}
+        <div style={{ paddingBottom: '80px' }}></div>
+      </div>
+      
+      {/* Fixed Footer */}
+      <div 
+        className="fixed left-0 right-0 text-center bg-background" 
+        style={{ bottom: '48px', paddingTop: '16px' }}
+        data-testid="footer"
+      >
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+          <Link 
+            href="/terms" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-terms"
+          >
+            用户服务协议
+          </Link>
+          <span>|</span>
+          <Link 
+            href="/privacy" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-privacy"
+          >
+            隐私政策
+          </Link>
         </div>
       </div>
     </div>

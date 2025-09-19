@@ -220,6 +220,34 @@ export default function ChildrenProtection() {
             <p><strong>若对我们的回复不满意，可依法向有管辖权的法院提起诉讼解决。</strong></p>
           </div>
         </div>
+        
+        {/* Bottom spacing to prevent fixed footer overlap */}
+        <div style={{ paddingBottom: '80px' }}></div>
+      </div>
+      
+      {/* Fixed Footer */}
+      <div 
+        className="fixed left-0 right-0 text-center bg-background" 
+        style={{ bottom: '48px', paddingTop: '16px' }}
+        data-testid="footer"
+      >
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+          <Link 
+            href="/terms" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-terms"
+          >
+            用户服务协议
+          </Link>
+          <span>|</span>
+          <Link 
+            href="/privacy" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-privacy"
+          >
+            隐私政策
+          </Link>
+        </div>
       </div>
     </div>
   );

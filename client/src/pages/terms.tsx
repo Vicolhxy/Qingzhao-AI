@@ -245,29 +245,32 @@ export default function Terms() {
           </div>
         </div>
 
-        {/* Footer - Fixed distance from bottom 48px (4px grid: 12 * 4 = 48) */}
-        <div 
-          className="text-center" 
-          style={{ marginBottom: '48px' }}
-          data-testid="footer"
-        >
-          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-            <Link 
-              href="/terms" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-terms"
-            >
-              用户服务协议
-            </Link>
-            <span>|</span>
-            <Link 
-              href="/privacy" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-privacy"
-            >
-              隐私政策
-            </Link>
-          </div>
+        {/* Bottom spacing to prevent fixed footer overlap */}
+        <div style={{ paddingBottom: '80px' }}></div>
+      </div>
+      
+      {/* Fixed Footer */}
+      <div 
+        className="fixed left-0 right-0 text-center bg-background" 
+        style={{ bottom: '48px', paddingTop: '16px' }}
+        data-testid="footer"
+      >
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+          <Link 
+            href="/terms" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-terms"
+          >
+            用户服务协议
+          </Link>
+          <span>|</span>
+          <Link 
+            href="/privacy" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-privacy"
+          >
+            隐私政策
+          </Link>
         </div>
       </div>
     </div>

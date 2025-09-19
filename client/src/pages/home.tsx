@@ -47,18 +47,21 @@ export default function Home() {
   // All sample images in rotation order
   const allSampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
 
-  // Sample images based on current rotation
+  // Keep stable image sources during transitions to prevent flicker
+  const [stableImageIndex, setStableImageIndex] = useState(0);
+  
+  // Sample images based on stable index (only updates after transition completes)
   const getSampleImages = () => {
     const totalImages = allSampleImages.length;
     
-    // Current large image
-    const large = allSampleImages[currentImageIndex];
+    // Current large image uses stable index during transitions
+    const large = allSampleImages[stableImageIndex];
     
     // Small images are the next 3 in rotation
     const small = [
-      allSampleImages[(currentImageIndex + 1) % totalImages],
-      allSampleImages[(currentImageIndex + 2) % totalImages], 
-      allSampleImages[(currentImageIndex + 3) % totalImages]
+      allSampleImages[(stableImageIndex + 1) % totalImages],
+      allSampleImages[(stableImageIndex + 2) % totalImages], 
+      allSampleImages[(stableImageIndex + 3) % totalImages]
     ];
     
     return { large, small };
@@ -79,6 +82,7 @@ export default function Home() {
       // After 500ms crossfade, swap to the next image
       timeoutRef = setTimeout(() => {
         setCurrentImageIndex(nextIndex);
+        setStableImageIndex(nextIndex); // Update stable index after transition
         setIsTransitioning(false);
       }, 500);
     }, 2500);
@@ -212,10 +216,10 @@ export default function Home() {
                 style={{ gap: '8px' }}
               >
                 {samples.small.map((sample, index) => {
-                  const nextSmallIndex = (currentImageIndex + index + 2) % allSampleImages.length;
+                  const nextSmallIndex = (stableImageIndex + index + 2) % allSampleImages.length;
                   return (
                     <div 
-                      key={`${currentImageIndex}-${index}`}
+                      key={`${stableImageIndex}-${index}`}
                       className="flex-1 bg-gray-100 rounded overflow-hidden relative"
                       style={{ aspectRatio: '1/1.43' }}
                       data-testid={`small-sample-${index + 1}`}
@@ -259,32 +263,32 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bottom spacing - 32px (4px grid: 8 * 4 = 32) */}
-        <div style={{ paddingBottom: '32px' }}></div>
-
-        {/* Footer - Fixed distance from bottom 48px (4px grid: 12 * 4 = 48) */}
-        <div 
-          className="text-center" 
-          style={{ marginBottom: '48px' }}
-          data-testid="footer"
-        >
-          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-            <Link 
-              href="/terms" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-terms"
-            >
-              用户服务协议
-            </Link>
-            <span>|</span>
-            <Link 
-              href="/privacy" 
-              className="hover:text-primary transition-colors"
-              data-testid="link-privacy"
-            >
-              隐私政策
-            </Link>
-          </div>
+        {/* Bottom spacing to prevent fixed footer overlap */}
+        <div style={{ paddingBottom: '80px' }}></div>
+      </div>
+      
+      {/* Fixed Footer */}
+      <div 
+        className="fixed left-0 right-0 text-center bg-background" 
+        style={{ bottom: '48px', paddingTop: '16px' }}
+        data-testid="footer"
+      >
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+          <Link 
+            href="/terms" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-terms"
+          >
+            用户服务协议
+          </Link>
+          <span>|</span>
+          <Link 
+            href="/privacy" 
+            className="hover:text-primary transition-colors"
+            data-testid="link-privacy"
+          >
+            隐私政策
+          </Link>
         </div>
       </div>
     </div>
