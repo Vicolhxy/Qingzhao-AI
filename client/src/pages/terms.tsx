@@ -252,7 +252,7 @@ export default function Terms() {
       {/* Fixed Footer */}
       <div 
         className="fixed left-0 right-0 text-center bg-background" 
-        style={{ bottom: '48px', paddingTop: '16px' }}
+        style={{ bottom: '24px', paddingTop: '16px' }}
         data-testid="footer"
       >
         <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
