@@ -231,8 +231,7 @@ export default function Upload() {
           </Button>
         </div>
 
-        {/* Bottom spacing to prevent fixed footer overlap */}
-        <div style={{ paddingBottom: '80px' }}></div>
+        
       </div>
 
       {/* Image Preview Dialog */}
