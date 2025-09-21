@@ -273,7 +273,12 @@ export default function Upload() {
                   />
                 ) : (
                   isIdPhoto ? (
-                    
+                    <img 
+                      src={idOutlineDotted} 
+                      alt="证件照模板" 
+                      className="max-w-full max-h-full object-contain opacity-30"
+                      style={{ filter: 'invert(0.5)' }}
+                    />
                   ) : (
                     <img 
                       src={outlineHuman} 
