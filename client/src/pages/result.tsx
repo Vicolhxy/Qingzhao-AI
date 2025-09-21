@@ -145,7 +145,6 @@ export default function Result() {
           <div className="flex items-center gap-2">
             <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
             <h3 className="text-lg font-medium" data-testid="photo-title">生成照片</h3>
-            <span className="text-sm text-gray-500 ml-3" data-testid="text-hint-preview">点击可查看大图</span>
           </div>
         </div>
         
