@@ -245,7 +245,6 @@ export default function Upload() {
             <div className="flex items-center gap-2 mb-3">
               <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
               <h2 className="text-lg font-medium">样片展示</h2>
-              <span className="text-sm text-gray-500 ml-3" data-testid="text-hint-preview">点击可查看大图</span>
             </div>
             
             {/* Sample Photos Display */}
@@ -307,24 +306,13 @@ export default function Upload() {
               {/* Main Action Button */}
               <Button
                 size="lg"
-                className="w-full bg-green-500 hover:bg-green-600 text-white font-bold rounded-full"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-full"
                 style={{ padding: '16px 0', fontSize: '16px' }}
                 onClick={() => setWechatPermissionModalOpen(true)}
                 data-testid="button-wechat-one-click"
               >
                 一键做同款
               </Button>
-              
-              {/* Alternative Upload Button */}
-              <div className="text-center">
-                <button
-                  className="text-gray-600 text-sm underline hover:text-gray-800 transition-colors"
-                  onClick={handleUploadClick}
-                  data-testid="button-wechat-upload"
-                >
-                  或者  上传/拍照
-                </button>
-              </div>
             </div>
           ) : (
             <>
