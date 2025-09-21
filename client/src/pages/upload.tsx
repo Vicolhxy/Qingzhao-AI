@@ -113,6 +113,15 @@ export default function Upload() {
       // Create preview URL for the uploaded image
       const imageUrl = URL.createObjectURL(file);
       setUploadedImageUrl(imageUrl);
+      
+      // Navigate to result page immediately after selecting file
+      const params = new URLSearchParams();
+      params.set('category', category);
+      params.set('gender', gender);
+      if (isWechatPortrait) {
+        params.set('frameIndex', frameIndex.toString());
+      }
+      setLocation(`/result?${params.toString()}`);
     }
   };
 
