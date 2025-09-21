@@ -113,10 +113,9 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
             <div 
               className="text-white font-bold transform -rotate-12 opacity-70"
               style={{ 
-                fontSize: 'clamp(12px, 4vw, 24px)',
+                fontSize: '48px',
                 width: '66.67%',
-                textAlign: 'center',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                textAlign: 'center'
               }}
             >
               轻照AI
@@ -146,10 +145,9 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
               <div 
                 className="text-white font-bold transform -rotate-12 opacity-70"
                 style={{ 
-                  fontSize: 'clamp(16px, 5vw, 32px)',
+                  fontSize: '64px',
                   width: '66.67%',
-                  textAlign: 'center',
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                  textAlign: 'center'
                 }}
               >
                 轻照AI
@@ -192,10 +190,9 @@ function ResultPhotoPlaceholder({ index, aspectRatio }: { index: number; aspectR
             <div 
               className="text-white font-bold transform -rotate-12 opacity-70"
               style={{ 
-                fontSize: 'clamp(10px, 3vw, 18px)',
+                fontSize: '32px',
                 width: '66.67%',
-                textAlign: 'center',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                textAlign: 'center'
               }}
             >
               轻照AI
@@ -218,10 +215,9 @@ function ResultPhotoPlaceholder({ index, aspectRatio }: { index: number; aspectR
               <div 
                 className="text-white font-bold transform -rotate-12 opacity-70"
                 style={{ 
-                  fontSize: 'clamp(16px, 5vw, 32px)',
+                  fontSize: '64px',
                   width: '66.67%',
-                  textAlign: 'center',
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                  textAlign: 'center'
                 }}
               >
                 轻照AI
