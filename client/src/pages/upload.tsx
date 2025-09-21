@@ -237,9 +237,8 @@ export default function Upload() {
               {sampleImages.map((sample, index) => (
                 <div 
                   key={index}
-                  className="bg-gray-100 rounded-[6px] overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+                  className="flex-1 bg-gray-100 rounded-[6px] overflow-hidden cursor-pointer hover:scale-105 transition-transform"
                   style={{ 
-                    width: 'clamp(60px, calc((100% - 18px)/4), 86px)', 
                     aspectRatio: isIdPhoto ? '3 / 4' : '86 / 126' 
                   }}
                   onClick={() => handleImageClick(sample)}
