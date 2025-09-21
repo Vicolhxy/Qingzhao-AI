@@ -342,6 +342,21 @@ export default function Upload() {
                   点击上传/拍照
                 </button>
               </div>
+              
+              {/* Generate Button - Only show when file is selected for WeChat portraits */}
+              {selectedFile && (
+                <div className="mt-4">
+                  <Button
+                    size="lg"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-full"
+                    style={{ padding: '12px 0' }}
+                    onClick={handleSubmit}
+                    data-testid="button-wechat-generate"
+                  >
+                    开始生成我的头像（4张）
+                  </Button>
+                </div>
+              )}
             </div>
           ) : (
             <>
@@ -603,23 +618,25 @@ export default function Upload() {
           </SheetContent>
         </Sheet>
 
-        {/* Third div: Button (24px gap from ID config, 48px from upload area) */}
-        <div style={{ marginTop: isIdPhoto && selectedFile && idPhotoConfig ? '24px' : '48px' }} data-testid="section-button">
-          <Button 
-            size="lg" 
-            className="bg-primary hover:bg-primary/90 text-white font-bold rounded-full"
-            style={{ 
-              width: '100%', 
-              padding: '12px 0' 
-            }}
-            onClick={selectedFile ? handleSubmit : handleUploadClick}
-            data-testid="button-upload"
-          >
-            {selectedFile ? (
-              isIdPhoto ? '开始生成我的证件照（4张）' : '开始生成我的照片（4张）'
-            ) : '点击上传 / 拍照'}
-          </Button>
-        </div>
+        {/* Third div: Button (24px gap from ID config, 48px from upload area) - Hidden for WeChat portraits */}
+        {!isWechatPortrait && (
+          <div style={{ marginTop: isIdPhoto && selectedFile && idPhotoConfig ? '24px' : '48px' }} data-testid="section-button">
+            <Button 
+              size="lg" 
+              className="bg-primary hover:bg-primary/90 text-white font-bold rounded-full"
+              style={{ 
+                width: '100%', 
+                padding: '12px 0' 
+              }}
+              onClick={selectedFile ? handleSubmit : handleUploadClick}
+              data-testid="button-upload"
+            >
+              {selectedFile ? (
+                isIdPhoto ? '开始生成我的证件照（4张）' : '开始生成我的照片（4张）'
+              ) : '点击上传 / 拍照'}
+            </Button>
+          </div>
+        )}
 
         
       </div>
