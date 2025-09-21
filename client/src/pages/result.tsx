@@ -125,7 +125,7 @@ export default function Result() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="flex items-center p-4 border-b" data-testid="result-header">
-        <Link href="/">
+        <Link href={`/?category=${category}`}>
           <Button variant="ghost" size="icon" data-testid="back-button">
             <ArrowLeft className="h-5 w-5" />
           </Button>

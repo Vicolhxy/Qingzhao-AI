@@ -47,7 +47,15 @@ const genderOptions = [
 
 export default function Home() {
   const [selectedGender, setSelectedGender] = useState("male");
-  const [selectedCategory, setSelectedCategory] = useState(PhotoCategory.PROFESSIONAL);
+  
+  // Read category from URL parameters if available, otherwise default to PROFESSIONAL
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryFromUrl = urlParams.get('category') as PhotoCategory | null;
+  const initialCategory = categoryFromUrl && Object.values(PhotoCategory).includes(categoryFromUrl) 
+    ? categoryFromUrl 
+    : PhotoCategory.PROFESSIONAL;
+    
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [, setLocation] = useLocation();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [nextImageIndex, setNextImageIndex] = useState(1);

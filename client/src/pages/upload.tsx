@@ -233,7 +233,7 @@ export default function Upload() {
     <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide flex flex-col" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       {/* Header */}
       <div className="flex items-center p-4 border-b" data-testid="upload-header">
-        <Link href="/">
+        <Link href={`/?category=${category}`}>
           <Button variant="ghost" size="icon" data-testid="button-back">
             <ArrowLeft className="h-5 w-5" />
           </Button>
