@@ -190,7 +190,7 @@ export default function Home() {
             <div style={{ marginBottom: '12px' }} data-testid="large-sample">
               <div 
                 className="w-full bg-gray-100 rounded overflow-hidden relative"
-                style={{ aspectRatio: '212/304' }}
+                style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '212/304' }}
               >
                 {/* Current image */}
                 <img 
@@ -221,7 +221,7 @@ export default function Home() {
                     <div 
                       key={`${stableImageIndex}-${index}`}
                       className="flex-1 bg-gray-100 rounded overflow-hidden relative"
-                      style={{ aspectRatio: '1/1.43' }}
+                      style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '1/1.43' }}
                       data-testid={`small-sample-${index + 1}`}
                     >
                       {/* Current small image */}
