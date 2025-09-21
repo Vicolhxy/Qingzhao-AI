@@ -529,44 +529,43 @@ export default function Upload() {
 
         {/* WeChat Permission Modal */}
         <Sheet open={wechatPermissionModalOpen} onOpenChange={setWechatPermissionModalOpen}>
-          <SheetContent 
-            side="bottom" 
-            className="h-auto max-h-[80vh] rounded-t-3xl"
-            style={{
-              background: 'white',
-              margin: '0 16px',
-              marginBottom: '0',
-              borderRadius: '24px 24px 0 0'
-            }}
-          >
-            <SheetTitle className="text-center text-lg font-medium mb-4">获取权限</SheetTitle>
-            <SheetDescription className="sr-only">WeChat permission request</SheetDescription>
-            
-            <div className="text-center text-sm text-gray-600 mb-6 leading-relaxed">
-              为了生成您的微信头像框，我们需要获取您的微信头像。<br/>
-              请确认是否同意使用您的头像信息。<br/>
-              点击"同意"即表示您已阅读并同意《用户服务协议》和《隐私政策》。
-            </div>
-            
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                className="flex-1 border-gray-300 text-gray-700"
-                onClick={() => setWechatPermissionModalOpen(false)}
-                data-testid="button-disagree"
-              >
-                不同意
-              </Button>
-              <Button
-                className="flex-1 bg-green-500 hover:bg-green-600 text-white"
-                onClick={() => {
-                  setWechatPermissionModalOpen(false);
-                  setLocation(`/result/${category}?gender=${gender}`);
-                }}
-                data-testid="button-agree"
-              >
-                同意并继续
-              </Button>
+          <SheetContent side="bottom" className="rounded-t-xl border-0 p-0">
+            <div className="px-6 pt-6 pb-0">
+              <SheetTitle className="text-lg font-semibold mb-4 text-center">获取权限</SheetTitle>
+              <SheetDescription className="sr-only">WeChat permission request</SheetDescription>
+              
+              <div className="text-sm text-gray-700 leading-relaxed mb-8 text-left">
+                为了生成您的微信头像框，我们需要获取您的微信头像。<br/>
+                请确认是否同意使用您的头像信息。<br/>
+                点击"同意"即表示您已阅读并同意《用户服务协议》和《隐私政策》。
+              </div>
+              
+              <div style={{ paddingBottom: '48px' }} className="space-y-4">
+                <Button
+                  size="lg"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-full"
+                  onClick={() => {
+                    setWechatPermissionModalOpen(false);
+                    setLocation(`/result?category=${category}&gender=${gender}&frameIndex=${frameIndex}`);
+                  }}
+                  data-testid="button-agree"
+                  style={{ 
+                    padding: '12px 0' 
+                  }}
+                >
+                  同意并继续
+                </Button>
+                
+                <div className="text-center">
+                  <button
+                    className="text-primary text-sm hover:text-primary/80 transition-colors"
+                    onClick={() => setWechatPermissionModalOpen(false)}
+                    data-testid="button-disagree"
+                  >
+                    不同意
+                  </button>
+                </div>
+              </div>
             </div>
           </SheetContent>
         </Sheet>
