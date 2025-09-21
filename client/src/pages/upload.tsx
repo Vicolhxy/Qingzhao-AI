@@ -114,6 +114,14 @@ export default function Upload() {
       const imageUrl = URL.createObjectURL(file);
       setUploadedImageUrl(imageUrl);
       
+      // Store the uploaded image in sessionStorage for result page access
+      sessionStorage.setItem('uploadedImage', imageUrl);
+      sessionStorage.setItem('uploadedImageFile', JSON.stringify({
+        name: file.name,
+        size: file.size,
+        type: file.type
+      }));
+      
       // Navigate to result page immediately after selecting file
       const params = new URLSearchParams();
       params.set('category', category);

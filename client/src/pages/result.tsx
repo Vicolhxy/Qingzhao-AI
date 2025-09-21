@@ -5,8 +5,16 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { ArrowLeft, Download, Eye, X } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ID_PHOTO_TYPES, createDefaultConfig, IdPhotoConfig, BACKGROUND_COLORS } from "@/data/idPhotoConfig";
+
+// Import WeChat frame images
+import wechatFrame1 from "@assets/WechatFrame-1_1758491861092.png";
+import wechatFrame2 from "@assets/WechatFrame-2_1758491861090.png";
+import wechatFrame3 from "@assets/WechatFrame-3_1758491861092.png";
+import wechatFrame4 from "@assets/WechatFrame-4_1758491861090.png";
+import wechatFrame5 from "@assets/WechatFrame-5_1758491861091.png";
+import wechatFrame6 from "@assets/WechatFrame-6_1758491861088.png";
 
 // Category display names
 const categoryNames = {
@@ -15,6 +23,152 @@ const categoryNames = {
   [PhotoCategory.ID_PHOTO]: "证件照",
   [PhotoCategory.WECHAT_PORTRAIT]: "微信头像框",
 };
+
+// WeChat Avatar Frame Composer
+function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [composedImageUrl, setComposedImageUrl] = useState<string>('');
+  
+  // WeChat frame images array
+  const wechatFrames = [wechatFrame1, wechatFrame2, wechatFrame3, wechatFrame4, wechatFrame5, wechatFrame6];
+  const selectedFrame = wechatFrames[frameIndex] || wechatFrame1;
+  
+  useEffect(() => {
+    const composeImage = async () => {
+      const uploadedImageUrl = sessionStorage.getItem('uploadedImage');
+      if (!uploadedImageUrl) return;
+      
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      
+      // Set canvas size
+      canvas.width = 512;
+      canvas.height = 512;
+      
+      try {
+        // Load user uploaded image
+        const userImg = new Image();
+        userImg.crossOrigin = 'anonymous';
+        await new Promise((resolve, reject) => {
+          userImg.onload = resolve;
+          userImg.onerror = reject;
+          userImg.src = uploadedImageUrl;
+        });
+        
+        // Load frame image
+        const frameImg = new Image();
+        frameImg.crossOrigin = 'anonymous';
+        await new Promise((resolve, reject) => {
+          frameImg.onload = resolve;
+          frameImg.onerror = reject;
+          frameImg.src = selectedFrame;
+        });
+        
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw user image (background) - scaled to fit canvas
+        ctx.drawImage(userImg, 0, 0, canvas.width, canvas.height);
+        
+        // Draw frame overlay
+        ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+        
+        // Convert to blob and create URL
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            setComposedImageUrl(url);
+          }
+        }, 'image/png');
+        
+      } catch (error) {
+        console.error('Error composing image:', error);
+      }
+    };
+    
+    composeImage();
+  }, [frameIndex, selectedFrame]);
+  
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity" style={{ aspectRatio: '1 / 1' }} data-testid="wechat-result-photo">
+          {composedImageUrl ? (
+            <img 
+              src={composedImageUrl} 
+              alt="合成的微信头像"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
+              <span className="text-gray-500 dark:text-gray-400 text-xs">正在生成...</span>
+            </div>
+          )}
+          
+          {/* Watermark overlay */}
+          <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+            <div className="bg-white/90 dark:bg-black/90 px-3 py-1 rounded-full text-xs font-medium transform -rotate-12 opacity-60">
+              DEMO
+            </div>
+          </div>
+          
+          {/* Preview button */}
+          <Button
+            size="icon"
+            variant="secondary"
+            className="absolute top-2 right-2 h-7 w-7 bg-white/80 hover:bg-white"
+            data-testid="preview-button-wechat"
+          >
+            <Eye className="h-3 w-3" />
+          </Button>
+        </div>
+      </DialogTrigger>
+      
+      <DialogContent className="max-w-screen-sm mx-auto p-6 [&>button]:hidden">
+        <DialogTitle className="sr-only">微信头像预览</DialogTitle>
+        <div className="flex flex-col items-center">
+          <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden w-full" style={{ aspectRatio: '1 / 1', maxWidth: '300px' }}>
+            {composedImageUrl ? (
+              <img 
+                src={composedImageUrl} 
+                alt="合成的微信头像"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
+                <span className="text-gray-500 dark:text-gray-400 text-lg">正在生成...</span>
+              </div>
+            )}
+            
+            {/* Large watermark overlay */}
+            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+              <div className="bg-white/90 dark:bg-black/90 px-6 py-3 rounded-full text-lg font-medium transform -rotate-12 opacity-60">
+                DEMO
+              </div>
+            </div>
+          </div>
+          <DialogClose asChild>
+            <Button
+              variant="outline"
+              size="lg"
+              className="mt-6 px-8 py-3 text-base"
+              data-testid="button-close-preview-wechat"
+            >
+              <X className="w-5 h-5 mr-2" />
+              关闭
+            </Button>
+          </DialogClose>
+        </div>
+      </DialogContent>
+      
+      {/* Hidden canvas for image composition */}
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
+    </Dialog>
+  );
+}
 
 // Result photo placeholder with watermark and click to view
 function ResultPhotoPlaceholder({ index, aspectRatio }: { index: number; aspectRatio: string }) {
@@ -87,6 +241,7 @@ export default function Result() {
   const urlParams = new URLSearchParams(window.location.search);
   const category = (urlParams.get('category') || PhotoCategory.PROFESSIONAL) as PhotoCategory;
   const gender = urlParams.get('gender') || 'male';
+  const frameIndex = parseInt(urlParams.get('frameIndex') || '0', 10);
   const categoryName = categoryNames[category];
   const isIdPhoto = category === PhotoCategory.ID_PHOTO;
   const isWechatPortrait = category === PhotoCategory.WECHAT_PORTRAIT;
@@ -153,7 +308,7 @@ export default function Result() {
           /* WeChat Portrait - Single 1:1 photo */
           <div className="flex justify-center mb-6" data-testid="wechat-result">
             <div className="w-64 h-64">
-              <ResultPhotoPlaceholder index={0} aspectRatio="1 / 1" />
+              <WechatAvatarComposer frameIndex={frameIndex} />
             </div>
           </div>
         ) : (
