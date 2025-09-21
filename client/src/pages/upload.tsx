@@ -301,7 +301,7 @@ export default function Upload() {
               {/* WeChat Portrait Preview - Frame + Avatar combination display */}
               <div className="flex justify-center mt-6" data-testid="wechat-preview">
                 <div 
-                  className="flex items-center gap-4"
+                  className="flex items-center justify-between"
                   style={{ width: '300px' }}
                 >
                   {/* Selected WeChat Frame */}
