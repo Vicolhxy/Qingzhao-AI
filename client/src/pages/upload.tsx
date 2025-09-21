@@ -306,11 +306,12 @@ export default function Upload() {
                 >
                   {/* Selected WeChat Frame */}
                   <div 
-                    className="bg-gray-100 rounded-lg overflow-hidden"
+                    className="bg-gray-100 overflow-hidden"
                     style={{ 
-                      width: '80px',
-                      height: '80px',
-                      aspectRatio: '1 / 1'
+                      width: '110px',
+                      height: '110px',
+                      aspectRatio: '1 / 1',
+                      borderRadius: '8px'
                     }}
                   >
                     <img 
@@ -325,14 +326,16 @@ export default function Upload() {
                   
                   {/* User Avatar Placeholder */}
                   <div 
-                    className="border-2 border-dashed border-gray-300 rounded flex items-center justify-center"
+                    className="border-2 border-dashed border-gray-300 flex items-center justify-center"
                     style={{ 
-                      width: '80px',
-                      height: '80px',
-                      borderRadius: '4px'
+                      width: '110px',
+                      height: '110px',
+                      borderRadius: '8px'
                     }}
                   >
-                    <span className="text-xs text-gray-500 text-center px-1">您的微信头像</span>
+                    <span className="text-base text-gray-500 text-center leading-tight">
+                      您的<br />微信头像
+                    </span>
                   </div>
                 </div>
               </div>
