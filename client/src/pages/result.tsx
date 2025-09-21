@@ -137,7 +137,7 @@ export default function Result() {
         </div>
       </div>
 
-      <div className="container mx-auto px-3 py-6 max-w-md flex-grow">
+      <div className="container mx-auto px-5 py-6 max-w-md flex-grow">
 
         {/* Photo Title */}
         <div className="mb-3">

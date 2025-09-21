@@ -16,7 +16,7 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 
 // Import outline human image
 import outlineHuman from "@assets/Outline-human_1758207634258.png";
-import idOutlineDotted from "@assets/ID-Outline_1758485859347.png";
+import idOutlineDotted from "@assets/ID-Outline_1758486694126.png";
 
 // Category display names
 const categoryNames = {
