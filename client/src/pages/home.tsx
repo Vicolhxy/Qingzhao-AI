@@ -232,7 +232,7 @@ export default function Home() {
                         size="sm"
                         className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
                         style={{ width: 'clamp(80px, 94px, 94px)' }}
-                        onClick={() => setLocation(`/upload/${PhotoCategory.WECHAT_PORTRAIT}?frameIndex=${index}`)}
+                        onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=${index}`)}
                         data-testid={`button-make-same-${index + 1}`}
                       >
                         做同款
