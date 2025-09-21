@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
+import { ID_PHOTO_TYPES, createDefaultConfig, IdPhotoConfig } from "@/data/idPhotoConfig";
 import { useState, useEffect } from "react";
 
 // Category display names
@@ -15,11 +16,11 @@ const categoryNames = {
 };
 
 // Generating photo placeholder with loading animation
-function GeneratingPhotoPlaceholder({ index, isGenerating, isCompleted }: { index: number; isGenerating: boolean; isCompleted: boolean }) {
+function GeneratingPhotoPlaceholder({ index, isGenerating, isCompleted, aspectRatio }: { index: number; isGenerating: boolean; isCompleted: boolean; aspectRatio: string }) {
   const generatingText = `正在生成第${['一', '二', '三', '四'][index]}张...`;
   
   return (
-    <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden" style={{ aspectRatio: '212/304' }} data-testid={`generating-photo-${index}`}>
+    <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden" style={{ aspectRatio }} data-testid={`generating-photo-${index}`}>
       {/* Photo content */}
       <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
         <div className="text-center px-2">
@@ -54,12 +55,15 @@ export default function Generating() {
   const [generatingStates, setGeneratingStates] = useState([true, true, true, true]);
   const [completedStates, setCompletedStates] = useState([false, false, false, false]);
   const [completedCount, setCompletedCount] = useState(0);
+  const [idPhotoConfig, setIdPhotoConfig] = useState<IdPhotoConfig | null>(null);
   
   // Parse category and gender from URL params
   const urlParams = new URLSearchParams(window.location.search);
   const category = (urlParams.get('category') || PhotoCategory.PROFESSIONAL) as PhotoCategory;
   const gender = urlParams.get('gender') || 'male';
   const categoryName = categoryNames[category];
+  const isIdPhoto = category === PhotoCategory.ID_PHOTO;
+  const aspectRatio = isIdPhoto ? '3/4' : '212/304';
 
   // Simulate photo generation process
   useEffect(() => {
@@ -96,6 +100,22 @@ export default function Generating() {
       }, 1000);
     }
   }, [completedCount, category, gender, setLocation]);
+  
+  // Load ID photo config from localStorage if available
+  useEffect(() => {
+    if (isIdPhoto && !idPhotoConfig) {
+      const savedConfig = localStorage.getItem('idPhotoConfig');
+      if (savedConfig) {
+        try {
+          setIdPhotoConfig(JSON.parse(savedConfig));
+        } catch (error) {
+          // Fall back to default if parsing fails
+          const defaultType = ID_PHOTO_TYPES[0];
+          setIdPhotoConfig(createDefaultConfig(defaultType));
+        }
+      }
+    }
+  }, [isIdPhoto, idPhotoConfig]);
 
   const handleBackToUpload = () => {
     setLocation(`/upload?category=${category}&gender=${gender}`);
@@ -141,6 +161,7 @@ export default function Generating() {
               index={index} 
               isGenerating={generatingStates[index]}
               isCompleted={completedStates[index]}
+              aspectRatio={aspectRatio}
             />
           ))}
         </div>

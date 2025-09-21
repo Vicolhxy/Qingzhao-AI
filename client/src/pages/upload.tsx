@@ -3,8 +3,10 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { ArrowLeft, User, Sun, Building, X } from "lucide-react";
+import { ArrowLeft, User, Sun, Building, X, ChevronDown } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ID_PHOTO_TYPES, BACKGROUND_COLORS, DPI_OPTIONS, IdPhotoConfig, createDefaultConfig, updateIdPhotoConfig, IdPhotoType } from "@/data/idPhotoConfig";
 
 // Import sample images (same as home page)
 import sampleMale1 from "@assets/Sample-Male-1_1758161866744.png";
@@ -14,6 +16,7 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 
 // Import outline human image
 import outlineHuman from "@assets/Outline-human_1758207634258.png";
+import idOutline from "@assets/ID-Outline_1758466914499.png";
 
 // Category display names
 const categoryNames = {
@@ -30,6 +33,7 @@ export default function Upload() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [aigcModalOpen, setAigcModalOpen] = useState(false);
+  const [idPhotoConfig, setIdPhotoConfig] = useState<IdPhotoConfig | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Parse category and gender from URL params
@@ -40,6 +44,14 @@ export default function Upload() {
 
   // Sample images (using same as home page)
   const sampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+  
+  // Initialize ID photo config with default values
+  useEffect(() => {
+    if (category === PhotoCategory.ID_PHOTO && !idPhotoConfig) {
+      const defaultType = ID_PHOTO_TYPES[0];
+      setIdPhotoConfig(createDefaultConfig(defaultType));
+    }
+  }, [category, idPhotoConfig]);
 
   const handleUploadClick = () => {
     // Clear input value to allow re-selecting the same file
@@ -75,6 +87,12 @@ export default function Upload() {
 
   const handleAigcAgreement = () => {
     setAigcModalOpen(false);
+    
+    // Store ID photo config in localStorage if it's an ID photo
+    if (isIdPhoto && idPhotoConfig) {
+      localStorage.setItem('idPhotoConfig', JSON.stringify(idPhotoConfig));
+    }
+    
     // Navigate to generating page after agreement
     setLocation(`/generating?category=${category}&gender=${gender}`);
   };
@@ -83,6 +101,59 @@ export default function Upload() {
     setSelectedImage(imageSrc);
     setDialogOpen(true);
   };
+  
+  // ID Photo config handlers
+  const handlePhotoTypeChange = (typeName: string) => {
+    const selectedType = ID_PHOTO_TYPES.find(type => type.name === typeName);
+    if (selectedType) {
+      setIdPhotoConfig(createDefaultConfig(selectedType));
+    }
+  };
+  
+  const handleConfigChange = (field: string, value: string | number) => {
+    if (!idPhotoConfig) return;
+    
+    let newConfig = { ...idPhotoConfig };
+    
+    switch (field) {
+      case 'width':
+        newConfig = updateIdPhotoConfig(
+          idPhotoConfig.type,
+          { width: Number(value), height: idPhotoConfig.size_mm.height },
+          idPhotoConfig.dpi,
+          idPhotoConfig.background_color
+        );
+        break;
+      case 'height':
+        newConfig = updateIdPhotoConfig(
+          idPhotoConfig.type,
+          { width: idPhotoConfig.size_mm.width, height: Number(value) },
+          idPhotoConfig.dpi,
+          idPhotoConfig.background_color
+        );
+        break;
+      case 'dpi':
+        newConfig = updateIdPhotoConfig(
+          idPhotoConfig.type,
+          idPhotoConfig.size_mm,
+          Number(value),
+          idPhotoConfig.background_color
+        );
+        break;
+      case 'background_color':
+        newConfig = updateIdPhotoConfig(
+          idPhotoConfig.type,
+          idPhotoConfig.size_mm,
+          idPhotoConfig.dpi,
+          value as string
+        );
+        break;
+    }
+    
+    setIdPhotoConfig(newConfig);
+  };
+  
+  const isIdPhoto = category === PhotoCategory.ID_PHOTO;
 
   // Cleanup blob URL on component unmount
   useEffect(() => {
@@ -125,7 +196,7 @@ export default function Upload() {
                   className="bg-gray-100 rounded-[6px] overflow-hidden cursor-pointer hover:scale-105 transition-transform"
                   style={{ 
                     width: 'clamp(60px, calc((100% - 18px)/4), 86px)', 
-                    aspectRatio: '86 / 126' 
+                    aspectRatio: isIdPhoto ? '3 / 4' : '86 / 126' 
                   }}
                   onClick={() => handleImageClick(sample)}
                   data-testid={`img-sample-${index + 1}`}
@@ -164,46 +235,173 @@ export default function Upload() {
                     className="max-w-full max-h-full object-contain mx-auto"
                   />
                 ) : (
-                  <img 
-                    src={outlineHuman} 
-                    alt="人物轮廓" 
-                    className="max-w-full max-h-full object-contain opacity-30"
-                    style={{ filter: 'invert(0.5)' }}
-                  />
+                  isIdPhoto ? (
+                    <div className="text-center px-8">
+                      <h3 className="text-lg font-medium text-gray-800 mb-2">请不要穿戴</h3>
+                      <p className="text-sm text-gray-600 mb-4">帽子、墨镜、围巾等</p>
+                      <h3 className="text-lg font-medium text-gray-800 mb-2">请保持端正</h3>
+                      <p className="text-sm text-gray-600">光线充足，背景简单</p>
+                    </div>
+                  ) : (
+                    <img 
+                      src={outlineHuman} 
+                      alt="人物轮廓" 
+                      className="max-w-full max-h-full object-contain opacity-30"
+                      style={{ filter: 'invert(0.5)' }}
+                    />
+                  )
                 )}
               </div>
             </div>
 
             {/* Right: Photo tips */}
             <div className="w-24 flex flex-col justify-center" data-testid="area-tips">
-              <div className="space-y-6">
-                {/* Tip 1: Single Person */}
-                <div className="text-center" data-testid="tip-single">
-                  <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
-                    <User className="w-6 h-6 text-gray-600" />
+              {isIdPhoto ? (
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <h3 className="text-sm font-medium text-gray-800 mb-2">请不要穿戴</h3>
+                    <p className="text-xs text-gray-600">帽子、墨镜、围巾等</p>
                   </div>
-                  <p className="text-xs text-gray-600">单人照片</p>
+                  <div className="text-center">
+                    <h3 className="text-sm font-medium text-gray-800 mb-2">请保持端正</h3>
+                    <p className="text-xs text-gray-600">光线充足，背景简单</p>
+                  </div>
                 </div>
-
-                {/* Tip 2: Good Lighting */}
-                <div className="text-center" data-testid="tip-lighting">
-                  <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
-                    <Sun className="w-6 h-6 text-gray-600" />
+              ) : (
+                <div className="space-y-6">
+                  {/* Tip 1: Single Person */}
+                  <div className="text-center" data-testid="tip-single">
+                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                      <User className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <p className="text-xs text-gray-600">单人照片</p>
                   </div>
-                  <p className="text-xs text-gray-600">光线充足</p>
+
+                  {/* Tip 2: Good Lighting */}
+                  <div className="text-center" data-testid="tip-lighting">
+                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                      <Sun className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <p className="text-xs text-gray-600">光线充足</p>
+                  </div>
+
+                  {/* Tip 3: Simple Background */}
+                  <div className="text-center" data-testid="tip-background">
+                    <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
+                      <Building className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <p className="text-xs text-gray-600">背景简单</p>
+                  </div>
                 </div>
-
-                {/* Tip 3: Simple Background */}
-                <div className="text-center" data-testid="tip-background">
-                  <div className="w-12 h-12 mx-auto mb-2 bg-gray-100 rounded-full flex items-center justify-center">
-                    <Building className="w-6 h-6 text-gray-600" />
-                  </div>
-                  <p className="text-xs text-gray-600">背景简单</p>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        {/* ID Photo Parameters Section - Only show for ID photos after upload */}
+        {isIdPhoto && selectedFile && idPhotoConfig && (
+          <div style={{ marginTop: '24px' }} data-testid="section-id-config">
+            <div className="flex items-center gap-2 mb-3">
+              <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
+              <h2 className="text-lg font-medium">证件照参数</h2>
+            </div>
+            
+            <div className="space-y-4 bg-gray-50 p-4 rounded-lg">
+              {/* Photo Type Selector */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">证件照类型</span>
+                <Select value={idPhotoConfig.type} onValueChange={handlePhotoTypeChange}>
+                  <SelectTrigger className="w-32" data-testid="select-photo-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ID_PHOTO_TYPES.map((type) => (
+                      <SelectItem key={type.name} value={type.name}>{type.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {/* Size Selectors */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">宽度(mm)</span>
+                  <Select value={idPhotoConfig.size_mm.width.toString()} onValueChange={(value) => handleConfigChange('width', value)}>
+                    <SelectTrigger className="w-20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[20, 22, 25, 26, 30, 33, 35, 40].map((size) => (
+                        <SelectItem key={size} value={size.toString()}>{size}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">高度(mm)</span>
+                  <Select value={idPhotoConfig.size_mm.height.toString()} onValueChange={(value) => handleConfigChange('height', value)}>
+                    <SelectTrigger className="w-20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[25, 30, 32, 35, 40, 45, 48, 49, 50].map((size) => (
+                        <SelectItem key={size} value={size.toString()}>{size}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              {/* DPI Selector */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">分辨率(DPI)</span>
+                <Select value={idPhotoConfig.dpi.toString()} onValueChange={(value) => handleConfigChange('dpi', value)}>
+                  <SelectTrigger className="w-24">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {DPI_OPTIONS.map((dpi) => (
+                      <SelectItem key={dpi} value={dpi.toString()}>{dpi}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {/* Background Color Selector */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">背景色</span>
+                <Select value={idPhotoConfig.background_color} onValueChange={(value) => handleConfigChange('background_color', value)}>
+                  <SelectTrigger className="w-24">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(BACKGROUND_COLORS).map(([key, color]) => (
+                      <SelectItem key={key} value={color}>
+                        <div className="flex items-center gap-2">
+                          <div className="w-4 h-4 rounded border" style={{ backgroundColor: color }}></div>
+                          {key === 'white' ? '白色' : key === 'blue' ? '蓝色' : '红色'}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {/* Calculated Values */}
+              <div className="pt-2 border-t border-gray-200">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600">像素</span>
+                  <span className="font-mono">{idPhotoConfig.pixels.width} × {idPhotoConfig.pixels.height}px</span>
+                </div>
+                <div className="flex justify-between items-center text-sm mt-1">
+                  <span className="text-gray-600">文件大小</span>
+                  <span className="font-mono">约{idPhotoConfig.file_size_kb}KB</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Hidden file input */}
         <input
@@ -227,7 +425,9 @@ export default function Upload() {
             onClick={selectedFile ? handleSubmit : handleUploadClick}
             data-testid="button-upload"
           >
-            {selectedFile ? '开始生成我的照片（4张）' : '点击上传 / 拍照'}
+            {selectedFile ? (
+              isIdPhoto ? '开始生成我的证件照（4张）' : '开始生成我的照片（4张）'
+            ) : '点击上传 / 拍照'}
           </Button>
         </div>
 

@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { ArrowLeft, Download, Eye, X } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ID_PHOTO_TYPES, createDefaultConfig, IdPhotoConfig } from "@/data/idPhotoConfig";
 
 // Category display names
 const categoryNames = {
@@ -16,11 +17,11 @@ const categoryNames = {
 };
 
 // Result photo placeholder with watermark and click to view
-function ResultPhotoPlaceholder({ index }: { index: number }) {
+function ResultPhotoPlaceholder({ index, aspectRatio }: { index: number; aspectRatio: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity" style={{ aspectRatio: '212/304' }} data-testid={`result-photo-${index}`}>
+        <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity" style={{ aspectRatio }} data-testid={`result-photo-${index}`}>
           {/* Photo content */}
           <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
             <span className="text-gray-500 dark:text-gray-400 text-xs">生成照片 {index + 1}</span>
@@ -48,7 +49,7 @@ function ResultPhotoPlaceholder({ index }: { index: number }) {
       <DialogContent className="max-w-screen-sm mx-auto p-6 [&>button]:hidden">
         <DialogTitle className="sr-only">生成照片预览</DialogTitle>
         <div className="flex flex-col items-center">
-          <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden w-full" style={{ aspectRatio: '212/304', maxWidth: '300px' }}>
+          <div className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden w-full" style={{ aspectRatio, maxWidth: '300px' }}>
             {/* Large photo content */}
             <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
               <span className="text-gray-500 dark:text-gray-400 text-lg">生成照片 {index + 1}</span>
@@ -80,11 +81,35 @@ function ResultPhotoPlaceholder({ index }: { index: number }) {
 
 export default function Result() {
   const [, setLocation] = useLocation();
+  const [idPhotoConfig, setIdPhotoConfig] = useState<IdPhotoConfig | null>(null);
   
-  // Parse category from URL params
+  // Parse category and gender from URL params
   const urlParams = new URLSearchParams(window.location.search);
   const category = (urlParams.get('category') || PhotoCategory.PROFESSIONAL) as PhotoCategory;
+  const gender = urlParams.get('gender') || 'male';
   const categoryName = categoryNames[category];
+  const isIdPhoto = category === PhotoCategory.ID_PHOTO;
+  const aspectRatio = isIdPhoto ? '3/4' : '212/304';
+  
+  // Initialize ID photo config for display (load from localStorage if available)
+  useEffect(() => {
+    if (isIdPhoto && !idPhotoConfig) {
+      const savedConfig = localStorage.getItem('idPhotoConfig');
+      if (savedConfig) {
+        try {
+          setIdPhotoConfig(JSON.parse(savedConfig));
+        } catch (error) {
+          // Fall back to default if parsing fails
+          const defaultType = ID_PHOTO_TYPES[0];
+          setIdPhotoConfig(createDefaultConfig(defaultType));
+        }
+      } else {
+        // Use default if no saved config
+        const defaultType = ID_PHOTO_TYPES[0];
+        setIdPhotoConfig(createDefaultConfig(defaultType));
+      }
+    }
+  }, [isIdPhoto, idPhotoConfig]);
 
   const handlePayment = () => {
     // TODO: Implement Stripe payment integration
@@ -92,7 +117,7 @@ export default function Result() {
   };
 
   const handleNewPhoto = () => {
-    setLocation('/upload?category=' + category);
+    setLocation(`/upload?category=${category}&gender=${gender}`);
   };
 
   return (
@@ -126,9 +151,24 @@ export default function Result() {
         {/* Results Grid - 2x2 Layout */}
         <div className="grid grid-cols-2 gap-3 mb-6" data-testid="results-grid">
           {Array.from({ length: 4 }, (_, i) => (
-            <ResultPhotoPlaceholder key={i} index={i} />
+            <ResultPhotoPlaceholder key={i} index={i} aspectRatio={aspectRatio} />
           ))}
         </div>
+        
+        {/* ID Photo Parameters - Only show for ID photos */}
+        {isIdPhoto && idPhotoConfig && (
+          <div className="mb-6" data-testid="id-photo-params">
+            <div className="flex items-center gap-2 mb-3">
+              <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
+              <h3 className="text-lg font-medium">证件照参数</h3>
+            </div>
+            <div className="text-sm text-gray-600">
+              <p>
+                {idPhotoConfig.type}，{idPhotoConfig.size_mm.width}×{idPhotoConfig.size_mm.height}mm，{idPhotoConfig.dpi}dpi，{idPhotoConfig.pixels.width}×{idPhotoConfig.pixels.height}px，约{idPhotoConfig.file_size_kb}kb
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Pricing Card */}
         <Card className="mb-6 border-green-200 dark:border-green-800">
