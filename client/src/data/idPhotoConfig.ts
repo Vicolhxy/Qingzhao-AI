@@ -67,6 +67,12 @@ export const ID_PHOTO_TYPES: IdPhotoType[] = [
     size_mm: { width: 33, height: 48 },
     default_dpi: 300,
     background: "white"
+  },
+  {
+    name: "自定义",
+    size_mm: { width: 0, height: 0 },
+    default_dpi: 300,
+    background: "white"
   }
 ];
 
@@ -76,7 +82,7 @@ export const BACKGROUND_COLORS = {
   red: "#FF4D4D"
 };
 
-export const DPI_OPTIONS = [150, 200, 300, 400, 500, 600];
+export const DPI_OPTIONS = [150, 300, 400, 500, 600];
 
 // Calculate pixels from mm and DPI
 export function calculatePixels(width_mm: number, height_mm: number, dpi: number) {

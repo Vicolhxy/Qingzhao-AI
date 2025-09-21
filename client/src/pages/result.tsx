@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogClose } from "
 import { ArrowLeft, Download, Eye, X } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
 import { useState, useEffect } from "react";
-import { ID_PHOTO_TYPES, createDefaultConfig, IdPhotoConfig } from "@/data/idPhotoConfig";
+import { ID_PHOTO_TYPES, createDefaultConfig, IdPhotoConfig, BACKGROUND_COLORS } from "@/data/idPhotoConfig";
 
 // Category display names
 const categoryNames = {
@@ -164,7 +164,10 @@ export default function Result() {
             </div>
             <div className="text-sm text-gray-600">
               <p>
-                {idPhotoConfig.type}，{idPhotoConfig.size_mm.width}×{idPhotoConfig.size_mm.height}mm，{idPhotoConfig.dpi}dpi，{idPhotoConfig.pixels.width}×{idPhotoConfig.pixels.height}px，约{idPhotoConfig.file_size_kb}kb
+                {idPhotoConfig.type}，{idPhotoConfig.size_mm.width}×{idPhotoConfig.size_mm.height}mm，{idPhotoConfig.dpi}dpi，{(() => {
+                  const colorName = Object.entries(BACKGROUND_COLORS).find(([_, color]) => color === idPhotoConfig.background_color)?.[0];
+                  return colorName === 'white' ? '白色背景' : colorName === 'blue' ? '蓝色背景' : colorName === 'red' ? '红色背景' : '背景色';
+                })()}，{idPhotoConfig.pixels.width}×{idPhotoConfig.pixels.height}px，约{idPhotoConfig.file_size_kb}kb
               </p>
             </div>
           </div>
