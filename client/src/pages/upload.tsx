@@ -63,10 +63,16 @@ export default function Upload() {
   const isIdPhoto = category === PhotoCategory.ID_PHOTO;
   const isWechatPortrait = category === PhotoCategory.WECHAT_PORTRAIT;
 
-  // Check if we should open the WeChat permission modal (returning from terms/privacy pages)
+  // Check if we should open modals (returning from terms/privacy pages)
   useEffect(() => {
     if (openModal === 'wechatPermission' && isWechatPortrait) {
       setWechatPermissionModalOpen(true);
+      // Clean up the URL by removing the openModal parameter
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete('openModal');
+      window.history.replaceState({}, '', newUrl.toString());
+    } else if (openModal === 'aigc') {
+      setAigcModalOpen(true);
       // Clean up the URL by removing the openModal parameter
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete('openModal');
@@ -681,9 +687,9 @@ export default function Upload() {
                 欢迎使用轻照AI，您将上传照片用于AIGC服务，您需要在取得照片权利人的同意后再进行操作。
                 <span className="font-bold">您上传的照片仅用于制作AI生图，不会被存储、传播或用于其他用途，</span>
                 相关规则请您仔细阅读
-                <Link href="/terms" className="font-bold text-primary underline mx-1">《用户服务协议》</Link>
+                <Link href={`/terms?returnTo=/upload&category=${category}&frameIndex=${frameIndex}&openModal=aigc`} className="font-bold text-primary underline mx-1">《用户服务协议》</Link>
                 和
-                <Link href="/privacy" className="font-bold text-primary underline mx-1">《隐私政策》</Link>
+                <Link href={`/privacy?returnTo=/upload&category=${category}&frameIndex=${frameIndex}&openModal=aigc`} className="font-bold text-primary underline mx-1">《隐私政策》</Link>
                 。
               </p>
             </div>
