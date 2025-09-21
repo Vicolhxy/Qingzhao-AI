@@ -308,7 +308,7 @@ export default function Upload() {
                     <p className="text-xs text-gray-600 whitespace-nowrap">帽子、墨镜、围巾等</p>
                   </div>
                   <div className="text-left">
-                    <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请尽量确保</h3>
+                    <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请保持端正</h3>
                     <p className="text-xs text-gray-600 whitespace-nowrap">光线充足，背景简单</p>
                   </div>
                 </div>
@@ -387,24 +387,24 @@ export default function Upload() {
                         { w: 33, h: 48, name: '大一寸' },
                         { w: 35, h: 49, name: '二寸证件照' },
                         { w: 33, h: 48, name: '护照照片' }
-                      ].map((size) => (
-                        <SelectItem key={`${size.w}x${size.h}`} value={`${size.w}x${size.h}`}>
+                      ].map((size, index) => (
+                        <SelectItem key={`${size.w}x${size.h}-${index}`} value={`${size.w}x${size.h}`}>
                           {size.w}×{size.h} ({size.name})
                         </SelectItem>
                       ))}
                       <div className="border-t pt-2 mt-2">
                         <div className="text-xs text-gray-500 mb-2 font-medium">自定义尺寸</div>
                         {[20, 22, 25, 26, 30, 33, 35, 40].flatMap(width =>
-                          [25, 30, 32, 35, 40, 45, 48, 49, 50].map(height => (
-                            <SelectItem key={`${width}x${height}`} value={`${width}x${height}`}>
-                              {width}×{height}
-                            </SelectItem>
-                          ))
-                        ).filter((item, index, self) => 
+                          [25, 30, 32, 35, 40, 45, 48, 49, 50].map(height => `${width}x${height}`)
+                        ).filter((size, index, self) => 
                           // Remove duplicates and exclude common sizes already shown above
-                          self.findIndex(i => i.key === item.key) === index &&
-                          !['26x32', '25x35', '22x32', '33x48', '35x49'].includes(item.key as string)
-                        )}
+                          self.indexOf(size) === index &&
+                          !['26x32', '25x35', '22x32', '33x48', '35x49'].includes(size)
+                        ).map((size) => (
+                          <SelectItem key={size} value={size}>
+                            {size.replace('x', '×')}
+                          </SelectItem>
+                        ))}
                       </div>
                     </div>
                   </SelectContent>
@@ -467,8 +467,8 @@ export default function Upload() {
           data-testid="input-file"
         />
 
-        {/* Third div: Button (48px gap from upload area) */}
-        <div style={{ marginTop: '48px' }} data-testid="section-button">
+        {/* Third div: Button (24px gap from ID config, 48px from upload area) */}
+        <div style={{ marginTop: isIdPhoto && selectedFile && idPhotoConfig ? '24px' : '48px' }} data-testid="section-button">
           <Button 
             size="lg" 
             className="bg-primary hover:bg-primary/90 text-white font-bold rounded-full"

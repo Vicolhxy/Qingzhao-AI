@@ -35,7 +35,7 @@ function TypewriterText({ isGenerating }: { isGenerating: boolean }) {
         setDisplayedText(text.slice(0, newIndex));
         return newIndex;
       });
-    }, 200); // 0.2 seconds per character
+    }, 150); // 0.15 seconds per character
 
     return () => clearInterval(timer);
   }, [isGenerating, text]);
@@ -211,9 +211,6 @@ export default function Generating() {
           ))}
         </div>
 
-        {/* Typewriter Animation for Privacy Text */}
-        <TypewriterText isGenerating={isGenerating} />
-
         {/* Pricing Section */}
         <Card className="mb-6">
           <CardContent className="p-4">
@@ -224,6 +221,9 @@ export default function Generating() {
                 <span className="text-lg font-bold text-primary">¥19.9</span>
               </div>
             </div>
+            
+            {/* Typewriter Animation for Privacy Text */}
+            <TypewriterText isGenerating={isGenerating} />
             
             <Button
               size="lg"
