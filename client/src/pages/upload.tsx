@@ -272,7 +272,8 @@ export default function Upload() {
             
             {/* Sample Photos Display */}
             {isWechatPortrait ? (
-              /* WeChat Portrait - Single large sample */
+              <>
+                {/* WeChat Portrait - Single large sample */}
               <div className="flex justify-center" data-testid="wechat-sample">
                 <div 
                   className="relative bg-gray-100 rounded-lg overflow-hidden"
@@ -335,6 +336,7 @@ export default function Upload() {
                   </div>
                 </div>
               </div>
+              </>
             ) : (
               /* Other categories - 4 Sample Photos Horizontal Strip */
               <div className="flex flex-nowrap gap-[6px]" data-testid="grid-samples">
