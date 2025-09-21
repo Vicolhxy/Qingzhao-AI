@@ -11,6 +11,14 @@ import sampleMale3 from "@assets/Sample-Male-3_1758161866745.png";
 import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 import wechatTestImage from "@assets/Wechat-test_1758491664457.png";
 
+// Import WeChat frame images
+import wechatFrame1 from "@assets/WechatFrame-1_1758491861092.png";
+import wechatFrame2 from "@assets/WechatFrame-2_1758491861090.png";
+import wechatFrame3 from "@assets/WechatFrame-3_1758491861092.png";
+import wechatFrame4 from "@assets/WechatFrame-4_1758491861090.png";
+import wechatFrame5 from "@assets/WechatFrame-5_1758491861091.png";
+import wechatFrame6 from "@assets/WechatFrame-6_1758491861088.png";
+
 // Photo categories data
 const photoCategories = [
   {
@@ -191,7 +199,7 @@ export default function Home() {
               /* WeChat Portrait Grid - 2x3 layout */
               <div style={{ marginBottom: '24px' }} data-testid="wechat-grid">
                 <div className="grid grid-cols-2" style={{ gap: '15px' }}>
-                  {Array.from({ length: 6 }, (_, index) => (
+                  {[wechatFrame1, wechatFrame2, wechatFrame3, wechatFrame4, wechatFrame5, wechatFrame6].map((frameImage, index) => (
                     <div key={index} className="flex flex-col items-center" data-testid={`wechat-frame-${index + 1}`}>
                       {/* Avatar with frame overlay */}
                       <div 
@@ -206,21 +214,21 @@ export default function Home() {
                         <img 
                           src={wechatTestImage} 
                           alt={`头像底图${index + 1}`} 
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover rounded-lg"
                         />
-                        {/* Frame overlay - placeholder for now */}
-                        <div className="absolute inset-0 border-2 border-red-500 rounded-lg opacity-50">
-                          <div className="w-full h-full bg-red-100 opacity-30 flex items-center justify-center text-xs">
-                            框{index + 1}
-                          </div>
-                        </div>
+                        {/* Frame overlay */}
+                        <img 
+                          src={frameImage} 
+                          alt={`微信头像框${index + 1}`} 
+                          className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                        />
                       </div>
                       
                       {/* "做同款" button */}
                       <Button 
                         size="sm"
                         className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded-full"
-                        onClick={() => setLocation(`/upload/${PhotoCategory.WECHAT_PORTRAIT}`)}
+                        onClick={() => setLocation(`/upload/${PhotoCategory.WECHAT_PORTRAIT}?frameIndex=${index}`)}
                         data-testid={`button-make-same-${index + 1}`}
                       >
                         做同款

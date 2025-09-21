@@ -19,6 +19,14 @@ import outlineHuman from "@assets/Outline-human_1758207634258.png";
 import idOutlineDotted from "@assets/ID-Outline_1758486694126.png";
 import wechatTestImage from "@assets/Wechat-test_1758491664457.png";
 
+// Import WeChat frame images
+import wechatFrame1 from "@assets/WechatFrame-1_1758491861092.png";
+import wechatFrame2 from "@assets/WechatFrame-2_1758491861090.png";
+import wechatFrame3 from "@assets/WechatFrame-3_1758491861092.png";
+import wechatFrame4 from "@assets/WechatFrame-4_1758491861090.png";
+import wechatFrame5 from "@assets/WechatFrame-5_1758491861091.png";
+import wechatFrame6 from "@assets/WechatFrame-6_1758491861088.png";
+
 // Category display names
 const categoryNames = {
   [PhotoCategory.PROFESSIONAL]: "专业职场照",
@@ -43,7 +51,12 @@ export default function Upload() {
   const urlParams = new URLSearchParams(window.location.search);
   const category = (urlParams.get('category') || PhotoCategory.PROFESSIONAL) as PhotoCategory;
   const gender = urlParams.get('gender') || 'male';
+  const frameIndex = parseInt(urlParams.get('frameIndex') || '0', 10);
   const categoryName = categoryNames[category];
+  
+  // WeChat frame images array
+  const wechatFrames = [wechatFrame1, wechatFrame2, wechatFrame3, wechatFrame4, wechatFrame5, wechatFrame6];
+  const selectedWechatFrame = wechatFrames[frameIndex] || wechatFrame1;
 
   // Sample images (using same as home page)
   const sampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
@@ -251,14 +264,14 @@ export default function Upload() {
                   <img 
                     src={wechatTestImage} 
                     alt="微信头像框样片" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-lg"
                   />
-                  {/* Frame overlay - placeholder */}
-                  <div className="absolute inset-0 border-4 border-red-500 rounded-lg opacity-60">
-                    <div className="absolute top-2 left-2 text-xs text-red-600 font-bold">
-                      样片框
-                    </div>
-                  </div>
+                  {/* Frame overlay */}
+                  <img 
+                    src={selectedWechatFrame} 
+                    alt="选中的微信头像框" 
+                    className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                  />
                 </div>
               </div>
             ) : (
