@@ -277,8 +277,8 @@ export default function Upload() {
                 <div 
                   className="relative bg-gray-100 rounded-lg overflow-hidden"
                   style={{ 
-                    width: '200px',
-                    height: '200px',
+                    width: '300px',
+                    height: '300px',
                     aspectRatio: '1 / 1'
                   }}
                 >
@@ -294,6 +294,45 @@ export default function Upload() {
                     alt="选中的微信头像框" 
                     className="absolute inset-0 w-full h-full object-cover rounded-lg"
                   />
+                </div>
+              </div>
+              
+              {/* WeChat Portrait Preview - Frame + Avatar combination display */}
+              <div className="flex justify-center mt-6" data-testid="wechat-preview">
+                <div 
+                  className="flex items-center gap-4"
+                  style={{ width: '300px' }}
+                >
+                  {/* Selected WeChat Frame */}
+                  <div 
+                    className="bg-gray-100 rounded-lg overflow-hidden"
+                    style={{ 
+                      width: '80px',
+                      height: '80px',
+                      aspectRatio: '1 / 1'
+                    }}
+                  >
+                    <img 
+                      src={selectedWechatFrame} 
+                      alt="选中的头像框" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Plus Sign */}
+                  <div className="text-gray-400 text-2xl font-bold">+</div>
+                  
+                  {/* User Avatar Placeholder */}
+                  <div 
+                    className="border-2 border-dashed border-gray-300 rounded flex items-center justify-center"
+                    style={{ 
+                      width: '80px',
+                      height: '80px',
+                      borderRadius: '4px'
+                    }}
+                  >
+                    <span className="text-xs text-gray-500 text-center px-1">您的微信头像</span>
+                  </div>
                 </div>
               </div>
             ) : (
