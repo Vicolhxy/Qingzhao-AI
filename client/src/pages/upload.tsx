@@ -317,6 +317,18 @@ export default function Upload() {
               >
                 一键做同款
               </Button>
+              
+              {/* Alternative Upload Option */}
+              <div className="text-center space-y-2">
+                <div className="text-sm text-gray-500">或者</div>
+                <button
+                  className="text-primary text-sm hover:text-primary/80 transition-colors underline"
+                  onClick={handleUploadClick}
+                  data-testid="button-wechat-upload"
+                >
+                  点击上传/拍照
+                </button>
+              </div>
             </div>
           ) : (
             <>
