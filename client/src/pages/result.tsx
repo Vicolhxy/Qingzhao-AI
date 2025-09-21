@@ -109,21 +109,19 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
           )}
           
           {/* Watermark overlay */}
-          <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-            <div className="bg-white/90 dark:bg-black/90 px-3 py-1 rounded-full text-xs font-medium transform -rotate-12 opacity-60">
-              DEMO
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div 
+              className="text-white font-bold transform -rotate-12 opacity-70"
+              style={{ 
+                fontSize: 'clamp(12px, 4vw, 24px)',
+                width: '66.67%',
+                textAlign: 'center',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+              }}
+            >
+              轻照AI
             </div>
           </div>
-          
-          {/* Preview button */}
-          <Button
-            size="icon"
-            variant="secondary"
-            className="absolute top-2 right-2 h-7 w-7 bg-white/80 hover:bg-white"
-            data-testid="preview-button-wechat"
-          >
-            <Eye className="h-3 w-3" />
-          </Button>
         </div>
       </DialogTrigger>
       
@@ -144,9 +142,17 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
             )}
             
             {/* Large watermark overlay */}
-            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-              <div className="bg-white/90 dark:bg-black/90 px-6 py-3 rounded-full text-lg font-medium transform -rotate-12 opacity-60">
-                DEMO
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div 
+                className="text-white font-bold transform -rotate-12 opacity-70"
+                style={{ 
+                  fontSize: 'clamp(16px, 5vw, 32px)',
+                  width: '66.67%',
+                  textAlign: 'center',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                }}
+              >
+                轻照AI
               </div>
             </div>
           </div>
@@ -182,21 +188,19 @@ function ResultPhotoPlaceholder({ index, aspectRatio }: { index: number; aspectR
           </div>
           
           {/* Watermark overlay */}
-          <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-            <div className="bg-white/90 dark:bg-black/90 px-3 py-1 rounded-full text-xs font-medium transform -rotate-12 opacity-60">
-              DEMO
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div 
+              className="text-white font-bold transform -rotate-12 opacity-70"
+              style={{ 
+                fontSize: 'clamp(10px, 3vw, 18px)',
+                width: '66.67%',
+                textAlign: 'center',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+              }}
+            >
+              轻照AI
             </div>
           </div>
-          
-          {/* Preview button */}
-          <Button
-            size="icon"
-            variant="secondary"
-            className="absolute top-2 right-2 h-7 w-7 bg-white/80 hover:bg-white"
-            data-testid={`preview-button-${index}`}
-          >
-            <Eye className="h-3 w-3" />
-          </Button>
         </div>
       </DialogTrigger>
       
@@ -210,9 +214,17 @@ function ResultPhotoPlaceholder({ index, aspectRatio }: { index: number; aspectR
             </div>
             
             {/* Large watermark overlay */}
-            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-              <div className="bg-white/90 dark:bg-black/90 px-6 py-3 rounded-full text-lg font-medium transform -rotate-12 opacity-60">
-                DEMO
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div 
+                className="text-white font-bold transform -rotate-12 opacity-70"
+                style={{ 
+                  fontSize: 'clamp(16px, 5vw, 32px)',
+                  width: '66.67%',
+                  textAlign: 'center',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                }}
+              >
+                轻照AI
               </div>
             </div>
           </div>
