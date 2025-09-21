@@ -52,11 +52,27 @@ export default function Upload() {
   const category = (urlParams.get('category') || PhotoCategory.PROFESSIONAL) as PhotoCategory;
   const gender = urlParams.get('gender') || 'male';
   const frameIndex = parseInt(urlParams.get('frameIndex') || '0', 10);
+  const openModal = urlParams.get('openModal');
   const categoryName = categoryNames[category];
   
   // WeChat frame images array
   const wechatFrames = [wechatFrame1, wechatFrame2, wechatFrame3, wechatFrame4, wechatFrame5, wechatFrame6];
   const selectedWechatFrame = wechatFrames[frameIndex] || wechatFrame1;
+
+  // Category flags
+  const isIdPhoto = category === PhotoCategory.ID_PHOTO;
+  const isWechatPortrait = category === PhotoCategory.WECHAT_PORTRAIT;
+
+  // Check if we should open the WeChat permission modal (returning from terms/privacy pages)
+  useEffect(() => {
+    if (openModal === 'wechatPermission' && isWechatPortrait) {
+      setWechatPermissionModalOpen(true);
+      // Clean up the URL by removing the openModal parameter
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete('openModal');
+      window.history.replaceState({}, '', newUrl.toString());
+    }
+  }, [openModal, isWechatPortrait]);
 
   // Sample images (using same as home page)
   const sampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
@@ -216,9 +232,6 @@ export default function Upload() {
     
     setIdPhotoConfig(newConfig);
   };
-  
-  const isIdPhoto = category === PhotoCategory.ID_PHOTO;
-  const isWechatPortrait = category === PhotoCategory.WECHAT_PORTRAIT;
 
   // Cleanup blob URL on component unmount
   useEffect(() => {
@@ -554,9 +567,9 @@ export default function Upload() {
                 为了生成您的微信头像框，我们需要获取您的微信头像。<br/>
                 请确认是否同意使用您的头像信息。<br/>
                 点击"同意"即表示您已阅读并同意
-                <Link href="/terms" className="font-bold text-primary underline mx-1">《用户服务协议》</Link>
+                <Link href={`/terms?returnTo=/upload&category=${category}&frameIndex=${frameIndex}&openModal=wechatPermission`} className="font-bold text-primary underline mx-1">《用户服务协议》</Link>
                 和
-                <Link href="/privacy" className="font-bold text-primary underline mx-1">《隐私政策》</Link>
+                <Link href={`/privacy?returnTo=/upload&category=${category}&frameIndex=${frameIndex}&openModal=wechatPermission`} className="font-bold text-primary underline mx-1">《隐私政策》</Link>
                 。
               </div>
               

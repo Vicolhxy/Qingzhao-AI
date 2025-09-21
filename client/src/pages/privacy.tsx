@@ -4,11 +4,32 @@ import { ArrowLeft } from "lucide-react";
 
 export default function Privacy() {
   const [, setLocation] = useLocation();
+  
+  // Parse URL parameters for return navigation
+  const urlParams = new URLSearchParams(window.location.search);
+  const returnTo = urlParams.get('returnTo');
+  const category = urlParams.get('category');
+  const frameIndex = urlParams.get('frameIndex');
+  const openModal = urlParams.get('openModal');
 
   // 页面加载时滚动到顶部
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleBack = () => {
+    if (returnTo && category) {
+      // Build return URL with all necessary parameters
+      const returnUrl = new URLSearchParams();
+      returnUrl.set('category', category);
+      if (frameIndex) returnUrl.set('frameIndex', frameIndex);
+      if (openModal) returnUrl.set('openModal', openModal);
+      
+      setLocation(`${returnTo}?${returnUrl.toString()}`);
+    } else {
+      setLocation("/");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -16,7 +37,7 @@ export default function Privacy() {
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
           <button
-            onClick={() => setLocation("/")}
+            onClick={handleBack}
             className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
             data-testid="button-back"
           >
