@@ -292,16 +292,16 @@ export default function Upload() {
             </div>
 
             {/* Right: Photo tips */}
-            <div className="w-24 flex flex-col justify-center" data-testid="area-tips">
+            <div className="w-32 flex flex-col justify-center" data-testid="area-tips">
               {isIdPhoto ? (
                 <div className="space-y-4">
-                  <div className="text-center">
-                    <h3 className="text-sm font-medium text-gray-800 mb-2">请<span className="text-red-500">不要</span>穿戴</h3>
-                    <p className="text-xs text-gray-600">帽子、墨镜、围巾等</p>
+                  <div className="text-left">
+                    <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请<span className="text-red-500">不要</span>穿戴</h3>
+                    <p className="text-xs text-gray-600 whitespace-nowrap">帽子、墨镜、围巾等</p>
                   </div>
-                  <div className="text-center">
-                    <h3 className="text-sm font-medium text-gray-800 mb-2">请保持端正</h3>
-                    <p className="text-xs text-gray-600">光线充足，背景简单</p>
+                  <div className="text-left">
+                    <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请保持端正</h3>
+                    <p className="text-xs text-gray-600 whitespace-nowrap">光线充足，背景简单</p>
                   </div>
                 </div>
               ) : (
