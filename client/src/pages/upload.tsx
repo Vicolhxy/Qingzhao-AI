@@ -16,7 +16,7 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 
 // Import outline human image
 import outlineHuman from "@assets/Outline-human_1758207634258.png";
-import idOutlineDotted from "@assets/ID-Outline_1758484243114.png";
+import idOutlineDotted from "@assets/ID-Outline_1758485241870.png";
 
 // Category display names
 const categoryNames = {
@@ -362,8 +362,8 @@ export default function Upload() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">宽度(mm)</span>
-                  <Select value={idPhotoConfig.size_mm.width === 0 ? '' : idPhotoConfig.size_mm.width.toString()} onValueChange={(value) => handleConfigChange('width', value)} disabled={idPhotoConfig.type !== '自定义'}>
-                    <SelectTrigger className={`w-20 ${validationErrors.width ? 'border-red-500' : ''} ${idPhotoConfig.type === '自定义' ? '' : 'text-gray-400'}`}>
+                  <Select value={idPhotoConfig.size_mm.width === 0 ? '' : idPhotoConfig.size_mm.width.toString()} onValueChange={(value) => handleConfigChange('width', value)}>
+                    <SelectTrigger className={`w-20 ${validationErrors.width ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder="请选择" />
                     </SelectTrigger>
                     <SelectContent>
@@ -376,8 +376,8 @@ export default function Upload() {
                 
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">高度(mm)</span>
-                  <Select value={idPhotoConfig.size_mm.height === 0 ? '' : idPhotoConfig.size_mm.height.toString()} onValueChange={(value) => handleConfigChange('height', value)} disabled={idPhotoConfig.type !== '自定义'}>
-                    <SelectTrigger className={`w-20 ${validationErrors.height ? 'border-red-500' : ''} ${idPhotoConfig.type === '自定义' ? '' : 'text-gray-400'}`}>
+                  <Select value={idPhotoConfig.size_mm.height === 0 ? '' : idPhotoConfig.size_mm.height.toString()} onValueChange={(value) => handleConfigChange('height', value)}>
+                    <SelectTrigger className={`w-20 ${validationErrors.height ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder="请选择" />
                     </SelectTrigger>
                     <SelectContent>
@@ -392,8 +392,8 @@ export default function Upload() {
               {/* DPI Selector */}
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">分辨率(DPI)</span>
-                <Select value={idPhotoConfig.dpi.toString()} onValueChange={(value) => handleConfigChange('dpi', value)} disabled={idPhotoConfig.type !== '自定义'}>
-                  <SelectTrigger className={`w-24 ${idPhotoConfig.type === '自定义' ? '' : 'text-gray-400'}`}>
+                <Select value={idPhotoConfig.dpi.toString()} onValueChange={(value) => handleConfigChange('dpi', value)}>
+                  <SelectTrigger className="w-24">
                     <SelectValue placeholder="请选择" />
                   </SelectTrigger>
                   <SelectContent>
@@ -407,8 +407,8 @@ export default function Upload() {
               {/* Background Color Selector */}
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">背景色</span>
-                <Select value={idPhotoConfig.background_color} onValueChange={(value) => handleConfigChange('background_color', value)} disabled={idPhotoConfig.type !== '自定义'}>
-                  <SelectTrigger className={`w-24 ${idPhotoConfig.type === '自定义' ? '' : 'text-gray-400'}`}>
+                <Select value={idPhotoConfig.background_color} onValueChange={(value) => handleConfigChange('background_color', value)}>
+                  <SelectTrigger className="w-24">
                     <SelectValue placeholder="请选择" />
                   </SelectTrigger>
                   <SelectContent>
