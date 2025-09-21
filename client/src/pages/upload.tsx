@@ -129,8 +129,12 @@ export default function Upload() {
       localStorage.setItem('idPhotoConfig', JSON.stringify(idPhotoConfig));
     }
     
-    // Navigate to generating page after agreement
-    setLocation(`/generating?category=${category}&gender=${gender}`);
+    // Navigate directly to result page (skip generating page)
+    if (isWechatPortrait) {
+      setLocation(`/result?category=${category}&gender=${gender}&frameIndex=${frameIndex}`);
+    } else {
+      setLocation(`/result?category=${category}&gender=${gender}`);
+    }
   };
 
   const handleImageClick = (imageSrc: string) => {
