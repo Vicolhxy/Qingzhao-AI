@@ -541,7 +541,11 @@ export default function Upload() {
               <div className="text-sm text-gray-700 leading-relaxed mb-8 text-left">
                 为了生成您的微信头像框，我们需要获取您的微信头像。<br/>
                 请确认是否同意使用您的头像信息。<br/>
-                点击"同意"即表示您已阅读并同意《用户服务协议》和《隐私政策》。
+                点击"同意"即表示您已阅读并同意
+                <Link href="/terms" className="font-bold text-primary underline mx-1">《用户服务协议》</Link>
+                和
+                <Link href="/privacy" className="font-bold text-primary underline mx-1">《隐私政策》</Link>
+                。
               </div>
               
               <div style={{ paddingBottom: '48px' }} className="space-y-4">
