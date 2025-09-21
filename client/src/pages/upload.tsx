@@ -211,7 +211,6 @@ export default function Upload() {
         </Link>
         <h1 className="ml-3 text-lg font-medium" data-testid="text-category-title">{categoryName}</h1>
       </div>
-
       {/* Main Content Container with fixed 20px margins */}
       <div className="flex-grow" style={{ marginLeft: '20px', marginRight: '20px' }}>
         
@@ -300,7 +299,7 @@ export default function Upload() {
                     <p className="text-xs text-gray-600 whitespace-nowrap">帽子、墨镜、围巾等</p>
                   </div>
                   <div className="text-left">
-                    <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请保持端正</h3>
+                    <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请尽量确保</h3>
                     <p className="text-xs text-gray-600 whitespace-nowrap">光线充足，背景简单</p>
                   </div>
                 </div>
@@ -466,7 +465,6 @@ export default function Upload() {
 
         
       </div>
-
       {/* Image Preview Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-screen-sm mx-auto p-6 [&>button]:hidden">
@@ -491,7 +489,6 @@ export default function Upload() {
           </div>
         </DialogContent>
       </Dialog>
-
       {/* AIGC Service Agreement Modal - Bottom Drawer */}
       <Sheet open={aigcModalOpen} onOpenChange={setAigcModalOpen}>
         <SheetContent side="bottom" className="rounded-t-xl border-0 p-0">
@@ -532,7 +529,6 @@ export default function Upload() {
           </div>
         </SheetContent>
       </Sheet>
-      
       {/* Footer at page bottom */}
       <div 
         className="text-center bg-background mt-auto mb-6 pt-4"
