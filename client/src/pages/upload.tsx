@@ -258,7 +258,7 @@ export default function Upload() {
           <div className="flex gap-4" data-testid="area-upload" style={{ backgroundColor: '#F9F9F9', padding: '16px', borderRadius: '8px' }}>
             {/* Left: Photo display area */}
             <div 
-              className={`${isIdPhoto ? '' : 'bg-white'} border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors ${isIdPhoto ? '' : 'flex-1'}`}
+              className={`bg-white border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors ${isIdPhoto ? '' : 'flex-1'}`}
               onClick={handleUploadClick}
               data-testid="area-photo"
               style={isIdPhoto ? { width: '171px', height: '228px' } : {}}
