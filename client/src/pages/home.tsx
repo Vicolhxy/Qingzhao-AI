@@ -203,8 +203,9 @@ export default function Home() {
                     <div key={index} className="flex flex-col items-center" data-testid={`wechat-frame-${index + 1}`}>
                       {/* Avatar with frame overlay */}
                       <div 
-                        className="relative bg-gray-100 rounded-lg overflow-hidden mb-2"
+                        className="relative bg-gray-100 overflow-hidden mb-2"
                         style={{ 
+                          borderRadius: '8px',
                           width: 'clamp(80px, 94px, 94px)',
                           height: 'clamp(80px, 94px, 94px)',
                           aspectRatio: '1 / 1'
@@ -214,20 +215,23 @@ export default function Home() {
                         <img 
                           src={wechatTestImage} 
                           alt={`头像底图${index + 1}`} 
-                          className="w-full h-full object-cover rounded-lg"
+                          className="w-full h-full object-cover"
+                          style={{ borderRadius: '8px' }}
                         />
                         {/* Frame overlay */}
                         <img 
                           src={frameImage} 
                           alt={`微信头像框${index + 1}`} 
-                          className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                          className="absolute inset-0 w-full h-full object-cover"
+                          style={{ borderRadius: '8px' }}
                         />
                       </div>
                       
                       {/* "做同款" button */}
                       <Button 
                         size="sm"
-                        className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded-full"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
+                        style={{ width: 'clamp(80px, 94px, 94px)' }}
                         onClick={() => setLocation(`/upload/${PhotoCategory.WECHAT_PORTRAIT}?frameIndex=${index}`)}
                         data-testid={`button-make-same-${index + 1}`}
                       >
@@ -300,21 +304,23 @@ export default function Home() {
               </>
             )}
 
-            {/* Call-to-Action Button */}
-            <div data-testid="cta-section">
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary/90 text-white font-bold rounded-full"
-                style={{ 
-                  width: '100%', 
-                  padding: '12px 0' 
-                }}
-                onClick={() => setLocation(`/upload?category=${selectedCategory}&gender=${selectedGender}`)}
-                data-testid="cta-button"
-              >
-                我也要同款 (4张)
-              </Button>
-            </div>
+            {/* Call-to-Action Button - Hide for WeChat Portrait */}
+            {selectedCategory !== PhotoCategory.WECHAT_PORTRAIT && (
+              <div data-testid="cta-section">
+                <Button 
+                  size="lg" 
+                  className="bg-primary hover:bg-primary/90 text-white font-bold rounded-full"
+                  style={{ 
+                    width: '100%', 
+                    padding: '12px 0' 
+                  }}
+                  onClick={() => setLocation(`/upload?category=${selectedCategory}&gender=${selectedGender}`)}
+                  data-testid="cta-button"
+                >
+                  我也要同款 (4张)
+                </Button>
+              </div>
+            )}
 
           </div>
         </div>
