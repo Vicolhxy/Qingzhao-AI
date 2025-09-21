@@ -17,13 +17,14 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 // Import outline human image
 import outlineHuman from "@assets/Outline-human_1758207634258.png";
 import idOutlineDotted from "@assets/ID-Outline_1758486694126.png";
+import wechatTestImage from "@assets/Wechat-test_1758491664457.png";
 
 // Category display names
 const categoryNames = {
   [PhotoCategory.PROFESSIONAL]: "专业职场照",
   [PhotoCategory.BLACK_WHITE_ART]: "黑白艺术照", 
   [PhotoCategory.ID_PHOTO]: "证件照",
-  [PhotoCategory.WECHAT_PORTRAIT]: "微信头像",
+  [PhotoCategory.WECHAT_PORTRAIT]: "微信头像框",
 };
 
 export default function Upload() {
@@ -33,6 +34,7 @@ export default function Upload() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [aigcModalOpen, setAigcModalOpen] = useState(false);
+  const [wechatPermissionModalOpen, setWechatPermissionModalOpen] = useState(false);
   const [idPhotoConfig, setIdPhotoConfig] = useState<IdPhotoConfig | null>(null);
   const [validationErrors, setValidationErrors] = useState<{ [key: string]: boolean }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -199,6 +201,7 @@ export default function Upload() {
   };
   
   const isIdPhoto = category === PhotoCategory.ID_PHOTO;
+  const isWechatPortrait = category === PhotoCategory.WECHAT_PORTRAIT;
 
   // Cleanup blob URL on component unmount
   useEffect(() => {
@@ -232,37 +235,92 @@ export default function Upload() {
               <span className="text-sm text-gray-500 ml-3" data-testid="text-hint-preview">点击可查看大图</span>
             </div>
             
-            {/* 4 Sample Photos Horizontal Strip */}
-            <div className="flex flex-nowrap gap-[6px]" data-testid="grid-samples">
-              {sampleImages.map((sample, index) => (
+            {/* Sample Photos Display */}
+            {isWechatPortrait ? (
+              /* WeChat Portrait - Single large sample */
+              <div className="flex justify-center" data-testid="wechat-sample">
                 <div 
-                  key={index}
-                  className="flex-1 bg-gray-100 rounded-[6px] overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+                  className="relative bg-gray-100 rounded-lg overflow-hidden"
                   style={{ 
-                    aspectRatio: isIdPhoto ? '3 / 4' : '86 / 126' 
+                    width: '200px',
+                    height: '200px',
+                    aspectRatio: '1 / 1'
                   }}
-                  onClick={() => handleImageClick(sample)}
-                  data-testid={`img-sample-${index + 1}`}
                 >
+                  {/* Base avatar image */}
                   <img 
-                    src={sample} 
-                    alt={`样片${index + 1}`} 
+                    src={wechatTestImage} 
+                    alt="微信头像框样片" 
                     className="w-full h-full object-cover"
                   />
+                  {/* Frame overlay - placeholder */}
+                  <div className="absolute inset-0 border-4 border-red-500 rounded-lg opacity-60">
+                    <div className="absolute top-2 left-2 text-xs text-red-600 font-bold">
+                      样片框
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ) : (
+              /* Other categories - 4 Sample Photos Horizontal Strip */
+              <div className="flex flex-nowrap gap-[6px]" data-testid="grid-samples">
+                {sampleImages.map((sample, index) => (
+                  <div 
+                    key={index}
+                    className="flex-1 bg-gray-100 rounded-[6px] overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+                    style={{ 
+                      aspectRatio: isIdPhoto ? '3 / 4' : '86 / 126' 
+                    }}
+                    onClick={() => handleImageClick(sample)}
+                    data-testid={`img-sample-${index + 1}`}
+                  >
+                    <img 
+                      src={sample} 
+                      alt={`样片${index + 1}`} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Second div: Upload Photo Area */}
+        {/* Second div: Upload Photo Area or WeChat Action Buttons */}
         <div data-testid="section-upload">
-          <div className="flex items-center gap-2 mb-3">
-            <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
-            <h2 className="text-lg font-medium">上传照片</h2>
-          </div>
-          
-          {/* Upload Area - Left and Right sections */}
+          {isWechatPortrait ? (
+            /* WeChat Portrait - Action Buttons */
+            <div className="space-y-4" data-testid="wechat-actions">
+              {/* Main Action Button */}
+              <Button
+                size="lg"
+                className="w-full bg-green-500 hover:bg-green-600 text-white font-bold rounded-full"
+                style={{ padding: '16px 0', fontSize: '16px' }}
+                onClick={() => setWechatPermissionModalOpen(true)}
+                data-testid="button-wechat-one-click"
+              >
+                一键做同款
+              </Button>
+              
+              {/* Alternative Upload Button */}
+              <div className="text-center">
+                <button
+                  className="text-gray-600 text-sm underline hover:text-gray-800 transition-colors"
+                  onClick={handleUploadClick}
+                  data-testid="button-wechat-upload"
+                >
+                  或者  上传/拍照
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-2 mb-3">
+                <div style={{ width: '3px', height: '16px', backgroundColor: 'hsl(148 65% 45%)', borderRadius: '2px' }}></div>
+                <h2 className="text-lg font-medium">上传照片</h2>
+              </div>
+              
+              {/* Upload Area - Left and Right sections */}
           <div className="flex gap-4" data-testid="area-upload" style={{ backgroundColor: '#F9F9F9', padding: '16px', borderRadius: '8px' }}>
             {/* Left: Photo display area */}
             <div 
@@ -339,7 +397,9 @@ export default function Upload() {
                 </div>
               )}
             </div>
-          </div>
+              </div>
+            </>
+          )}
         </div>
         
         {/* ID Photo Parameters Section - Only show for ID photos after upload */}
@@ -465,6 +525,50 @@ export default function Upload() {
           className="hidden"
           data-testid="input-file"
         />
+
+        {/* WeChat Permission Modal */}
+        <Sheet open={wechatPermissionModalOpen} onOpenChange={setWechatPermissionModalOpen}>
+          <SheetContent 
+            side="bottom" 
+            className="h-auto max-h-[80vh] rounded-t-3xl"
+            style={{
+              background: 'white',
+              margin: '0 16px',
+              marginBottom: '0',
+              borderRadius: '24px 24px 0 0'
+            }}
+          >
+            <SheetTitle className="text-center text-lg font-medium mb-4">获取权限</SheetTitle>
+            <SheetDescription className="sr-only">WeChat permission request</SheetDescription>
+            
+            <div className="text-center text-sm text-gray-600 mb-6 leading-relaxed">
+              为了生成您的微信头像框，我们需要获取您的微信头像。<br/>
+              请确认是否同意使用您的头像信息。<br/>
+              点击"同意"即表示您已阅读并同意《用户服务协议》和《隐私政策》。
+            </div>
+            
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                className="flex-1 border-gray-300 text-gray-700"
+                onClick={() => setWechatPermissionModalOpen(false)}
+                data-testid="button-disagree"
+              >
+                不同意
+              </Button>
+              <Button
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white"
+                onClick={() => {
+                  setWechatPermissionModalOpen(false);
+                  setLocation(`/result/${category}?gender=${gender}`);
+                }}
+                data-testid="button-agree"
+              >
+                同意并继续
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
 
         {/* Third div: Button (24px gap from ID config, 48px from upload area) */}
         <div style={{ marginTop: isIdPhoto && selectedFile && idPhotoConfig ? '24px' : '48px' }} data-testid="section-button">

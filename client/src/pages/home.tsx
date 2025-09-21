@@ -9,6 +9,7 @@ import sampleMale1 from "@assets/Sample-Male-1_1758161866744.png";
 import sampleMale2 from "@assets/Sample-Male-2_1758161866744.png";
 import sampleMale3 from "@assets/Sample-Male-3_1758161866745.png";
 import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
+import wechatTestImage from "@assets/Wechat-test_1758491664457.png";
 
 // Photo categories data
 const photoCategories = [
@@ -26,7 +27,7 @@ const photoCategories = [
   },
   {
     id: PhotoCategory.WECHAT_PORTRAIT,
-    name: "微信头像"
+    name: "微信头像框"
   }
 ];
 
@@ -186,63 +187,110 @@ export default function Home() {
           {/* Right Content Area - Responsive */}
           <div className="flex-1 min-w-0 w-full max-w-[300px]" data-testid="content-area">
             
-            {/* Large Sample Photo - Base 212x304, responsive */}
-            <div style={{ marginBottom: '12px' }} data-testid="large-sample">
-              <div 
-                className="w-full bg-gray-100 rounded overflow-hidden relative"
-                style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '212/304' }}
-              >
-                {/* Current image */}
-                <img 
-                  src={samples.large} 
-                  alt="大样片" 
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
-                  style={{ opacity: isTransitioning ? 0 : 1 }}
-                />
-                {/* Next image for crossfade - always rendered */}
-                <img 
-                  src={allSampleImages[nextImageIndex]} 
-                  alt="大样片" 
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out z-10"
-                  style={{ opacity: isTransitioning ? 1 : 0 }}
-                />
-              </div>
-            </div>
-
-            {/* Small Sample Photos Row - 24px margin bottom (4px grid: 6 * 4 = 24) */}
-            <div style={{ marginBottom: '24px' }} data-testid="small-samples">
-              <div 
-                className="flex w-full" 
-                style={{ gap: '8px' }}
-              >
-                {samples.small.map((sample, index) => {
-                  const nextSmallIndex = (stableImageIndex + index + 2) % allSampleImages.length;
-                  return (
-                    <div 
-                      key={`${stableImageIndex}-${index}`}
-                      className="flex-1 bg-gray-100 rounded overflow-hidden relative"
-                      style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '1/1.43' }}
-                      data-testid={`small-sample-${index + 1}`}
-                    >
-                      {/* Current small image */}
-                      <img 
-                        src={sample} 
-                        alt={`小样片${index + 1}`} 
-                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
-                        style={{ opacity: isTransitioning ? 0 : 1 }}
-                      />
-                      {/* Next small image for crossfade - always rendered */}
-                      <img 
-                        src={allSampleImages[nextSmallIndex]} 
-                        alt={`小样片${index + 1}`} 
-                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out z-10"
-                        style={{ opacity: isTransitioning ? 1 : 0 }}
-                      />
+            {selectedCategory === PhotoCategory.WECHAT_PORTRAIT ? (
+              /* WeChat Portrait Grid - 2x3 layout */
+              <div style={{ marginBottom: '24px' }} data-testid="wechat-grid">
+                <div className="grid grid-cols-2" style={{ gap: '15px' }}>
+                  {Array.from({ length: 6 }, (_, index) => (
+                    <div key={index} className="flex flex-col items-center" data-testid={`wechat-frame-${index + 1}`}>
+                      {/* Avatar with frame overlay */}
+                      <div 
+                        className="relative bg-gray-100 rounded-lg overflow-hidden mb-2"
+                        style={{ 
+                          width: 'clamp(80px, 94px, 94px)',
+                          height: 'clamp(80px, 94px, 94px)',
+                          aspectRatio: '1 / 1'
+                        }}
+                      >
+                        {/* Base avatar image */}
+                        <img 
+                          src={wechatTestImage} 
+                          alt={`头像底图${index + 1}`} 
+                          className="w-full h-full object-cover"
+                        />
+                        {/* Frame overlay - placeholder for now */}
+                        <div className="absolute inset-0 border-2 border-red-500 rounded-lg opacity-50">
+                          <div className="w-full h-full bg-red-100 opacity-30 flex items-center justify-center text-xs">
+                            框{index + 1}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* "做同款" button */}
+                      <Button 
+                        size="sm"
+                        className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded-full"
+                        onClick={() => setLocation(`/upload/${PhotoCategory.WECHAT_PORTRAIT}`)}
+                        data-testid={`button-make-same-${index + 1}`}
+                      >
+                        做同款
+                      </Button>
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <>
+                {/* Default layout for other categories */}
+                {/* Large Sample Photo - Base 212x304, responsive */}
+                <div style={{ marginBottom: '12px' }} data-testid="large-sample">
+                  <div 
+                    className="w-full bg-gray-100 rounded overflow-hidden relative"
+                    style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '212/304' }}
+                  >
+                    {/* Current image */}
+                    <img 
+                      src={samples.large} 
+                      alt="大样片" 
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+                      style={{ opacity: isTransitioning ? 0 : 1 }}
+                    />
+                    {/* Next image for crossfade - always rendered */}
+                    <img 
+                      src={allSampleImages[nextImageIndex]} 
+                      alt="大样片" 
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out z-10"
+                      style={{ opacity: isTransitioning ? 1 : 0 }}
+                    />
+                  </div>
+                </div>
+
+                {/* Small Sample Photos Row - 24px margin bottom (4px grid: 6 * 4 = 24) */}
+                <div style={{ marginBottom: '24px' }} data-testid="small-samples">
+                  <div 
+                    className="flex w-full" 
+                    style={{ gap: '8px' }}
+                  >
+                    {samples.small.map((sample, index) => {
+                      const nextSmallIndex = (stableImageIndex + index + 2) % allSampleImages.length;
+                      return (
+                        <div 
+                          key={`${stableImageIndex}-${index}`}
+                          className="flex-1 bg-gray-100 rounded overflow-hidden relative"
+                          style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '1/1.43' }}
+                          data-testid={`small-sample-${index + 1}`}
+                        >
+                          {/* Current small image */}
+                          <img 
+                            src={sample} 
+                            alt={`小样片${index + 1}`} 
+                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+                            style={{ opacity: isTransitioning ? 0 : 1 }}
+                          />
+                          {/* Next small image for crossfade - always rendered */}
+                          <img 
+                            src={allSampleImages[nextSmallIndex]} 
+                            alt={`小样片${index + 1}`} 
+                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out z-10"
+                            style={{ opacity: isTransitioning ? 1 : 0 }}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
 
             {/* Call-to-Action Button */}
             <div data-testid="cta-section">

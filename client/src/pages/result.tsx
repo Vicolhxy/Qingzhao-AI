@@ -13,7 +13,7 @@ const categoryNames = {
   [PhotoCategory.PROFESSIONAL]: "专业职场照",
   [PhotoCategory.BLACK_WHITE_ART]: "黑白艺术照", 
   [PhotoCategory.ID_PHOTO]: "证件照",
-  [PhotoCategory.WECHAT_PORTRAIT]: "微信头像",
+  [PhotoCategory.WECHAT_PORTRAIT]: "微信头像框",
 };
 
 // Result photo placeholder with watermark and click to view
@@ -89,6 +89,7 @@ export default function Result() {
   const gender = urlParams.get('gender') || 'male';
   const categoryName = categoryNames[category];
   const isIdPhoto = category === PhotoCategory.ID_PHOTO;
+  const isWechatPortrait = category === PhotoCategory.WECHAT_PORTRAIT;
   const aspectRatio = isIdPhoto ? '3/4' : '212/304';
   
   // Initialize ID photo config for display (load from localStorage if available)
@@ -148,12 +149,22 @@ export default function Result() {
           </div>
         </div>
         
-        {/* Results Grid - 2x2 Layout */}
-        <div className="grid grid-cols-2 gap-3 mb-6" data-testid="results-grid">
-          {Array.from({ length: 4 }, (_, i) => (
-            <ResultPhotoPlaceholder key={i} index={i} aspectRatio={aspectRatio} />
-          ))}
-        </div>
+        {/* Results Display */}
+        {isWechatPortrait ? (
+          /* WeChat Portrait - Single 1:1 photo */
+          <div className="flex justify-center mb-6" data-testid="wechat-result">
+            <div className="w-64 h-64">
+              <ResultPhotoPlaceholder index={0} aspectRatio="1 / 1" />
+            </div>
+          </div>
+        ) : (
+          /* Other categories - 2x2 Grid Layout */
+          <div className="grid grid-cols-2 gap-3 mb-6" data-testid="results-grid">
+            {Array.from({ length: 4 }, (_, i) => (
+              <ResultPhotoPlaceholder key={i} index={i} aspectRatio={aspectRatio} />
+            ))}
+          </div>
+        )}
         
         {/* ID Photo Parameters - Only show for ID photos */}
         {isIdPhoto && idPhotoConfig && (
@@ -178,12 +189,18 @@ export default function Result() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="font-semibold" data-testid="pricing-title">高清无水印原片（4张）</h3>
+                <h3 className="font-semibold" data-testid="pricing-title">
+                  {isWechatPortrait ? '高清无水印原片（1张）' : '高清无水印原片（4张）'}
+                </h3>
               </div>
               <div className="text-right">
                 <div className="flex items-center justify-end gap-2">
-                  <span className="text-sm text-muted-foreground line-through">¥99.9</span>
-                  <span className="text-2xl font-bold text-primary" data-testid="price">¥19.9</span>
+                  <span className="text-sm text-muted-foreground line-through">
+                    {isWechatPortrait ? '¥9.9' : '¥99.9'}
+                  </span>
+                  <span className="text-2xl font-bold text-primary" data-testid="price">
+                    {isWechatPortrait ? '¥1.9' : '¥19.9'}
+                  </span>
                 </div>
               </div>
             </div>
