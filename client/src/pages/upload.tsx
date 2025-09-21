@@ -428,7 +428,7 @@ export default function Upload() {
               <div className="pt-2 border-t border-gray-200">
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-gray-600">像素及文件大小</span>
-                  <span className="font-mono">{idPhotoConfig.pixels.width} × {idPhotoConfig.pixels.height}px, 约{idPhotoConfig.file_size_kb}KB</span>
+                  <span className="font-mono">{idPhotoConfig.pixels.width}×{idPhotoConfig.pixels.height}px, 约{idPhotoConfig.file_size_kb}KB</span>
                 </div>
               </div>
             </div>
