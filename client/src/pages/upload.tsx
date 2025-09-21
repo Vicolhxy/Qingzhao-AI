@@ -152,6 +152,15 @@ export default function Upload() {
     let newConfig = { ...idPhotoConfig };
     
     switch (field) {
+      case 'size':
+        const [width, height] = (value as string).split('x').map(Number);
+        newConfig = updateIdPhotoConfig(
+          idPhotoConfig.type,
+          { width, height },
+          idPhotoConfig.dpi,
+          idPhotoConfig.background_color
+        );
+        break;
       case 'width':
         newConfig = updateIdPhotoConfig(
           idPhotoConfig.type,
@@ -358,42 +367,55 @@ export default function Upload() {
                 </Select>
               </div>
               
-              {/* Size Selectors */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">宽度(mm)</span>
-                  <Select value={idPhotoConfig.size_mm.width === 0 ? '' : idPhotoConfig.size_mm.width.toString()} onValueChange={(value) => handleConfigChange('width', value)}>
-                    <SelectTrigger className={`w-20 ${validationErrors.width ? 'border-red-500' : ''}`}>
-                      <SelectValue placeholder="请选择" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[20, 22, 25, 26, 30, 33, 35, 40].map((size) => (
-                        <SelectItem key={size} value={size.toString()}>{size}</SelectItem>
+              {/* Size Selector */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">尺寸(mm)</span>
+                <Select 
+                  value={idPhotoConfig.size_mm.width === 0 || idPhotoConfig.size_mm.height === 0 ? '' : `${idPhotoConfig.size_mm.width}x${idPhotoConfig.size_mm.height}`} 
+                  onValueChange={(value) => handleConfigChange('size', value)}
+                >
+                  <SelectTrigger className={`w-32 ${validationErrors.width || validationErrors.height ? 'border-red-500' : ''}`}>
+                    <SelectValue placeholder="请选择" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <div className="p-2">
+                      <div className="text-xs text-gray-500 mb-2 font-medium">常用尺寸</div>
+                      {[
+                        { w: 25, h: 35, name: '一寸' },
+                        { w: 35, h: 49, name: '二寸' },
+                        { w: 33, h: 48, name: '小二寸' },
+                        { w: 26, h: 32, name: '护照' },
+                        { w: 22, h: 32, name: '驾照' },
+                        { w: 35, h: 45, name: '大一寸' }
+                      ].map((size) => (
+                        <SelectItem key={`${size.w}x${size.h}`} value={`${size.w}x${size.h}`}>
+                          {size.w}×{size.h} ({size.name})
+                        </SelectItem>
                       ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">高度(mm)</span>
-                  <Select value={idPhotoConfig.size_mm.height === 0 ? '' : idPhotoConfig.size_mm.height.toString()} onValueChange={(value) => handleConfigChange('height', value)}>
-                    <SelectTrigger className={`w-20 ${validationErrors.height ? 'border-red-500' : ''}`}>
-                      <SelectValue placeholder="请选择" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[25, 30, 32, 35, 40, 45, 48, 49, 50].map((size) => (
-                        <SelectItem key={size} value={size.toString()}>{size}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                      <div className="border-t pt-2 mt-2">
+                        <div className="text-xs text-gray-500 mb-2 font-medium">自定义尺寸</div>
+                        {[20, 22, 25, 26, 30, 33, 35, 40].flatMap(width =>
+                          [25, 30, 32, 35, 40, 45, 48, 49, 50].map(height => (
+                            <SelectItem key={`${width}x${height}`} value={`${width}x${height}`}>
+                              {width}×{height}
+                            </SelectItem>
+                          ))
+                        ).filter((item, index, self) => 
+                          // Remove duplicates and exclude common sizes already shown above
+                          self.findIndex(i => i.key === item.key) === index &&
+                          !['25x35', '35x49', '33x48', '26x32', '22x32', '35x45'].includes(item.key as string)
+                        )}
+                      </div>
+                    </div>
+                  </SelectContent>
+                </Select>
               </div>
               
               {/* DPI Selector */}
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">分辨率(DPI)</span>
                 <Select value={idPhotoConfig.dpi.toString()} onValueChange={(value) => handleConfigChange('dpi', value)}>
-                  <SelectTrigger className="w-24">
+                  <SelectTrigger className="w-32">
                     <SelectValue placeholder="请选择" />
                   </SelectTrigger>
                   <SelectContent>
@@ -408,7 +430,7 @@ export default function Upload() {
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">背景色</span>
                 <Select value={idPhotoConfig.background_color} onValueChange={(value) => handleConfigChange('background_color', value)}>
-                  <SelectTrigger className="w-24">
+                  <SelectTrigger className="w-32">
                     <SelectValue placeholder="请选择" />
                   </SelectTrigger>
                   <SelectContent>
