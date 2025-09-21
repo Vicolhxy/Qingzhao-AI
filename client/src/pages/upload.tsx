@@ -16,7 +16,7 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 
 // Import outline human image
 import outlineHuman from "@assets/Outline-human_1758207634258.png";
-import idOutlineDotted from "@assets/ID-Outline_1758485241870.png";
+import idOutlineDotted from "@assets/ID-Outline_1758485859347.png";
 
 // Category display names
 const categoryNames = {
@@ -259,7 +259,7 @@ export default function Upload() {
           <div className="flex gap-4" data-testid="area-upload" style={{ backgroundColor: '#F9F9F9', padding: '16px', borderRadius: '8px' }}>
             {/* Left: Photo display area */}
             <div 
-              className={`bg-white border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors ${isIdPhoto ? '' : 'flex-1'}`}
+              className={`${isIdPhoto ? '' : 'bg-white'} border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors ${isIdPhoto ? '' : 'flex-1'}`}
               onClick={handleUploadClick}
               data-testid="area-photo"
               style={isIdPhoto ? { width: '171px', height: '228px' } : {}}
@@ -273,12 +273,7 @@ export default function Upload() {
                   />
                 ) : (
                   isIdPhoto ? (
-                    <img 
-                      src={idOutlineDotted} 
-                      alt="证件照轮廓" 
-                      className="max-w-full max-h-full object-contain opacity-30"
-                      style={{ filter: 'invert(0.5)' }}
-                    />
+                    
                   ) : (
                     <img 
                       src={outlineHuman} 
