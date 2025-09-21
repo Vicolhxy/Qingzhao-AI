@@ -15,6 +15,51 @@ const categoryNames = {
   [PhotoCategory.WECHAT_PORTRAIT]: "微信头像",
 };
 
+// Typewriter animation component for privacy text
+function TypewriterText({ isGenerating }: { isGenerating: boolean }) {
+  const text = "在您支付成功并下载照片后，我们会立即删除。我们承诺不会存储或转播您的个人照片，请放心。";
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isGenerating) return;
+
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => {
+        if (prevIndex >= text.length) {
+          // Reset to start for looping
+          setDisplayedText("");
+          return 0;
+        }
+        const newIndex = prevIndex + 1;
+        setDisplayedText(text.slice(0, newIndex));
+        return newIndex;
+      });
+    }, 200); // 0.2 seconds per character
+
+    return () => clearInterval(timer);
+  }, [isGenerating, text]);
+
+  // Reset when generation stops
+  useEffect(() => {
+    if (!isGenerating) {
+      setDisplayedText("");
+      setCurrentIndex(0);
+    }
+  }, [isGenerating]);
+
+  if (!isGenerating) return null;
+
+  return (
+    <div className="text-center mt-4 mb-6">
+      <p className="text-sm text-muted-foreground leading-relaxed">
+        {displayedText}
+        <span className="animate-pulse">|</span>
+      </p>
+    </div>
+  );
+}
+
 // Generating photo placeholder with loading animation
 function GeneratingPhotoPlaceholder({ index, isGenerating, isCompleted, aspectRatio }: { index: number; isGenerating: boolean; isCompleted: boolean; aspectRatio: string }) {
   const generatingText = `正在生成第${['一', '二', '三', '四'][index]}张...`;
@@ -165,6 +210,9 @@ export default function Generating() {
             />
           ))}
         </div>
+
+        {/* Typewriter Animation for Privacy Text */}
+        <TypewriterText isGenerating={isGenerating} />
 
         {/* Pricing Section */}
         <Card className="mb-6">

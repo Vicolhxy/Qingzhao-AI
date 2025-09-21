@@ -356,7 +356,7 @@ export default function Upload() {
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">证件照类型</span>
                 <Select value={idPhotoConfig.type} onValueChange={handlePhotoTypeChange}>
-                  <SelectTrigger className="w-32" data-testid="select-photo-type">
+                  <SelectTrigger className="w-44" data-testid="select-photo-type">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -374,19 +374,19 @@ export default function Upload() {
                   value={idPhotoConfig.size_mm.width === 0 || idPhotoConfig.size_mm.height === 0 ? '' : `${idPhotoConfig.size_mm.width}x${idPhotoConfig.size_mm.height}`} 
                   onValueChange={(value) => handleConfigChange('size', value)}
                 >
-                  <SelectTrigger className={`w-32 ${validationErrors.width || validationErrors.height ? 'border-red-500' : ''}`}>
+                  <SelectTrigger className={`w-44 ${validationErrors.width || validationErrors.height ? 'border-red-500' : ''}`}>
                     <SelectValue placeholder="请选择" />
                   </SelectTrigger>
                   <SelectContent>
                     <div className="p-2">
                       <div className="text-xs text-gray-500 mb-2 font-medium">常用尺寸</div>
                       {[
-                        { w: 25, h: 35, name: '一寸' },
-                        { w: 35, h: 49, name: '二寸' },
-                        { w: 33, h: 48, name: '小二寸' },
-                        { w: 26, h: 32, name: '护照' },
-                        { w: 22, h: 32, name: '驾照' },
-                        { w: 35, h: 45, name: '大一寸' }
+                        { w: 26, h: 32, name: '身份证' },
+                        { w: 25, h: 35, name: '一寸证件照' },
+                        { w: 22, h: 32, name: '小一寸' },
+                        { w: 33, h: 48, name: '大一寸' },
+                        { w: 35, h: 49, name: '二寸证件照' },
+                        { w: 33, h: 48, name: '护照照片' }
                       ].map((size) => (
                         <SelectItem key={`${size.w}x${size.h}`} value={`${size.w}x${size.h}`}>
                           {size.w}×{size.h} ({size.name})
@@ -403,7 +403,7 @@ export default function Upload() {
                         ).filter((item, index, self) => 
                           // Remove duplicates and exclude common sizes already shown above
                           self.findIndex(i => i.key === item.key) === index &&
-                          !['25x35', '35x49', '33x48', '26x32', '22x32', '35x45'].includes(item.key as string)
+                          !['26x32', '25x35', '22x32', '33x48', '35x49'].includes(item.key as string)
                         )}
                       </div>
                     </div>
@@ -415,7 +415,7 @@ export default function Upload() {
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">分辨率(DPI)</span>
                 <Select value={idPhotoConfig.dpi.toString()} onValueChange={(value) => handleConfigChange('dpi', value)}>
-                  <SelectTrigger className="w-32">
+                  <SelectTrigger className="w-44">
                     <SelectValue placeholder="请选择" />
                   </SelectTrigger>
                   <SelectContent>
@@ -430,15 +430,15 @@ export default function Upload() {
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">背景色</span>
                 <Select value={idPhotoConfig.background_color} onValueChange={(value) => handleConfigChange('background_color', value)}>
-                  <SelectTrigger className="w-32">
+                  <SelectTrigger className="w-44">
                     <SelectValue placeholder="请选择" />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(BACKGROUND_COLORS).map(([key, color]) => (
                       <SelectItem key={key} value={color}>
                         <div className="flex items-center gap-2">
+                          <span>{key === 'white' ? '白色' : key === 'blue' ? '蓝色' : '红色'}</span>
                           <div className="w-4 h-4 rounded border" style={{ backgroundColor: color }}></div>
-                          {key === 'white' ? '白色' : key === 'blue' ? '蓝色' : '红色'}
                         </div>
                       </SelectItem>
                     ))}
