@@ -16,7 +16,6 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 
 // Import outline human image
 import outlineHuman from "@assets/Outline-human_1758207634258.png";
-import idOutlineDotted from "@assets/ID-Outline_1758486694126.png";
 import wechatTestImage from "@assets/Wechat-test_1758491664457.png";
 
 // Import WeChat frame images
@@ -450,12 +449,9 @@ export default function Upload() {
                   />
                 ) : (
                   isIdPhoto ? (
-                    <img 
-                      src={idOutlineDotted} 
-                      alt="证件照模板" 
-                      className="max-w-full max-h-full object-contain opacity-30"
-                      style={{ filter: 'invert(0.5)' }}
-                    />
+                    <div className="text-gray-400 text-center">
+                      <span className="text-sm">点击上传证件照</span>
+                    </div>
                   ) : (
                     <img 
                       src={outlineHuman} 
