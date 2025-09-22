@@ -358,7 +358,7 @@ export default function Upload() {
               </>
             ) : (
               /* Other categories - 4 Sample Photos Horizontal Strip */
-              <div className="flex flex-nowrap gap-[6px]" data-testid="grid-samples">
+              (<div className="flex flex-nowrap gap-[6px]" data-testid="grid-samples">
                 {sampleImages.map((sample, index) => (
                   <div 
                     key={index}
@@ -376,7 +376,7 @@ export default function Upload() {
                     />
                   </div>
                 ))}
-              </div>
+              </div>)
             )}
           </div>
         </div>
@@ -385,7 +385,7 @@ export default function Upload() {
         <div data-testid="section-upload">
           {isWechatPortrait ? (
             /* WeChat Portrait - Action Buttons */
-            <div className="space-y-4" data-testid="wechat-actions">
+            (<div className="space-y-4" data-testid="wechat-actions">
               {/* Main Action Button */}
               <Button
                 size="lg"
@@ -396,7 +396,6 @@ export default function Upload() {
               >
                 一键做同款
               </Button>
-              
               {/* Alternative Upload Option */}
               <div className="text-center space-y-2">
                 <div className="text-sm text-gray-500">或者</div>
@@ -408,7 +407,6 @@ export default function Upload() {
                   点击上传/拍照
                 </button>
               </div>
-              
               {/* Generate Button - Only show when file is selected for WeChat portraits */}
               {selectedFile && (
                 <div className="mt-4">
@@ -423,7 +421,7 @@ export default function Upload() {
                   </Button>
                 </div>
               )}
-            </div>
+            </div>)
           ) : (
             <>
               <div className="flex items-center gap-2 mb-3">
@@ -474,7 +472,7 @@ export default function Upload() {
                   </div>
                   <div className="text-left">
                     <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请保持端正</h3>
-                    <p className="text-xs text-gray-600 whitespace-nowrap">光线充足，背景简单</p>
+                    <p className="text-gray-600 whitespace-nowrap text-[13px]">光线充足，背景简单</p>
                   </div>
                 </div>
               ) : (
