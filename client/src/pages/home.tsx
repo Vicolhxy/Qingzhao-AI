@@ -262,15 +262,21 @@ export default function Home() {
                     <img 
                       src={samples.large} 
                       alt="大样片" 
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
-                      style={{ opacity: isTransitioning ? 0 : 1 }}
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                      style={{ 
+                        opacity: isTransitioning ? 0 : 1,
+                        transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                      }}
                     />
                     {/* Next image for crossfade - always rendered */}
                     <img 
                       src={allSampleImages[nextImageIndex]} 
                       alt="大样片" 
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out z-10"
-                      style={{ opacity: isTransitioning ? 1 : 0 }}
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10"
+                      style={{ 
+                        opacity: isTransitioning ? 1 : 0,
+                        transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                      }}
                     />
                   </div>
                 </div>
@@ -294,15 +300,21 @@ export default function Home() {
                           <img 
                             src={sample} 
                             alt={`小样片${index + 1}`} 
-                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
-                            style={{ opacity: isTransitioning ? 0 : 1 }}
+                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                            style={{ 
+                              opacity: isTransitioning ? 0 : 1,
+                              transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                            }}
                           />
                           {/* Next small image for crossfade - always rendered */}
                           <img 
                             src={allSampleImages[nextSmallIndex]} 
                             alt={`小样片${index + 1}`} 
-                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out z-10"
-                            style={{ opacity: isTransitioning ? 1 : 0 }}
+                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10"
+                            style={{ 
+                              opacity: isTransitioning ? 1 : 0,
+                              transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                            }}
                           />
                         </div>
                       );
