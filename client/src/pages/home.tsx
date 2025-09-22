@@ -86,26 +86,28 @@ export default function Home() {
 
   const samples = getSampleImages();
 
-  // Auto-rotate images every 2.5 seconds with 500ms crossfade transition
+  // Auto-rotate images every 2.5 seconds with 500ms fade in/out transition
   useEffect(() => {
     let intervalRef: NodeJS.Timeout;
     let timeoutRef: NodeJS.Timeout;
 
     intervalRef = setInterval(() => {
       const nextIndex = (currentImageIndex + 1) % allSampleImages.length;
-      setNextImageIndex(nextIndex);
+      
+      // Start fade out
       setIsTransitioning(true);
       
-      // After 500ms crossfade, swap to the next image
+      // After 250ms fade out, change image and fade in
       timeoutRef = setTimeout(() => {
         setCurrentImageIndex(nextIndex);
-        setStableImageIndex(nextIndex); // Update stable index while overlay is opaque
-        // Stage the fade-out to next frame to prevent flicker
-        requestAnimationFrame(() => {
+        setStableImageIndex(nextIndex);
+        setNextImageIndex((nextIndex + 1) % allSampleImages.length);
+        
+        // End transition after a brief moment
+        setTimeout(() => {
           setIsTransitioning(false);
-          setNextImageIndex((nextIndex + 1) % allSampleImages.length);
-        });
-      }, 500);
+        }, 50);
+      }, 250);
     }, 2500);
 
     return () => {
@@ -262,26 +264,13 @@ export default function Home() {
                     className="w-full bg-gray-100 rounded overflow-hidden relative"
                     style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '212/304' }}
                   >
-                    {/* Current image - base layer */}
                     <img 
                       src={samples.large} 
                       alt="大样片" 
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-opacity duration-300"
                       style={{ 
-                        opacity: 1,
-                        willChange: 'opacity'
-                      }}
-                    />
-                    {/* Next image for crossfade - overlay layer */}
-                    <img 
-                      src={allSampleImages[nextImageIndex]} 
-                      alt="大样片" 
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10"
-                      style={{ 
-                        opacity: isTransitioning ? 1 : 0,
-                        transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
-                        willChange: 'opacity',
-                        pointerEvents: 'none'
+                        opacity: isTransitioning ? 0 : 1,
+                        transitionTimingFunction: 'ease-in-out'
                       }}
                     />
                   </div>
@@ -302,26 +291,13 @@ export default function Home() {
                           style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '1/1.43' }}
                           data-testid={`small-sample-${index + 1}`}
                         >
-                          {/* Current small image - base layer */}
                           <img 
                             src={sample} 
                             alt={`小样片${index + 1}`} 
-                            className="absolute inset-0 w-full h-full object-cover"
+                            className="w-full h-full object-cover transition-opacity duration-300"
                             style={{ 
-                              opacity: 1,
-                              willChange: 'opacity'
-                            }}
-                          />
-                          {/* Next small image for crossfade - overlay layer */}
-                          <img 
-                            src={allSampleImages[nextSmallIndex]} 
-                            alt={`小样片${index + 1}`} 
-                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10"
-                            style={{ 
-                              opacity: isTransitioning ? 1 : 0,
-                              transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
-                              willChange: 'opacity',
-                              pointerEvents: 'none'
+                              opacity: isTransitioning ? 0 : 1,
+                              transitionTimingFunction: 'ease-in-out'
                             }}
                           />
                         </div>
