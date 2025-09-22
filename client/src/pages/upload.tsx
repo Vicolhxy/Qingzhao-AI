@@ -447,14 +447,14 @@ export default function Upload() {
               className={`bg-white border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-colors ${isIdPhoto ? '' : 'flex-1'}`}
               onClick={handleUploadClick}
               data-testid="area-photo"
-              style={isIdPhoto ? { width: '171px', height: '228px' } : {}}
+              style={isIdPhoto ? { width: '171px', height: '228px' } : { aspectRatio: '86 / 126' }}
             >
-              <div className={`w-full h-full flex items-center justify-center ${isIdPhoto ? '' : 'min-h-[300px]'}`}>
+              <div className="w-full h-full flex items-center justify-center">
                 {uploadedImageUrl ? (
                   <img 
                     src={uploadedImageUrl} 
                     alt="已上传照片" 
-                    className="max-w-full max-h-full object-contain mx-auto"
+                    className="w-full h-full object-cover object-center"
                   />
                 ) : (
                   isIdPhoto ? (

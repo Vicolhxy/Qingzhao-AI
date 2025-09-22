@@ -70,8 +70,14 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Draw user image (background) - scaled to fit canvas
-        ctx.drawImage(userImg, 0, 0, canvas.width, canvas.height);
+        // Draw user image (background) with object-cover behavior
+        const scale = Math.max(canvas.width / userImg.naturalWidth, canvas.height / userImg.naturalHeight);
+        const drawWidth = userImg.naturalWidth * scale;
+        const drawHeight = userImg.naturalHeight * scale;
+        const offsetX = (canvas.width - drawWidth) / 2;
+        const offsetY = (canvas.height - drawHeight) / 2;
+        
+        ctx.drawImage(userImg, offsetX, offsetY, drawWidth, drawHeight);
         
         // Draw frame overlay
         ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
