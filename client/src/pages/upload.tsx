@@ -449,7 +449,7 @@ export default function Upload() {
                 ) : (
                   isIdPhoto ? (
                     <div className="text-gray-400 text-center">
-                      <span className="text-sm">点击上传证件照</span>
+                      <span className="text-sm">点击上传 / 拍照</span>
                     </div>
                   ) : (
                     <img 
