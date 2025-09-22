@@ -99,8 +99,12 @@ export default function Home() {
       // After 500ms crossfade, swap to the next image
       timeoutRef = setTimeout(() => {
         setCurrentImageIndex(nextIndex);
-        setStableImageIndex(nextIndex); // Update stable index after transition
-        setIsTransitioning(false);
+        setStableImageIndex(nextIndex); // Update stable index while overlay is opaque
+        // Stage the fade-out to next frame to prevent flicker
+        requestAnimationFrame(() => {
+          setIsTransitioning(false);
+          setNextImageIndex((nextIndex + 1) % allSampleImages.length);
+        });
       }, 500);
     }, 2500);
 
@@ -258,24 +262,26 @@ export default function Home() {
                     className="w-full bg-gray-100 rounded overflow-hidden relative"
                     style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '212/304' }}
                   >
-                    {/* Current image */}
+                    {/* Current image - base layer */}
                     <img 
                       src={samples.large} 
                       alt="大样片" 
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                      className="absolute inset-0 w-full h-full object-cover"
                       style={{ 
-                        opacity: isTransitioning ? 0 : 1,
-                        transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                        opacity: 1,
+                        willChange: 'opacity'
                       }}
                     />
-                    {/* Next image for crossfade - always rendered */}
+                    {/* Next image for crossfade - overlay layer */}
                     <img 
                       src={allSampleImages[nextImageIndex]} 
                       alt="大样片" 
                       className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10"
                       style={{ 
                         opacity: isTransitioning ? 1 : 0,
-                        transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                        transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+                        willChange: 'opacity',
+                        pointerEvents: 'none'
                       }}
                     />
                   </div>
@@ -291,29 +297,31 @@ export default function Home() {
                       const nextSmallIndex = (stableImageIndex + index + 2) % allSampleImages.length;
                       return (
                         <div 
-                          key={`${stableImageIndex}-${index}`}
+                          key={`small-${index}`}
                           className="flex-1 bg-gray-100 rounded overflow-hidden relative"
                           style={{ aspectRatio: selectedCategory === PhotoCategory.ID_PHOTO ? '3/4' : '1/1.43' }}
                           data-testid={`small-sample-${index + 1}`}
                         >
-                          {/* Current small image */}
+                          {/* Current small image - base layer */}
                           <img 
                             src={sample} 
                             alt={`小样片${index + 1}`} 
-                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                            className="absolute inset-0 w-full h-full object-cover"
                             style={{ 
-                              opacity: isTransitioning ? 0 : 1,
-                              transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                              opacity: 1,
+                              willChange: 'opacity'
                             }}
                           />
-                          {/* Next small image for crossfade - always rendered */}
+                          {/* Next small image for crossfade - overlay layer */}
                           <img 
                             src={allSampleImages[nextSmallIndex]} 
                             alt={`小样片${index + 1}`} 
                             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10"
                             style={{ 
                               opacity: isTransitioning ? 1 : 0,
-                              transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                              transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+                              willChange: 'opacity',
+                              pointerEvents: 'none'
                             }}
                           />
                         </div>
