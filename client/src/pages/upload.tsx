@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { ArrowLeft, User, Sun, Building, X, ChevronDown } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ID_PHOTO_TYPES, BACKGROUND_COLORS, DPI_OPTIONS, IdPhotoConfig, createDefaultConfig, updateIdPhotoConfig, IdPhotoType } from "@/data/idPhotoConfig";
 
 // Import sample images (same as home page)
@@ -44,6 +43,12 @@ export default function Upload() {
   const [wechatPermissionModalOpen, setWechatPermissionModalOpen] = useState(false);
   const [idPhotoConfig, setIdPhotoConfig] = useState<IdPhotoConfig | null>(null);
   const [validationErrors, setValidationErrors] = useState<{ [key: string]: boolean }>({});
+  
+  // Bottom sheet states for ID photo parameter selectors
+  const [photoTypeSheetOpen, setPhotoTypeSheetOpen] = useState(false);
+  const [sizeSheetOpen, setSizeSheetOpen] = useState(false);
+  const [dpiSheetOpen, setDpiSheetOpen] = useState(false);
+  const [backgroundSheetOpen, setBackgroundSheetOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Parse category and gender from URL params
@@ -81,6 +86,11 @@ export default function Upload() {
 
   // Sample images (using same as home page)
   const sampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+  
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   // Initialize ID photo config with default values
   useEffect(() => {
@@ -521,95 +531,74 @@ export default function Upload() {
               {/* Photo Type Selector */}
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">证件照类型</span>
-                <Select value={idPhotoConfig.type} onValueChange={handlePhotoTypeChange}>
-                  <SelectTrigger className="w-44" data-testid="select-photo-type">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ID_PHOTO_TYPES.map((type) => (
-                      <SelectItem key={type.name} value={type.name}>{type.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Button
+                  variant="outline"
+                  className="w-44 justify-between h-10 px-3 py-2"
+                  onClick={() => setPhotoTypeSheetOpen(true)}
+                  data-testid="button-photo-type"
+                >
+                  <span className="text-sm">{idPhotoConfig.type}</span>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </Button>
               </div>
               
               {/* Size Selector */}
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">尺寸(mm)</span>
-                <Select 
-                  value={idPhotoConfig.size_mm.width === 0 || idPhotoConfig.size_mm.height === 0 ? '' : `${idPhotoConfig.size_mm.width}x${idPhotoConfig.size_mm.height}`} 
-                  onValueChange={(value) => handleConfigChange('size', value)}
+                <Button
+                  variant="outline"
+                  className={`w-44 justify-between h-10 px-3 py-2 ${
+                    validationErrors.width || validationErrors.height ? 'border-red-500' : ''
+                  }`}
+                  onClick={() => setSizeSheetOpen(true)}
+                  data-testid="button-size"
                 >
-                  <SelectTrigger className={`w-44 ${validationErrors.width || validationErrors.height ? 'border-red-500' : ''}`}>
-                    <SelectValue placeholder="请选择" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <div className="p-2">
-                      <div className="text-xs text-gray-500 mb-2 font-medium">常用尺寸</div>
-                      {[
-                        { w: 26, h: 32, name: '身份证' },
-                        { w: 25, h: 35, name: '一寸证件照' },
-                        { w: 22, h: 32, name: '小一寸' },
-                        { w: 33, h: 48, name: '大一寸' },
-                        { w: 35, h: 49, name: '二寸证件照' },
-                        { w: 33, h: 48, name: '护照照片' }
-                      ].map((size, index) => (
-                        <SelectItem key={`${size.w}x${size.h}-${index}`} value={`${size.w}x${size.h}`}>
-                          {size.w}×{size.h} ({size.name})
-                        </SelectItem>
-                      ))}
-                      <div className="border-t pt-2 mt-2">
-                        <div className="text-xs text-gray-500 mb-2 font-medium">自定义尺寸</div>
-                        {[20, 22, 25, 26, 30, 33, 35, 40].flatMap(width =>
-                          [25, 30, 32, 35, 40, 45, 48, 49, 50].map(height => `${width}x${height}`)
-                        ).filter((size, index, self) => 
-                          // Remove duplicates and exclude common sizes already shown above
-                          self.indexOf(size) === index &&
-                          !['26x32', '25x35', '22x32', '33x48', '35x49'].includes(size)
-                        ).map((size) => (
-                          <SelectItem key={size} value={size}>
-                            {size.replace('x', '×')}
-                          </SelectItem>
-                        ))}
-                      </div>
-                    </div>
-                  </SelectContent>
-                </Select>
+                  <span className="text-sm">
+                    {idPhotoConfig.size_mm.width === 0 || idPhotoConfig.size_mm.height === 0
+                      ? '请选择'
+                      : `${idPhotoConfig.size_mm.width}×${idPhotoConfig.size_mm.height}`
+                    }
+                  </span>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </Button>
               </div>
               
               {/* DPI Selector */}
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">分辨率(DPI)</span>
-                <Select value={idPhotoConfig.dpi.toString()} onValueChange={(value) => handleConfigChange('dpi', value)}>
-                  <SelectTrigger className="w-44">
-                    <SelectValue placeholder="请选择" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {DPI_OPTIONS.map((dpi) => (
-                      <SelectItem key={dpi} value={dpi.toString()}>{dpi}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Button
+                  variant="outline"
+                  className="w-44 justify-between h-10 px-3 py-2"
+                  onClick={() => setDpiSheetOpen(true)}
+                  data-testid="button-dpi"
+                >
+                  <span className="text-sm">{idPhotoConfig.dpi}</span>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </Button>
               </div>
               
               {/* Background Color Selector */}
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">背景色</span>
-                <Select value={idPhotoConfig.background_color} onValueChange={(value) => handleConfigChange('background_color', value)}>
-                  <SelectTrigger className="w-44">
-                    <SelectValue placeholder="请选择" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(BACKGROUND_COLORS).map(([key, color]) => (
-                      <SelectItem key={key} value={color}>
-                        <div className="flex items-center gap-2">
-                          <span>{key === 'white' ? '白色' : key === 'blue' ? '蓝色' : '红色'}</span>
-                          <div className="w-4 h-4 rounded border" style={{ backgroundColor: color }}></div>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Button
+                  variant="outline"
+                  className="w-44 justify-between h-10 px-3 py-2"
+                  onClick={() => setBackgroundSheetOpen(true)}
+                  data-testid="button-background"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">
+                      {Object.entries(BACKGROUND_COLORS).find(([_, color]) => color === idPhotoConfig.background_color)?.[0] === 'white'
+                        ? '白色'
+                        : Object.entries(BACKGROUND_COLORS).find(([_, color]) => color === idPhotoConfig.background_color)?.[0] === 'blue'
+                        ? '蓝色'
+                        : '红色'
+                      }
+                    </span>
+                    <div className="w-4 h-4 rounded border" style={{ backgroundColor: idPhotoConfig.background_color }}></div>
+                  </div>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </Button>
               </div>
               
               {/* Calculated Values */}
@@ -766,6 +755,291 @@ export default function Upload() {
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* Photo Type Bottom Sheet */}
+      <Sheet open={photoTypeSheetOpen} onOpenChange={setPhotoTypeSheetOpen}>
+        <SheetContent 
+          side="bottom" 
+          className="rounded-t-xl border-0 p-0 max-h-[80vh] overflow-hidden"
+        >
+          <div className="px-6 pt-6">
+            <SheetTitle className="text-lg font-semibold mb-4 text-center">
+              选择证件照类型
+            </SheetTitle>
+            <SheetDescription className="sr-only">选择证件照类型</SheetDescription>
+            
+            <div 
+              className="overflow-y-auto scrollbar-hide"
+              style={{ 
+                maxHeight: 'calc(80vh - 120px)',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none'
+              }}
+            >
+              <div className="space-y-1">
+                {ID_PHOTO_TYPES.map((type) => (
+                  <button
+                    key={type.name}
+                    onClick={() => {
+                      handlePhotoTypeChange(type.name);
+                      setPhotoTypeSheetOpen(false);
+                    }}
+                    className={`w-full text-left p-4 rounded-lg transition-colors ${
+                      idPhotoConfig?.type === type.name
+                        ? 'bg-primary/10 text-primary border border-primary'
+                        : 'hover:bg-gray-50 border border-transparent'
+                    }`}
+                    data-testid={`option-photo-type-${type.name}`}
+                  >
+                    <span className="text-sm font-medium">{type.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div style={{ paddingBottom: '32px' }} className="pt-4">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full"
+                onClick={() => setPhotoTypeSheetOpen(false)}
+              >
+                取消
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* Size Bottom Sheet */}
+      <Sheet open={sizeSheetOpen} onOpenChange={setSizeSheetOpen}>
+        <SheetContent 
+          side="bottom" 
+          className="rounded-t-xl border-0 p-0 max-h-[80vh] overflow-hidden"
+        >
+          <div className="px-6 pt-6">
+            <SheetTitle className="text-lg font-semibold mb-4 text-center">
+              选择尺寸
+            </SheetTitle>
+            <SheetDescription className="sr-only">选择证件照尺寸</SheetDescription>
+            
+            <div 
+              className="overflow-y-auto scrollbar-hide"
+              style={{ 
+                maxHeight: 'calc(80vh - 120px)',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none'
+              }}
+            >
+              <div className="space-y-4">
+                {/* Common sizes */}
+                <div>
+                  <h3 className="text-xs text-gray-500 mb-2 font-medium">常用尺寸</h3>
+                  <div className="space-y-1">
+                    {[
+                      { w: 26, h: 32, name: '身份证' },
+                      { w: 25, h: 35, name: '一寸证件照' },
+                      { w: 22, h: 32, name: '小一寸' },
+                      { w: 33, h: 48, name: '大一寸' },
+                      { w: 35, h: 49, name: '二寸证件照' },
+                      { w: 33, h: 48, name: '护照照片' }
+                    ].map((size, index) => {
+                      const sizeValue = `${size.w}x${size.h}`;
+                      const currentValue = idPhotoConfig && idPhotoConfig.size_mm.width !== 0 && idPhotoConfig.size_mm.height !== 0 
+                        ? `${idPhotoConfig.size_mm.width}x${idPhotoConfig.size_mm.height}` 
+                        : '';
+                      
+                      return (
+                        <button
+                          key={`common-${sizeValue}-${index}`}
+                          onClick={() => {
+                            handleConfigChange('size', sizeValue);
+                            setSizeSheetOpen(false);
+                          }}
+                          className={`w-full text-left p-4 rounded-lg transition-colors ${
+                            currentValue === sizeValue
+                              ? 'bg-primary/10 text-primary border border-primary'
+                              : 'hover:bg-gray-50 border border-transparent'
+                          }`}
+                          data-testid={`option-size-${sizeValue}`}
+                        >
+                          <span className="text-sm font-medium">
+                            {size.w}×{size.h} ({size.name})
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                
+                {/* Custom sizes */}
+                <div>
+                  <h3 className="text-xs text-gray-500 mb-2 font-medium">自定义尺寸</h3>
+                  <div className="space-y-1">
+                    {[20, 22, 25, 26, 30, 33, 35, 40].flatMap(width =>
+                      [25, 30, 32, 35, 40, 45, 48, 49, 50].map(height => `${width}x${height}`)
+                    ).filter((size, index, self) => 
+                      self.indexOf(size) === index &&
+                      !['26x32', '25x35', '22x32', '33x48', '35x49'].includes(size)
+                    ).map((size) => {
+                      const currentValue = idPhotoConfig && idPhotoConfig.size_mm.width !== 0 && idPhotoConfig.size_mm.height !== 0 
+                        ? `${idPhotoConfig.size_mm.width}x${idPhotoConfig.size_mm.height}` 
+                        : '';
+                      
+                      return (
+                        <button
+                          key={`custom-${size}`}
+                          onClick={() => {
+                            handleConfigChange('size', size);
+                            setSizeSheetOpen(false);
+                          }}
+                          className={`w-full text-left p-4 rounded-lg transition-colors ${
+                            currentValue === size
+                              ? 'bg-primary/10 text-primary border border-primary'
+                              : 'hover:bg-gray-50 border border-transparent'
+                          }`}
+                          data-testid={`option-size-${size}`}
+                        >
+                          <span className="text-sm font-medium">
+                            {size.replace('x', '×')}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div style={{ paddingBottom: '32px' }} className="pt-4">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full"
+                onClick={() => setSizeSheetOpen(false)}
+              >
+                取消
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* DPI Bottom Sheet */}
+      <Sheet open={dpiSheetOpen} onOpenChange={setDpiSheetOpen}>
+        <SheetContent 
+          side="bottom" 
+          className="rounded-t-xl border-0 p-0 max-h-[80vh] overflow-hidden"
+        >
+          <div className="px-6 pt-6">
+            <SheetTitle className="text-lg font-semibold mb-4 text-center">
+              选择分辨率
+            </SheetTitle>
+            <SheetDescription className="sr-only">选择分辨率DPI</SheetDescription>
+            
+            <div 
+              className="overflow-y-auto scrollbar-hide"
+              style={{ 
+                maxHeight: 'calc(80vh - 120px)',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none'
+              }}
+            >
+              <div className="space-y-1">
+                {DPI_OPTIONS.map((dpi) => (
+                  <button
+                    key={dpi}
+                    onClick={() => {
+                      handleConfigChange('dpi', dpi.toString());
+                      setDpiSheetOpen(false);
+                    }}
+                    className={`w-full text-left p-4 rounded-lg transition-colors ${
+                      idPhotoConfig?.dpi === dpi
+                        ? 'bg-primary/10 text-primary border border-primary'
+                        : 'hover:bg-gray-50 border border-transparent'
+                    }`}
+                    data-testid={`option-dpi-${dpi}`}
+                  >
+                    <span className="text-sm font-medium">{dpi}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div style={{ paddingBottom: '32px' }} className="pt-4">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full"
+                onClick={() => setDpiSheetOpen(false)}
+              >
+                取消
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* Background Color Bottom Sheet */}
+      <Sheet open={backgroundSheetOpen} onOpenChange={setBackgroundSheetOpen}>
+        <SheetContent 
+          side="bottom" 
+          className="rounded-t-xl border-0 p-0 max-h-[80vh] overflow-hidden"
+        >
+          <div className="px-6 pt-6">
+            <SheetTitle className="text-lg font-semibold mb-4 text-center">
+              选择背景色
+            </SheetTitle>
+            <SheetDescription className="sr-only">选择背景颜色</SheetDescription>
+            
+            <div 
+              className="overflow-y-auto scrollbar-hide"
+              style={{ 
+                maxHeight: 'calc(80vh - 120px)',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none'
+              }}
+            >
+              <div className="space-y-1">
+                {Object.entries(BACKGROUND_COLORS).map(([key, color]) => (
+                  <button
+                    key={key}
+                    onClick={() => {
+                      handleConfigChange('background_color', color);
+                      setBackgroundSheetOpen(false);
+                    }}
+                    className={`w-full text-left p-4 rounded-lg transition-colors ${
+                      idPhotoConfig?.background_color === color
+                        ? 'bg-primary/10 text-primary border border-primary'
+                        : 'hover:bg-gray-50 border border-transparent'
+                    }`}
+                    data-testid={`option-background-${key}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded border" style={{ backgroundColor: color }}></div>
+                      <span className="text-sm font-medium">
+                        {key === 'white' ? '白色' : key === 'blue' ? '蓝色' : '红色'}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div style={{ paddingBottom: '32px' }} className="pt-4">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full"
+                onClick={() => setBackgroundSheetOpen(false)}
+              >
+                取消
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
       {/* Footer at page bottom */}
       <div 
         className="text-center bg-background mt-auto mb-6 pt-4"

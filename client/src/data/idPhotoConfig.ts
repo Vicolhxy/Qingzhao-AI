@@ -82,7 +82,7 @@ export const BACKGROUND_COLORS = {
   red: "#FF4D4D"
 };
 
-export const DPI_OPTIONS = [150, 300, 400, 500, 600];
+export const DPI_OPTIONS = [300, 400, 500, 600];
 
 // Calculate pixels from mm and DPI
 export function calculatePixels(width_mm: number, height_mm: number, dpi: number) {

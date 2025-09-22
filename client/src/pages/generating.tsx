@@ -110,6 +110,11 @@ export default function Generating() {
   const isIdPhoto = category === PhotoCategory.ID_PHOTO;
   const aspectRatio = isIdPhoto ? '3/4' : '212/304';
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Simulate photo generation process
   useEffect(() => {
     const timeouts: ReturnType<typeof setTimeout>[] = [];

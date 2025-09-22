@@ -86,6 +86,11 @@ export default function Home() {
 
   const samples = getSampleImages();
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Auto-rotate images every 2.5 seconds with 500ms fade in/out transition
   useEffect(() => {
     let intervalRef: NodeJS.Timeout;
