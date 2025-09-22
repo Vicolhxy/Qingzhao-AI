@@ -468,7 +468,7 @@ export default function Upload() {
                 <div className="space-y-4">
                   <div className="text-left">
                     <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请<span className="text-red-500">不要</span>穿戴</h3>
-                    <p className="text-xs text-gray-600 whitespace-nowrap">帽子、墨镜、围巾等</p>
+                    <p className="text-gray-600 whitespace-nowrap text-[13px]">帽子、墨镜、围巾等</p>
                   </div>
                   <div className="text-left">
                     <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请保持端正</h3>
