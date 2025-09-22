@@ -1,0 +1,80 @@
+{
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "AI照片处理",
+        "navigationStyle": "default",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/upload/index",
+      "style": {
+        "navigationBarTitleText": "上传照片",
+        "navigationStyle": "default",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/generating/index",
+      "style": {
+        "navigationBarTitleText": "生成中",
+        "navigationStyle": "default",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/result/index",
+      "style": {
+        "navigationBarTitleText": "生成结果",
+        "navigationStyle": "default",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/terms/index",
+      "style": {
+        "navigationBarTitleText": "用户协议",
+        "navigationStyle": "default",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/privacy/index",
+      "style": {
+        "navigationBarTitleText": "隐私政策",
+        "navigationStyle": "default",
+        "enablePullDownRefresh": false
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "AI照片处理",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8",
+    "app-plus": {
+      "background": "#efeff4"
+    }
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "height": "50px",
+    "fontSize": "10px",
+    "iconWidth": "24px",
+    "spacing": "3px",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home_selected.png",
+        "text": "首页"
+      }
+    ]
+  },
+  "uniIdRouter": {}
+}
