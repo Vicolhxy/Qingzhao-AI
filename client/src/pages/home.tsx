@@ -269,7 +269,7 @@ export default function Home() {
                       alt="大样片" 
                       className="w-full h-full object-cover transition-opacity duration-300"
                       style={{ 
-                        opacity: isTransitioning ? 0 : 1,
+                        opacity: isTransitioning ? 0.3 : 1,
                         transitionTimingFunction: 'ease-in-out'
                       }}
                     />
@@ -296,7 +296,7 @@ export default function Home() {
                             alt={`小样片${index + 1}`} 
                             className="w-full h-full object-cover transition-opacity duration-300"
                             style={{ 
-                              opacity: isTransitioning ? 0 : 1,
+                              opacity: isTransitioning ? 0.3 : 1,
                               transitionTimingFunction: 'ease-in-out'
                             }}
                           />
