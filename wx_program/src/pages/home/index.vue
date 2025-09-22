@@ -112,22 +112,22 @@
 import { ref, computed, onMounted } from 'vue'
 import { PhotoCategory, photoCategories, genderOptions } from '@/shared/types'
 
-// 静态资源导入（需要根据实际项目调整路径）
+// 静态资源导入
 const bannerImage = '/static/images/banner.png'
 const wechatTestImage = '/static/images/wechat-test.png'
-const sampleMale1 = '/static/images/sample-male-1.png'
-const sampleMale2 = '/static/images/sample-male-2.png'
-const sampleMale3 = '/static/images/sample-male-3.png'
-const sampleMale4 = '/static/images/sample-male-4.png'
+const sampleMale1 = '/static/images/Sample-Male-1_1758161866744.png'
+const sampleMale2 = '/static/images/Sample-Male-2_1758161866744.png'
+const sampleMale3 = '/static/images/Sample-Male-3_1758161866745.png'
+const sampleMale4 = '/static/images/Sample-Male-4_1758161866744.png'
 
 // WeChat frame images
 const wechatFrames = [
-  '/static/images/wechat-frame-1.png',
-  '/static/images/wechat-frame-2.png',
-  '/static/images/wechat-frame-3.png',
-  '/static/images/wechat-frame-4.png',
-  '/static/images/wechat-frame-5.png',
-  '/static/images/wechat-frame-6.png'
+  '/static/images/WechatFrame-1_1758491861092.png',
+  '/static/images/WechatFrame-2_1758491861090.png',
+  '/static/images/WechatFrame-3_1758491861092.png',
+  '/static/images/WechatFrame-4_1758491861090.png',
+  '/static/images/WechatFrame-5_1758491861091.png',
+  '/static/images/WechatFrame-6_1758491861088.png'
 ]
 
 // 响应式数据

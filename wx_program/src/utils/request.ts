@@ -1,7 +1,7 @@
 import type { ApiResponse } from '@/shared/types'
 
 // 请求配置
-const BASE_URL = 'https://your-api-domain.com/api' // 替换为实际的API域名
+const BASE_URL = '/api' // 连接到现有的后端API
 
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
