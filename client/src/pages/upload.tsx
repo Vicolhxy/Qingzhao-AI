@@ -472,7 +472,7 @@ export default function Upload() {
                     <p className="text-gray-600 whitespace-nowrap text-[13px]">帽子、墨镜、围巾等</p>
                   </div>
                   <div className="text-left pt-[8px] pb-[8px]">
-                    <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请保持端正</h3>
+                    <h3 className="text-sm font-medium text-gray-800 mb-2 whitespace-nowrap">请尽量确保</h3>
                     <p className="text-gray-600 whitespace-nowrap text-[13px]">光线充足，背景简单</p>
                   </div>
                 </div>
