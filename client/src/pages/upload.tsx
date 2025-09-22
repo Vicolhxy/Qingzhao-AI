@@ -121,14 +121,15 @@ export default function Upload() {
         type: file.type
       }));
       
-      // Navigate to result page immediately after selecting file
-      const params = new URLSearchParams();
-      params.set('category', category);
-      params.set('gender', gender);
+      // Only navigate to result page immediately for WeChat portraits
       if (isWechatPortrait) {
+        const params = new URLSearchParams();
+        params.set('category', category);
+        params.set('gender', gender);
         params.set('frameIndex', frameIndex.toString());
+        setLocation(`/result?${params.toString()}`);
       }
-      setLocation(`/result?${params.toString()}`);
+      // For other photo types, stay on upload page to show uploaded photo and generate button
     }
   };
 
@@ -167,11 +168,11 @@ export default function Upload() {
       localStorage.setItem('idPhotoConfig', JSON.stringify(idPhotoConfig));
     }
     
-    // Navigate directly to result page (skip generating page)
+    // Navigate to generating page for AI processing (except WeChat portraits which go directly to result)
     if (isWechatPortrait) {
       setLocation(`/result?category=${category}&gender=${gender}&frameIndex=${frameIndex}`);
     } else {
-      setLocation(`/result?category=${category}&gender=${gender}`);
+      setLocation(`/generating?category=${category}&gender=${gender}`);
     }
   };
 
