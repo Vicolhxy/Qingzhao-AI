@@ -314,13 +314,13 @@ export default function Upload() {
                   <img 
                     src={wechatTestImage} 
                     alt="微信头像框样片" 
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-cover"
                   />
                   {/* Frame overlay */}
                   <img 
                     src={selectedWechatFrame} 
                     alt="选中的微信头像框" 
-                    className="absolute inset-0 w-full h-full object-fill rounded-lg"
+                    className="absolute inset-0 w-full h-full object-fill"
                   />
                 </div>
               </div>

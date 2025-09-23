@@ -235,14 +235,12 @@ export default function Home() {
                           src={wechatTestImage} 
                           alt={`头像底图${index + 1}`} 
                           className="w-full h-full object-cover"
-                          style={{ borderRadius: '8px' }}
                         />
                         {/* Frame overlay */}
                         <img 
                           src={frameImage} 
                           alt={`微信头像框${index + 1}`} 
                           className="absolute inset-0 w-full h-full object-fill"
-                          style={{ borderRadius: '8px' }}
                         />
                       </div>
                       
