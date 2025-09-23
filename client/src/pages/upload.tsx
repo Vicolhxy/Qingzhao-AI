@@ -320,7 +320,7 @@ export default function Upload() {
                   <img 
                     src={selectedWechatFrame} 
                     alt="选中的微信头像框" 
-                    className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                    className="absolute inset-0 w-full h-full object-fill rounded-lg"
                   />
                 </div>
               </div>
@@ -344,7 +344,7 @@ export default function Upload() {
                     <img 
                       src={selectedWechatFrame} 
                       alt="选中的头像框" 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-fill"
                     />
                   </div>
                   

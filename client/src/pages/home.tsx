@@ -241,7 +241,7 @@ export default function Home() {
                         <img 
                           src={frameImage} 
                           alt={`微信头像框${index + 1}`} 
-                          className="absolute inset-0 w-full h-full object-cover"
+                          className="absolute inset-0 w-full h-full object-fill"
                           style={{ borderRadius: '8px' }}
                         />
                       </div>

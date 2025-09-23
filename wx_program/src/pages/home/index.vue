@@ -62,7 +62,7 @@
               :class="{ active: selectedFrame === index }"
               @tap="handleFrameSelect(index)"
             >
-              <image :src="frame" class="frame-image" mode="aspectFill" />
+              <image :src="frame" class="frame-image" mode="scaleToFill" />
             </view>
           </view>
         </view>

@@ -31,7 +31,7 @@
         <view class="wechat-composition">
           <!-- Selected Frame -->
           <view class="frame-container">
-            <image :src="selectedWechatFrame" class="frame-image" mode="aspectFill" />
+            <image :src="selectedWechatFrame" class="frame-image" mode="scaleToFill" />
           </view>
           
           <text class="plus-icon">+</text>
