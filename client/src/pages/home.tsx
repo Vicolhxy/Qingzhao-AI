@@ -251,7 +251,7 @@ export default function Home() {
                       size="sm"
                       className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
                       style={{ width: 'clamp(80px, 94px, 94px)' }}
-                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=0`)}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=0&gender=${selectedGender}`)}
                       data-testid="button-make-same-1"
                     >
                       做同款
@@ -289,7 +289,7 @@ export default function Home() {
                       size="sm"
                       className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
                       style={{ width: 'clamp(80px, 94px, 94px)' }}
-                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=1`)}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=1&gender=${selectedGender}`)}
                       data-testid="button-make-same-2"
                     >
                       做同款
@@ -327,7 +327,7 @@ export default function Home() {
                       size="sm"
                       className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
                       style={{ width: 'clamp(80px, 94px, 94px)' }}
-                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=2`)}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=2&gender=${selectedGender}`)}
                       data-testid="button-make-same-3"
                     >
                       做同款
@@ -365,7 +365,7 @@ export default function Home() {
                       size="sm"
                       className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
                       style={{ width: 'clamp(80px, 94px, 94px)' }}
-                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=3`)}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=3&gender=${selectedGender}`)}
                       data-testid="button-make-same-4"
                     >
                       做同款
@@ -403,7 +403,7 @@ export default function Home() {
                       size="sm"
                       className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
                       style={{ width: 'clamp(80px, 94px, 94px)' }}
-                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=4`)}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=4&gender=${selectedGender}`)}
                       data-testid="button-make-same-5"
                     >
                       做同款
@@ -441,7 +441,7 @@ export default function Home() {
                       size="sm"
                       className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
                       style={{ width: 'clamp(80px, 94px, 94px)' }}
-                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=5`)}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=5&gender=${selectedGender}`)}
                       data-testid="button-make-same-6"
                     >
                       做同款

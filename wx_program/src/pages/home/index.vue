@@ -178,12 +178,11 @@ const getCurrentCategoryName = () => {
 const handleStartGeneration = () => {
   // 构建查询参数
   const query: Record<string, string> = {
-    category: selectedCategory.value
+    category: selectedCategory.value,
+    gender: selectedGender.value
   }
   
-  if (selectedCategory.value !== PhotoCategory.WECHAT_PORTRAIT) {
-    query.gender = selectedGender.value
-  } else {
+  if (selectedCategory.value === PhotoCategory.WECHAT_PORTRAIT) {
     query.frame = selectedFrame.value.toString()
   }
   
