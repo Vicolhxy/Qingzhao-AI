@@ -458,18 +458,9 @@ export default function Upload() {
                     className="w-full h-full object-cover object-center"
                   />
                 ) : (
-                  isIdPhoto ? (
-                    <div className="text-gray-400 text-center">
-                      <span className="text-sm">点击上传 / 拍照</span>
-                    </div>
-                  ) : (
-                    <img 
-                      src={outlineHuman} 
-                      alt="人物轮廓" 
-                      className="max-w-full max-h-full object-contain opacity-30"
-                      style={{ filter: 'invert(0.5)' }}
-                    />
-                  )
+                  <div className="text-gray-400 text-center">
+                    <span className="text-sm">点击上传 / 拍照</span>
+                  </div>
                 )}
               </div>
             </div>
