@@ -117,7 +117,7 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
           {/* Watermark overlay */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div 
-              className="text-white font-bold transform -rotate-12 opacity-50"
+              className="text-white font-bold transform -rotate-12 opacity-25"
               style={{ 
                 fontSize: '48px',
                 width: '80%',
@@ -149,7 +149,7 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
             {/* Large watermark overlay */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div 
-                className="text-white font-bold transform -rotate-12 opacity-50"
+                className="text-white font-bold transform -rotate-12 opacity-25"
                 style={{ 
                   fontSize: '64px',
                   width: '80%',
@@ -194,7 +194,7 @@ function ResultPhotoPlaceholder({ index, aspectRatio }: { index: number; aspectR
           {/* Watermark overlay */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div 
-              className="text-white font-bold transform -rotate-12 opacity-50"
+              className="text-white font-bold transform -rotate-12 opacity-25"
               style={{ 
                 fontSize: '32px',
                 width: '80%',
@@ -219,7 +219,7 @@ function ResultPhotoPlaceholder({ index, aspectRatio }: { index: number; aspectR
             {/* Large watermark overlay */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div 
-                className="text-white font-bold transform -rotate-12 opacity-50"
+                className="text-white font-bold transform -rotate-12 opacity-25"
                 style={{ 
                   fontSize: '64px',
                   width: '80%',
