@@ -53,7 +53,7 @@
       <!-- WeChat Portrait Special Layout -->
       <view v-if="selectedCategory === PhotoCategory.WECHAT_PORTRAIT" class="wechat-samples">
         <view class="wechat-main-sample">
-          <image :src="wechatTestImage" class="main-sample-image" mode="aspectFill" />
+          <image :src="selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage" class="main-sample-image" mode="aspectFill" />
           <view class="wechat-frames-grid">
             <view 
               v-for="(frame, index) in wechatFrames" 
@@ -114,7 +114,8 @@ import { PhotoCategory, photoCategories, genderOptions } from '@/shared/types'
 
 // 静态资源导入
 const bannerImage = '/static/images/banner.png'
-const wechatTestImage = '/static/images/wechat-test.png'
+const wechatMaleImage = '/static/images/wechat-male_1758738002915.png'
+const wechatFemaleImage = '/static/images/wechat-female_1758738002920.png'
 const sampleMale1 = '/static/images/Sample-Male-1_1758161866744.png'
 const sampleMale2 = '/static/images/Sample-Male-2_1758161866744.png'
 const sampleMale3 = '/static/images/Sample-Male-3_1758161866745.png'

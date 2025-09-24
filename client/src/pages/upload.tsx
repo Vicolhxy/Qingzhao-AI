@@ -15,7 +15,8 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 
 // Import outline human image
 import outlineHuman from "@assets/Outline-human_1758207634258.png";
-import wechatTestImage from "@assets/Wechat-test_1758491664457.png";
+import wechatMaleImage from "@assets/wechat-male_1758738002915.png";
+import wechatFemaleImage from "@assets/wechat-female_1758738002920.png";
 
 // Import WeChat frame images
 import wechatFrame1 from "@assets/WechatFrame-1_1758491861092.png";
@@ -312,7 +313,7 @@ export default function Upload() {
                 >
                   {/* Base avatar image */}
                   <img 
-                    src={wechatTestImage} 
+                    src={gender === 'male' ? wechatMaleImage : wechatFemaleImage} 
                     alt="微信头像框样片" 
                     className="w-full h-full object-cover"
                   />

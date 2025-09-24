@@ -9,7 +9,8 @@ import sampleMale1 from "@assets/Sample-Male-1_1758161866744.png";
 import sampleMale2 from "@assets/Sample-Male-2_1758161866744.png";
 import sampleMale3 from "@assets/Sample-Male-3_1758161866745.png";
 import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
-import wechatTestImage from "@assets/Wechat-test_1758491664457.png";
+import wechatMaleImage from "@assets/wechat-male_1758738002915.png";
+import wechatFemaleImage from "@assets/wechat-female_1758738002920.png";
 
 // Import WeChat frame images
 import wechatFrame1 from "@assets/WechatFrame-1_1758491861092.png";
@@ -232,7 +233,7 @@ export default function Home() {
                       >
                         {/* Base avatar image */}
                         <img 
-                          src={wechatTestImage} 
+                          src={selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage} 
                           alt={`头像底图${index + 1}`} 
                           className="w-full h-full object-cover"
                         />

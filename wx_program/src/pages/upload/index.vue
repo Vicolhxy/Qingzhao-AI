@@ -194,7 +194,8 @@ const sampleMale1 = '/static/images/Sample-Male-1_1758161866744.png'
 const sampleMale2 = '/static/images/Sample-Male-2_1758161866744.png'
 const sampleMale3 = '/static/images/Sample-Male-3_1758161866745.png'
 const sampleMale4 = '/static/images/Sample-Male-4_1758161866744.png'
-const wechatTestImage = '/static/images/wechat-test.png'
+const wechatMaleImage = '/static/images/wechat-male_1758738002915.png'
+const wechatFemaleImage = '/static/images/wechat-female_1758738002920.png'
 
 // WeChat frames
 const wechatFrames = [
