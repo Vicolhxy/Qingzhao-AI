@@ -219,44 +219,235 @@ export default function Home() {
               /* WeChat Portrait Grid - 2x3 layout */
               <div style={{ marginBottom: '24px' }} data-testid="wechat-grid">
                 <div className="grid grid-cols-2" style={{ gap: '15px' }}>
-                  {[wechatFrame1, wechatFrame2, wechatFrame3, wechatFrame4, wechatFrame5, wechatFrame6].map((frameImage, index) => (
-                    <div key={index} className="flex flex-col items-center" data-testid={`wechat-frame-${index + 1}`}>
-                      {/* Avatar with frame overlay */}
-                      <div 
-                        className="relative bg-gray-100 overflow-hidden mb-2"
-                        style={{ 
-                          borderRadius: '8px',
-                          width: 'clamp(80px, 94px, 94px)',
-                          height: 'clamp(80px, 94px, 94px)',
-                          aspectRatio: '1 / 1'
-                        }}
-                      >
-                        {/* Base avatar image */}
-                        <img 
-                          src={selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage} 
-                          alt={`头像底图${index + 1}`} 
-                          className="w-full h-full object-cover"
-                        />
-                        {/* Frame overlay */}
-                        <img 
-                          src={frameImage} 
-                          alt={`微信头像框${index + 1}`} 
-                          className="absolute inset-0 w-full h-full object-fill"
-                        />
-                      </div>
-                      
-                      {/* "做同款" button */}
-                      <Button 
-                        size="sm"
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
-                        style={{ width: 'clamp(80px, 94px, 94px)' }}
-                        onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=${index}`)}
-                        data-testid={`button-make-same-${index + 1}`}
-                      >
-                        做同款
-                      </Button>
+                  
+                  {/* 样品1 */}
+                  <div className="flex flex-col items-center" data-testid="wechat-frame-1">
+                    {/* Avatar with frame overlay */}
+                    <div 
+                      className="relative bg-gray-100 overflow-hidden mb-2"
+                      style={{ 
+                        borderRadius: '8px',
+                        width: 'clamp(80px, 94px, 94px)',
+                        height: 'clamp(80px, 94px, 94px)',
+                        aspectRatio: '1 / 1'
+                      }}
+                    >
+                      {/* Base avatar image */}
+                      <img 
+                        src={selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage} 
+                        alt="头像底图1" 
+                        className="w-full h-full object-cover"
+                      />
+                      {/* Frame overlay */}
+                      <img 
+                        src={wechatFrame1} 
+                        alt="微信头像框1" 
+                        className="absolute inset-0 w-full h-full object-fill"
+                      />
                     </div>
-                  ))}
+                    
+                    {/* "做同款" button */}
+                    <Button 
+                      size="sm"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
+                      style={{ width: 'clamp(80px, 94px, 94px)' }}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=0`)}
+                      data-testid="button-make-same-1"
+                    >
+                      做同款
+                    </Button>
+                  </div>
+
+                  {/* 样品2 */}
+                  <div className="flex flex-col items-center" data-testid="wechat-frame-2">
+                    {/* Avatar with frame overlay */}
+                    <div 
+                      className="relative bg-gray-100 overflow-hidden mb-2"
+                      style={{ 
+                        borderRadius: '8px',
+                        width: 'clamp(80px, 94px, 94px)',
+                        height: 'clamp(80px, 94px, 94px)',
+                        aspectRatio: '1 / 1'
+                      }}
+                    >
+                      {/* Base avatar image */}
+                      <img 
+                        src={selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage} 
+                        alt="头像底图2" 
+                        className="w-full h-full object-cover"
+                      />
+                      {/* Frame overlay */}
+                      <img 
+                        src={wechatFrame2} 
+                        alt="微信头像框2" 
+                        className="absolute inset-0 w-full h-full object-fill"
+                      />
+                    </div>
+                    
+                    {/* "做同款" button */}
+                    <Button 
+                      size="sm"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
+                      style={{ width: 'clamp(80px, 94px, 94px)' }}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=1`)}
+                      data-testid="button-make-same-2"
+                    >
+                      做同款
+                    </Button>
+                  </div>
+
+                  {/* 样品3 */}
+                  <div className="flex flex-col items-center" data-testid="wechat-frame-3">
+                    {/* Avatar with frame overlay */}
+                    <div 
+                      className="relative bg-gray-100 overflow-hidden mb-2"
+                      style={{ 
+                        borderRadius: '8px',
+                        width: 'clamp(80px, 94px, 94px)',
+                        height: 'clamp(80px, 94px, 94px)',
+                        aspectRatio: '1 / 1'
+                      }}
+                    >
+                      {/* Base avatar image */}
+                      <img 
+                        src={selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage} 
+                        alt="头像底图3" 
+                        className="w-full h-full object-cover"
+                      />
+                      {/* Frame overlay */}
+                      <img 
+                        src={wechatFrame3} 
+                        alt="微信头像框3" 
+                        className="absolute inset-0 w-full h-full object-fill"
+                      />
+                    </div>
+                    
+                    {/* "做同款" button */}
+                    <Button 
+                      size="sm"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
+                      style={{ width: 'clamp(80px, 94px, 94px)' }}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=2`)}
+                      data-testid="button-make-same-3"
+                    >
+                      做同款
+                    </Button>
+                  </div>
+
+                  {/* 样品4 */}
+                  <div className="flex flex-col items-center" data-testid="wechat-frame-4">
+                    {/* Avatar with frame overlay */}
+                    <div 
+                      className="relative bg-gray-100 overflow-hidden mb-2"
+                      style={{ 
+                        borderRadius: '8px',
+                        width: 'clamp(80px, 94px, 94px)',
+                        height: 'clamp(80px, 94px, 94px)',
+                        aspectRatio: '1 / 1'
+                      }}
+                    >
+                      {/* Base avatar image */}
+                      <img 
+                        src={selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage} 
+                        alt="头像底图4" 
+                        className="w-full h-full object-cover"
+                      />
+                      {/* Frame overlay */}
+                      <img 
+                        src={wechatFrame4} 
+                        alt="微信头像框4" 
+                        className="absolute inset-0 w-full h-full object-fill"
+                      />
+                    </div>
+                    
+                    {/* "做同款" button */}
+                    <Button 
+                      size="sm"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
+                      style={{ width: 'clamp(80px, 94px, 94px)' }}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=3`)}
+                      data-testid="button-make-same-4"
+                    >
+                      做同款
+                    </Button>
+                  </div>
+
+                  {/* 样品5 */}
+                  <div className="flex flex-col items-center" data-testid="wechat-frame-5">
+                    {/* Avatar with frame overlay */}
+                    <div 
+                      className="relative bg-gray-100 overflow-hidden mb-2"
+                      style={{ 
+                        borderRadius: '8px',
+                        width: 'clamp(80px, 94px, 94px)',
+                        height: 'clamp(80px, 94px, 94px)',
+                        aspectRatio: '1 / 1'
+                      }}
+                    >
+                      {/* Base avatar image */}
+                      <img 
+                        src={selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage} 
+                        alt="头像底图5" 
+                        className="w-full h-full object-cover"
+                      />
+                      {/* Frame overlay */}
+                      <img 
+                        src={wechatFrame5} 
+                        alt="微信头像框5" 
+                        className="absolute inset-0 w-full h-full object-fill"
+                      />
+                    </div>
+                    
+                    {/* "做同款" button */}
+                    <Button 
+                      size="sm"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
+                      style={{ width: 'clamp(80px, 94px, 94px)' }}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=4`)}
+                      data-testid="button-make-same-5"
+                    >
+                      做同款
+                    </Button>
+                  </div>
+
+                  {/* 样品6 */}
+                  <div className="flex flex-col items-center" data-testid="wechat-frame-6">
+                    {/* Avatar with frame overlay */}
+                    <div 
+                      className="relative bg-gray-100 overflow-hidden mb-2"
+                      style={{ 
+                        borderRadius: '8px',
+                        width: 'clamp(80px, 94px, 94px)',
+                        height: 'clamp(80px, 94px, 94px)',
+                        aspectRatio: '1 / 1'
+                      }}
+                    >
+                      {/* Base avatar image */}
+                      <img 
+                        src={selectedGender === 'male' ? wechatMaleImage : wechatFemaleImage} 
+                        alt="头像底图6" 
+                        className="w-full h-full object-cover"
+                      />
+                      {/* Frame overlay */}
+                      <img 
+                        src={wechatFrame6} 
+                        alt="微信头像框6" 
+                        className="absolute inset-0 w-full h-full object-fill"
+                      />
+                    </div>
+                    
+                    {/* "做同款" button */}
+                    <Button 
+                      size="sm"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs py-1 rounded-lg"
+                      style={{ width: 'clamp(80px, 94px, 94px)' }}
+                      onClick={() => setLocation(`/upload?category=${PhotoCategory.WECHAT_PORTRAIT}&frameIndex=5`)}
+                      data-testid="button-make-same-6"
+                    >
+                      做同款
+                    </Button>
+                  </div>
+
                 </div>
               </div>
             ) : (
