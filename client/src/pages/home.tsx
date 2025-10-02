@@ -247,6 +247,18 @@ export default function Home() {
                   {category.name}
                 </button>
               ))}
+              
+              {/* Coming Soon Item - Non-clickable */}
+              <div
+                className="w-full text-left text-sm text-gray-400 cursor-default"
+                style={{ 
+                  padding: '12px',
+                  position: 'relative'
+                }}
+                data-testid="category-coming-soon"
+              >
+                敬请期待更多
+              </div>
             </div>
           </div>
 
