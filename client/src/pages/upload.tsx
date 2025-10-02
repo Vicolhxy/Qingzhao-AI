@@ -7,16 +7,20 @@ import { ArrowLeft, User, Sun, Building, X, ChevronDown } from "lucide-react";
 import { PhotoCategory } from "@shared/schema";
 import { ID_PHOTO_TYPES, BACKGROUND_COLORS, DPI_OPTIONS, IdPhotoConfig, createDefaultConfig, updateIdPhotoConfig, IdPhotoType } from "@/data/idPhotoConfig";
 
-// Import sample images (same as home page)
-import sampleMale1 from "@assets/Sample-Male-1_1758161866744.png";
-import sampleMale2 from "@assets/Sample-Male-2_1758161866744.png";
-import sampleMale3 from "@assets/Sample-Male-3_1758161866745.png";
-import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
-
 // Import outline human image
 import outlineHuman from "@assets/Outline-human_1758207634258.png";
 import wechatMaleImage from "@assets/wechat-male_1758738002915.png";
 import wechatFemaleImage from "@assets/wechat-female_1758738002920.png";
+
+// Import professional photo samples
+import businessMale1 from "@assets/Business-male-1_1759428794045.png";
+import businessMale2 from "@assets/Business-male-2_1759428794044.png";
+import businessMale3 from "@assets/Business-male-3_1759428794043.png";
+import businessMale4 from "@assets/Business-male-4_1759428794041.png";
+import businessFemale1 from "@assets/Business-female-1_1759428794046.png";
+import businessFemale2 from "@assets/Business-female-2_1759428794045.png";
+import businessFemale3 from "@assets/Business-female-3_1759428794044.png";
+import businessFemale4 from "@assets/Business-female-4_1759428794043.png";
 
 // Import ID photo samples
 import idMaleBlue from "@assets/ID-male-blue_1759371513892.png";
@@ -98,23 +102,37 @@ export default function Upload() {
 
   // Sample images (using same as home page)
   const getSampleImages = () => {
+    let categoryImages;
+    
     if (category === PhotoCategory.ID_PHOTO) {
       // For ID photos, use gender-specific images
-      const idImages = gender === 'male' 
+      categoryImages = gender === 'male' 
         ? [idMaleBlue, idMaleGrey, idMaleRed, idMaleWhite]
         : [idFemaleBlue, idFemaleGrey, idFemaleRed, idFemaleWhite];
-      
-      // Reorder based on sampleIndex to show the selected sample first
-      const reorderedImages = [
-        idImages[sampleIndex % idImages.length],
-        ...idImages.filter((_, idx) => idx !== sampleIndex % idImages.length)
-      ];
-      
-      return reorderedImages;
+    } else if (category === PhotoCategory.PROFESSIONAL) {
+      // For professional photos, use gender-specific images
+      categoryImages = gender === 'male'
+        ? [businessMale1, businessMale2, businessMale3, businessMale4]
+        : [businessFemale1, businessFemale2, businessFemale3, businessFemale4];
+    } else if (category === PhotoCategory.BLACK_WHITE_ART) {
+      // For black & white art, use professional images as placeholder for now
+      categoryImages = gender === 'male'
+        ? [businessMale1, businessMale2, businessMale3, businessMale4]
+        : [businessFemale1, businessFemale2, businessFemale3, businessFemale4];
+    } else {
+      // Default fallback
+      categoryImages = gender === 'male'
+        ? [businessMale1, businessMale2, businessMale3, businessMale4]
+        : [businessFemale1, businessFemale2, businessFemale3, businessFemale4];
     }
     
-    // For other categories, use default professional photos
-    return [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+    // Reorder based on sampleIndex to show the selected sample first
+    const reorderedImages = [
+      categoryImages[sampleIndex % categoryImages.length],
+      ...categoryImages.filter((_, idx) => idx !== sampleIndex % categoryImages.length)
+    ];
+    
+    return reorderedImages;
   };
   
   const sampleImages = getSampleImages();

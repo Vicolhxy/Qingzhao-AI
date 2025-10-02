@@ -5,12 +5,18 @@ import { PhotoCategory } from "@shared/schema";
 
 // Import new assets
 import bannerImage from "@assets/Banner_1758161866737.png";
-import sampleMale1 from "@assets/Sample-Male-1_1758161866744.png";
-import sampleMale2 from "@assets/Sample-Male-2_1758161866744.png";
-import sampleMale3 from "@assets/Sample-Male-3_1758161866745.png";
-import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 import wechatMaleImage from "@assets/wechat-male_1758738002915.png";
 import wechatFemaleImage from "@assets/wechat-female_1758738002920.png";
+
+// Import professional photo samples
+import businessMale1 from "@assets/Business-male-1_1759428794045.png";
+import businessMale2 from "@assets/Business-male-2_1759428794044.png";
+import businessMale3 from "@assets/Business-male-3_1759428794043.png";
+import businessMale4 from "@assets/Business-male-4_1759428794041.png";
+import businessFemale1 from "@assets/Business-female-1_1759428794046.png";
+import businessFemale2 from "@assets/Business-female-2_1759428794045.png";
+import businessFemale3 from "@assets/Business-female-3_1759428794044.png";
+import businessFemale4 from "@assets/Business-female-4_1759428794043.png";
 
 // Import ID photo samples
 import idMaleBlue from "@assets/ID-male-blue_1759371513892.png";
@@ -72,8 +78,9 @@ export default function Home() {
   const [nextImageIndex, setNextImageIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // All sample images in rotation order
-  const allSampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+  // Professional photo sample images
+  const professionalMaleImages = [businessMale1, businessMale2, businessMale3, businessMale4];
+  const professionalFemaleImages = [businessFemale1, businessFemale2, businessFemale3, businessFemale4];
   
   // ID photo sample images
   const idPhotoMaleImages = [idMaleBlue, idMaleGrey, idMaleRed, idMaleWhite];
@@ -84,32 +91,31 @@ export default function Home() {
   
   // Sample images based on stable index (only updates after transition completes)
   const getSampleImages = () => {
-    // For ID photos, use gender-specific images
+    let categoryImages;
+    
+    // Select images based on category and gender
     if (selectedCategory === PhotoCategory.ID_PHOTO) {
-      const idImages = selectedGender === 'male' ? idPhotoMaleImages : idPhotoFemaleImages;
-      const totalImages = idImages.length;
-      
-      const large = idImages[stableImageIndex % totalImages];
-      const small = [
-        idImages[(stableImageIndex + 1) % totalImages],
-        idImages[(stableImageIndex + 2) % totalImages], 
-        idImages[(stableImageIndex + 3) % totalImages]
-      ];
-      
-      return { large, small };
+      categoryImages = selectedGender === 'male' ? idPhotoMaleImages : idPhotoFemaleImages;
+    } else if (selectedCategory === PhotoCategory.PROFESSIONAL) {
+      categoryImages = selectedGender === 'male' ? professionalMaleImages : professionalFemaleImages;
+    } else if (selectedCategory === PhotoCategory.BLACK_WHITE_ART) {
+      // For black & white art, use professional images as placeholder for now
+      categoryImages = selectedGender === 'male' ? professionalMaleImages : professionalFemaleImages;
+    } else {
+      // Default fallback
+      categoryImages = selectedGender === 'male' ? professionalMaleImages : professionalFemaleImages;
     }
     
-    // For other categories, use default sample images
-    const totalImages = allSampleImages.length;
+    const totalImages = categoryImages.length;
     
     // Current large image uses stable index during transitions
-    const large = allSampleImages[stableImageIndex];
+    const large = categoryImages[stableImageIndex % totalImages];
     
     // Small images are the next 3 in rotation
     const small = [
-      allSampleImages[(stableImageIndex + 1) % totalImages],
-      allSampleImages[(stableImageIndex + 2) % totalImages], 
-      allSampleImages[(stableImageIndex + 3) % totalImages]
+      categoryImages[(stableImageIndex + 1) % totalImages],
+      categoryImages[(stableImageIndex + 2) % totalImages], 
+      categoryImages[(stableImageIndex + 3) % totalImages]
     ];
     
     return { large, small };
@@ -135,8 +141,18 @@ export default function Home() {
     let intervalRef: NodeJS.Timeout;
     let timeoutRef: NodeJS.Timeout;
 
+    // Get the correct number of images for current category
+    const getImageCount = () => {
+      if (selectedCategory === PhotoCategory.ID_PHOTO) {
+        return 4; // ID photos have 4 images
+      } else if (selectedCategory === PhotoCategory.PROFESSIONAL || selectedCategory === PhotoCategory.BLACK_WHITE_ART) {
+        return 4; // Professional and black & white also have 4 images
+      }
+      return 4;
+    };
+
     intervalRef = setInterval(() => {
-      const nextIndex = (currentImageIndex + 1) % allSampleImages.length;
+      const nextIndex = (currentImageIndex + 1) % getImageCount();
       
       // Start fade out
       setIsTransitioning(true);
@@ -145,7 +161,7 @@ export default function Home() {
       timeoutRef = setTimeout(() => {
         setCurrentImageIndex(nextIndex);
         setStableImageIndex(nextIndex);
-        setNextImageIndex((nextIndex + 1) % allSampleImages.length);
+        setNextImageIndex((nextIndex + 1) % getImageCount());
         
         // End transition after a brief moment
         setTimeout(() => {
@@ -158,7 +174,7 @@ export default function Home() {
       clearInterval(intervalRef);
       if (timeoutRef) clearTimeout(timeoutRef);
     };
-  }, [currentImageIndex, allSampleImages.length]);
+  }, [currentImageIndex, selectedCategory]);
 
   return (
     <div className="min-h-screen bg-background overflow-y-auto scrollbar-hide flex flex-col" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -527,9 +543,7 @@ export default function Home() {
                     className="flex w-full" 
                     style={{ gap: '8px' }}
                   >
-                    {samples.small.map((sample, index) => {
-                      const nextSmallIndex = (stableImageIndex + index + 2) % allSampleImages.length;
-                      return (
+                    {samples.small.map((sample, index) => (
                         <div 
                           key={`small-${index}`}
                           className="flex-1 bg-gray-100 rounded overflow-hidden relative"
@@ -546,8 +560,7 @@ export default function Home() {
                             }}
                           />
                         </div>
-                      );
-                    })}
+                    ))}
                   </div>
                 </div>
               </>
