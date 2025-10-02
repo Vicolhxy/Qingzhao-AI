@@ -32,6 +32,16 @@ import idFemaleGrey from "@assets/ID-female-grey_1759371513891.png";
 import idFemaleRed from "@assets/ID-female-red_1759371513891.png";
 import idFemaleWhite from "@assets/ID-female-white_1759371513892.png";
 
+// Import B&W art photo samples
+import artBwMale1 from "@assets/ArtB&W-male-1_1759432746968.png";
+import artBwMale2 from "@assets/ArtB&W-male-2_1759432746967.png";
+import artBwMale3 from "@assets/ArtB&W-male-3_1759432746966.png";
+import artBwMale4 from "@assets/ArtB&W-male-4_1759432746965.png";
+import artBwFemale1 from "@assets/ArtB&W-female-1_1759432746968.png";
+import artBwFemale2 from "@assets/ArtB&W-female-2_1759432746967.png";
+import artBwFemale3 from "@assets/ArtB&W-female-3_1759432746966.png";
+import artBwFemale4 from "@assets/ArtB&W-female-4_1759432746966.png";
+
 // Import WeChat frame images
 import wechatFrame1 from "@assets/WechatFrame-1_1758491861092.png";
 import wechatFrame2 from "@assets/WechatFrame-2_1758491861090.png";
@@ -115,10 +125,10 @@ export default function Upload() {
         ? [businessMale1, businessMale2, businessMale3, businessMale4]
         : [businessFemale1, businessFemale2, businessFemale3, businessFemale4];
     } else if (category === PhotoCategory.BLACK_WHITE_ART) {
-      // For black & white art, use professional images as placeholder for now
+      // For black & white art, use gender-specific images
       categoryImages = gender === 'male'
-        ? [businessMale1, businessMale2, businessMale3, businessMale4]
-        : [businessFemale1, businessFemale2, businessFemale3, businessFemale4];
+        ? [artBwMale1, artBwMale2, artBwMale3, artBwMale4]
+        : [artBwFemale1, artBwFemale2, artBwFemale3, artBwFemale4];
     } else {
       // Default fallback
       categoryImages = gender === 'male'
