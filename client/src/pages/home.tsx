@@ -12,6 +12,16 @@ import sampleMale4 from "@assets/Sample-Male-4_1758161866744.png";
 import wechatMaleImage from "@assets/wechat-male_1758738002915.png";
 import wechatFemaleImage from "@assets/wechat-female_1758738002920.png";
 
+// Import ID photo samples
+import idMaleBlue from "@assets/ID-male-blue_1759371513892.png";
+import idMaleGrey from "@assets/ID-male-grey_1759371513892.png";
+import idMaleRed from "@assets/ID-male-red_1759371513893.png";
+import idMaleWhite from "@assets/ID-male-white_1759371513893.png";
+import idFemaleBlue from "@assets/ID-female-blue_1759371513890.png";
+import idFemaleGrey from "@assets/ID-female-grey_1759371513891.png";
+import idFemaleRed from "@assets/ID-female-red_1759371513891.png";
+import idFemaleWhite from "@assets/ID-female-white_1759371513892.png";
+
 // Import WeChat frame images
 import wechatFrame1 from "@assets/WechatFrame-1_1758491861092.png";
 import wechatFrame2 from "@assets/WechatFrame-2_1758491861090.png";
@@ -64,12 +74,32 @@ export default function Home() {
 
   // All sample images in rotation order
   const allSampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+  
+  // ID photo sample images
+  const idPhotoMaleImages = [idMaleBlue, idMaleGrey, idMaleRed, idMaleWhite];
+  const idPhotoFemaleImages = [idFemaleBlue, idFemaleGrey, idFemaleRed, idFemaleWhite];
 
   // Keep stable image sources during transitions to prevent flicker
   const [stableImageIndex, setStableImageIndex] = useState(0);
   
   // Sample images based on stable index (only updates after transition completes)
   const getSampleImages = () => {
+    // For ID photos, use gender-specific images
+    if (selectedCategory === PhotoCategory.ID_PHOTO) {
+      const idImages = selectedGender === 'male' ? idPhotoMaleImages : idPhotoFemaleImages;
+      const totalImages = idImages.length;
+      
+      const large = idImages[stableImageIndex % totalImages];
+      const small = [
+        idImages[(stableImageIndex + 1) % totalImages],
+        idImages[(stableImageIndex + 2) % totalImages], 
+        idImages[(stableImageIndex + 3) % totalImages]
+      ];
+      
+      return { large, small };
+    }
+    
+    // For other categories, use default sample images
     const totalImages = allSampleImages.length;
     
     // Current large image uses stable index during transitions
@@ -91,6 +121,14 @@ export default function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  
+  // Reset image index when category or gender changes
+  useEffect(() => {
+    setCurrentImageIndex(0);
+    setStableImageIndex(0);
+    setNextImageIndex(1);
+    setIsTransitioning(false);
+  }, [selectedCategory, selectedGender]);
 
   // Auto-rotate images every 2.5 seconds with 500ms fade in/out transition
   useEffect(() => {
