@@ -551,7 +551,7 @@ export default function Home() {
                     width: '100%', 
                     padding: '12px 0' 
                   }}
-                  onClick={() => setLocation(`/upload?category=${selectedCategory}&gender=${selectedGender}`)}
+                  onClick={() => setLocation(`/upload?category=${selectedCategory}&gender=${selectedGender}&sampleIndex=${stableImageIndex}`)}
                   data-testid="cta-button"
                 >
                   我也要同款 (4张)

@@ -18,6 +18,16 @@ import outlineHuman from "@assets/Outline-human_1758207634258.png";
 import wechatMaleImage from "@assets/wechat-male_1758738002915.png";
 import wechatFemaleImage from "@assets/wechat-female_1758738002920.png";
 
+// Import ID photo samples
+import idMaleBlue from "@assets/ID-male-blue_1759371513892.png";
+import idMaleGrey from "@assets/ID-male-grey_1759371513892.png";
+import idMaleRed from "@assets/ID-male-red_1759371513893.png";
+import idMaleWhite from "@assets/ID-male-white_1759371513893.png";
+import idFemaleBlue from "@assets/ID-female-blue_1759371513890.png";
+import idFemaleGrey from "@assets/ID-female-grey_1759371513891.png";
+import idFemaleRed from "@assets/ID-female-red_1759371513891.png";
+import idFemaleWhite from "@assets/ID-female-white_1759371513892.png";
+
 // Import WeChat frame images
 import wechatFrame1 from "@assets/WechatFrame-1_1758491861092.png";
 import wechatFrame2 from "@assets/WechatFrame-2_1758491861090.png";
@@ -57,6 +67,7 @@ export default function Upload() {
   const category = (urlParams.get('category') || PhotoCategory.PROFESSIONAL) as PhotoCategory;
   const gender = urlParams.get('gender') || 'male';
   const frameIndex = parseInt(urlParams.get('frameIndex') || '0', 10);
+  const sampleIndex = parseInt(urlParams.get('sampleIndex') || '0', 10);
   const openModal = urlParams.get('openModal');
   const categoryName = categoryNames[category];
   
@@ -86,7 +97,27 @@ export default function Upload() {
   }, [openModal, isWechatPortrait]);
 
   // Sample images (using same as home page)
-  const sampleImages = [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+  const getSampleImages = () => {
+    if (category === PhotoCategory.ID_PHOTO) {
+      // For ID photos, use gender-specific images
+      const idImages = gender === 'male' 
+        ? [idMaleBlue, idMaleGrey, idMaleRed, idMaleWhite]
+        : [idFemaleBlue, idFemaleGrey, idFemaleRed, idFemaleWhite];
+      
+      // Reorder based on sampleIndex to show the selected sample first
+      const reorderedImages = [
+        idImages[sampleIndex % idImages.length],
+        ...idImages.filter((_, idx) => idx !== sampleIndex % idImages.length)
+      ];
+      
+      return reorderedImages;
+    }
+    
+    // For other categories, use default professional photos
+    return [sampleMale1, sampleMale2, sampleMale3, sampleMale4];
+  };
+  
+  const sampleImages = getSampleImages();
   
   // Scroll to top when component mounts
   useEffect(() => {
