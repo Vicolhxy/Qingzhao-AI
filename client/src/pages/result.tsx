@@ -36,7 +36,10 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
   useEffect(() => {
     const composeImage = async () => {
       const uploadedImageUrl = sessionStorage.getItem('uploadedImage');
-      if (!uploadedImageUrl) return;
+      if (!uploadedImageUrl) {
+        console.warn('No uploaded image found in sessionStorage');
+        return;
+      }
       
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -54,7 +57,9 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
         userImg.crossOrigin = 'anonymous';
         await new Promise((resolve, reject) => {
           userImg.onload = resolve;
-          userImg.onerror = reject;
+          userImg.onerror = (e) => {
+            reject(new Error(`Failed to load user image: ${uploadedImageUrl}`));
+          };
           userImg.src = uploadedImageUrl;
         });
         
@@ -63,7 +68,9 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
         frameImg.crossOrigin = 'anonymous';
         await new Promise((resolve, reject) => {
           frameImg.onload = resolve;
-          frameImg.onerror = reject;
+          frameImg.onerror = (e) => {
+            reject(new Error(`Failed to load frame image: ${selectedFrame}`));
+          };
           frameImg.src = selectedFrame;
         });
         
@@ -91,7 +98,7 @@ function WechatAvatarComposer({ frameIndex }: { frameIndex: number }) {
         }, 'image/png');
         
       } catch (error) {
-        console.error('Error composing image:', error);
+        console.error('Error composing image:', error instanceof Error ? error.message : 'Unknown error');
       }
     };
     
