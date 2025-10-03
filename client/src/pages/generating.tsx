@@ -17,7 +17,7 @@ const categoryNames = {
 
 // Typewriter animation component for privacy text
 function TypewriterText({ isGenerating }: { isGenerating: boolean }) {
-  const text = "在您支付成功并下载照片后，我们会立即删除。我们承诺不会存储或转播您的个人照片，请放心。";
+  const text = "在您下载照片后，我们会立即删除。我们承诺不会存储或转播您的个人照片，请放心。";
   const [displayedText, setDisplayedText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -221,10 +221,7 @@ export default function Generating() {
           <CardContent className="p-4">
             <div className="flex justify-between items-center mb-3">
               <span className="text-sm text-muted-foreground">价格</span>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground line-through">¥99.9</span>
-                <span className="text-lg font-bold text-primary">¥19.9</span>
-              </div>
+              <span className="text-lg font-bold text-primary">限时免费</span>
             </div>
             
             {/* Typewriter Animation for Privacy Text */}

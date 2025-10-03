@@ -367,20 +367,15 @@ export default function Result() {
                 </h3>
               </div>
               <div className="text-right">
-                <div className="flex items-center justify-end gap-2">
-                  <span className="text-sm text-muted-foreground line-through">
-                    {isWechatPortrait ? '¥9.9' : '¥99.9'}
-                  </span>
-                  <span className="text-2xl font-bold text-primary" data-testid="price">
-                    {isWechatPortrait ? '¥1.9' : '¥19.9'}
-                  </span>
-                </div>
+                <span className="text-2xl font-bold text-primary" data-testid="price">
+                  限时免费
+                </span>
               </div>
             </div>
             
             <div className="space-y-2 mb-4">
               <p className="text-sm text-muted-foreground">
-                在您支付成功并下载照片后，我们会立即删除。<br />
+                在您下载照片后，我们会立即删除。<br />
                 我们承诺不会存储或转播您的个人照片，请放心。
               </p>
             </div>
@@ -392,13 +387,13 @@ export default function Result() {
               data-testid="payment-button"
             >
               <Download className="mr-2 h-4 w-4" />
-              立即购买下载
+              下载
             </Button>
             
             {/* Agreement Notice */}
             <div className="text-center mt-3">
               <p className="text-xs text-muted-foreground">
-                点击购买即表示同意服务条款和隐私政策
+                点击下载即表示同意服务条款和隐私政策
               </p>
             </div>
           </CardContent>
